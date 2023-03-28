@@ -1,0 +1,40 @@
+{
+  "executable": "Trading",
+  "splashscreen": {
+    "imageFile": "./Assets/Adiidev 1920x1080_color_white.png"
+  },
+  "name": "Trading",
+  "author": "Adrian Krysiak & Jacek Wiśniewski",
+  "singleInstance": false,
+  "environment": "Production",
+  "build": {
+    "appId": "com.Trading.app",
+    "productName": "Trading",
+    "copyright": "Copyright © 2020",
+    "buildVersion": "1.0.0",
+    "compression": "maximum",
+    "directories": {
+      "output": "../../../bin/Desktop"
+    },
+    "extraResources": [
+      {
+        "from": "./bin",
+        "to": "bin",
+        "filter": [ "**/*" ]
+      }
+    ],
+    "files": [
+      {
+        "from": "./ElectronHostHook/node_modules",
+        "to": "ElectronHostHook/node_modules",
+        "filter": [ "**/*" ]
+      },
+      "**/*"
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "multiLanguageInstaller": true,
+    "allowToChangeInstallationDirectory": true
+  }
+}

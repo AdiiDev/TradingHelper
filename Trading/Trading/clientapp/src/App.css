@@ -1,0 +1,314 @@
+.App {
+  text-align: center;
+  overflow-y: auto;
+}
+
+.App-win {
+  margin-top: 32px;
+  height: calc(100vh - 32px);
+  max-height: calc(100vh - 32px);
+}
+
+.blankPage {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.Page {
+  padding-left: 68px;
+  padding-right: 4px;
+  overflow-y: auto;
+}
+
+.Page-win {
+  min-height: calc(100vh - 32px);
+  max-height: calc(100vh - 32px);
+  height: calc(100vh - 32px);
+}
+
+.section {
+  height: 100vh;
+  max-height: 100vh;
+  min-height: 100vh;
+}
+
+.section-center {
+  margin-left: 64px;
+  padding-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  -webkit-box-shadow: 8px 6px 40px -7px rgba(66, 68, 90, 1);
+  -moz-box-shadow: 8px 6px 40px -7px rgba(66, 68, 90, 1);
+  box-shadow: 8px 6px 40px -7px rgba(66, 68, 90, 1);
+}
+
+.accordionSummary {
+  margin: 0 !important;
+}
+
+.css-o4b71y-MuiAccordionSummary-content {
+  margin: 0 !important;
+}
+
+.css-o4b71y-MuiAccordionSummary-content {
+  padding: 0 !important;
+}
+
+.css-15v22id-MuiAccordionDetails-root {
+  text-align: left !important;
+}
+
+.tabHeader-span {
+  position: absolute !important;
+  right: 50px !important;
+}
+
+.portraitHeader {
+  display: flex;
+}
+.portraitHeaderInfo {
+  margin-right: 300px;
+  font-weight: bolder;
+  text-align: left;
+  line-height: 15px;
+}
+
+.portraitFooter {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 2px;
+  text-align: left;
+}
+
+.portraitAddData {
+  display: flex !important;
+  flex-direction: row !important;
+}
+
+.portraitTextField {
+  margin-right: 10px !important;
+  min-width: 80% !important;
+}
+
+.portraitInput {
+  min-width: 232px !important;
+}
+.portraitButton {
+  margin-right: 10px !important;
+}
+
+.addPortraitBtn {
+  text-align: left !important;
+  padding-bottom: 20px !important;
+}
+.accordionTitle {
+  font-weight: bold !important;
+}
+
+.buttonTab {
+  margin: 4px !important;
+  border: 1px solid !important;
+  border-radius: 8px !important;
+}
+
+.dialog-title {
+  display: flex !important;
+  flex-direction: row !important;
+  min-width: 600px !important;
+  font-weight: bold !important;
+}
+
+.dialog-actions {
+  margin: 16px !important;
+}
+
+.close-btn {
+  position: absolute;
+  margin: 5px;
+  top: 0;
+  right: 0;
+}
+
+.delete-btn {
+  position: absolute;
+  margin: 24px;
+  bottom: 0px;
+  left: 0px;
+}
+
+.tabHeader {
+  display: flex;
+  flex-direction: row;
+  padding: 4px;
+}
+
+.tabHeader-typography {
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+  margin-right: 20px !important;
+}
+
+.tabHeader-client {
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+  margin-right: 200px !important;
+}
+
+.tabHeader-icon {
+  margin-left: 7px !important;
+  margin-right: 20px !important;
+  padding-top: 2px !important;
+}
+
+.tabHeader-button {
+  margin-top: 3px !important;
+  margin-bottom: 3px !important;
+  margin-right: 20px !important;
+  font-weight: bold !important;
+  border-radius: 8px !important;
+}
+
+.tabHeader-input {
+  margin-top: 3px !important;
+  margin-bottom: 3px !important;
+  min-width: 350px !important;
+  font-weight: bold !important;
+}
+
+.tabHeaderPortrait {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 4px;
+}
+
+.clientData {
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: bolder;
+  font-family: 'JetBrains Mono';
+}
+
+.confirm-icon {
+  margin: auto !important;
+}
+.confirm-button {
+  margin: 24px !important;
+  border: 1px solid !important;
+  border-radius: 8px !important;
+}
+.dictionaryTab {
+  padding: 0 !important;
+}
+
+.numerologyNumbers {
+  font-weight: bold !important;
+  text-align: center !important;
+  font-family: 'JetBrains Mono';
+}
+
+.cardHeader {
+  padding: 0px !important;
+}
+
+.cardContent {
+  padding: 0px !important;
+}
+
+.dashboardContent {
+  margin: auto;
+  max-width: 94%;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.css-19kzrtu {
+  padding: 0 !important;
+}
+
+.AdditionalMenu {
+  margin-top: auto !important;
+  margin-bottom: 5px !important;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-config-paper {
+  padding: 16px;
+}
+
+.Controller-text-field {
+  margin-bottom: 16px !important;
+}
+
+.Stack-row-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.Hide-icon > .MuiButton-endIcon {
+  visibility: hidden;
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+body div .Application-bar {
+  -webkit-app-region: drag;
+  height: 32px;
+  -webkit-user-select: none;
+  user-select: none;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.Application-bar-buttons {
+  -webkit-app-region: no-drag;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+/*body {
+  -webkit-app-region: drag;
+}*/
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fix-drawer .MuiPaper-root {
+  max-width: 64px;
+  min-width: 64px;
+}

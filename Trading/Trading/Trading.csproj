@@ -1,0 +1,161 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>clientapp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+    <SpaProxyServerUrl>https://localhost:44472</SpaProxyServerUrl>
+    <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="ElectronNET.API" Version="13.5.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.30" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.11" />
+    <PackageReference Include="NLog" Version="5.0.5" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.1.0" />
+    <PackageReference Include="NLog.Web" Version="5.1.5" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.5" />
+  </ItemGroup>
+	<ItemGroup>
+		<!-- Don't publish the SPA source files, but do show them in the project files list -->
+		<Compile Remove="clientapp\**" />
+		<Content Remove="$(SpaRoot)**" />
+		<Content Remove="clientapp\**" />
+		<EmbeddedResource Remove="clientapp\**" />
+		<None Remove="$(SpaRoot)**" />
+		<None Remove="clientapp\**" />
+		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Remove="nlog.config" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="clientapp\.env" />
+	  <None Remove="clientapp\.gitignore" />
+	  <None Remove="clientapp\build\asset-manifest.json" />
+	  <None Remove="clientapp\build\favicon.ico" />
+	  <None Remove="clientapp\build\index.html" />
+	  <None Remove="clientapp\build\logo192.png" />
+	  <None Remove="clientapp\build\logo512.png" />
+	  <None Remove="clientapp\build\manifest.json" />
+	  <None Remove="clientapp\build\robots.txt" />
+	  <None Remove="clientapp\build\static\css\main.a84b01d5.css" />
+	  <None Remove="clientapp\build\static\css\main.a84b01d5.css.map" />
+	  <None Remove="clientapp\build\static\js\787.b6fd2ddb.chunk.js" />
+	  <None Remove="clientapp\build\static\js\787.b6fd2ddb.chunk.js.map" />
+	  <None Remove="clientapp\build\static\js\main.18408743.js" />
+	  <None Remove="clientapp\build\static\js\main.18408743.js.LICENSE.txt" />
+	  <None Remove="clientapp\build\static\js\main.18408743.js.map" />
+	  <None Remove="clientapp\build\static\media\logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg" />
+	  <None Remove="clientapp\config-overrides.js" />
+	  <None Remove="clientapp\package-lock.json" />
+	  <None Remove="clientapp\package.json" />
+	  <None Remove="clientapp\public\favicon.ico" />
+	  <None Remove="clientapp\public\index.html" />
+	  <None Remove="clientapp\public\logo192.png" />
+	  <None Remove="clientapp\public\logo512.png" />
+	  <None Remove="clientapp\public\manifest.json" />
+	  <None Remove="clientapp\public\robots.txt" />
+	  <None Remove="clientapp\README.md" />
+	  <None Remove="clientapp\src\.prettierignore" />
+	  <None Remove="clientapp\src\.prettierrc.json" />
+	  <None Remove="clientapp\src\App.css" />
+	  <None Remove="clientapp\src\App.js" />
+	  <None Remove="clientapp\src\App.test.js" />
+	  <None Remove="clientapp\src\components\AdditionalMenu.js" />
+	  <None Remove="clientapp\src\components\ApplicationBar.js" />
+	  <None Remove="clientapp\src\components\BaseConfigurationForm.js" />
+	  <None Remove="clientapp\src\components\CodeSubmissionActionButton.js" />
+	  <None Remove="clientapp\src\components\CodeSubmissions\AnalysisIcon.js" />
+	  <None Remove="clientapp\src\components\CodeSubmissions\CodeSubmissionsTable.js" />
+	  <None Remove="clientapp\src\components\CodeSubmissions\CodeSubmissionsTableRow.js" />
+	  <None Remove="clientapp\src\components\CodeSubmissions\CodeSubmissionsTableToolbar.js" />
+	  <None Remove="clientapp\src\components\CodeSubmissions\QuickStats.js" />
+	  <None Remove="clientapp\src\components\DictLegendDialog.js" />
+	  <None Remove="clientapp\src\components\EnvironmentDialog.js" />
+	  <None Remove="clientapp\src\components\EnvironmentForm.js" />
+	  <None Remove="clientapp\src\components\Language.js" />
+	  <None Remove="clientapp\src\components\NavigationBarLeft.js" />
+	  <None Remove="clientapp\src\components\NewWindow.js" />
+	  <None Remove="clientapp\src\components\PageTitle.js" />
+	  <None Remove="clientapp\src\components\ReactHookFormSelect.js" />
+	  <None Remove="clientapp\src\components\SubmissionActionDialog.js" />
+	  <None Remove="clientapp\src\components\SubmissionMonitoringFilter.js" />
+	  <None Remove="clientapp\src\components\Terminal.js" />
+	  <None Remove="clientapp\src\components\VendorsAPI\XFIAPIForm.js" />
+	  <None Remove="clientapp\src\helpers\Response.js" />
+	  <None Remove="clientapp\src\hooks\Audio.js" />
+	  <None Remove="clientapp\src\index.css" />
+	  <None Remove="clientapp\src\index.js" />
+	  <None Remove="clientapp\src\locales\Locales.js" />
+	  <None Remove="clientapp\src\logo.svg" />
+	  <None Remove="clientapp\src\pages\AppConfigPage.js" />
+	  <None Remove="clientapp\src\pages\ExamplePage.js" />
+	  <None Remove="clientapp\src\pages\SettingsPage.js" />
+	  <None Remove="clientapp\src\pages\SQSPage.js" />
+	  <None Remove="clientapp\src\pages\SubmissionsMonitoringPage.js" />
+	  <None Remove="clientapp\src\pages\VendorsAPIPage.js" />
+	  <None Remove="clientapp\src\reportWebVitals.js" />
+	  <None Remove="clientapp\src\services\API.js" />
+	  <None Remove="clientapp\src\services\AppConfigurationService.js" />
+	  <None Remove="clientapp\src\services\ConfigSlice.js" />
+	  <None Remove="clientapp\src\services\CounterSlice.js" />
+	  <None Remove="clientapp\src\services\DictionariesSlice.js" />
+	  <None Remove="clientapp\src\services\IntervalSubmissionsService.js" />
+	  <None Remove="clientapp\src\services\SubmissionErrorService.js" />
+	  <None Remove="clientapp\src\services\SubmissionWarningService.js" />
+	  <None Remove="clientapp\src\services\VendorsService.js" />
+	  <None Remove="clientapp\src\services\WindowsNotificationService.js" />
+	  <None Remove="clientapp\src\setupTests.js" />
+	  <None Remove="clientapp\src\Store.js" />
+	  <None Remove="clientapp\src\styles\CustomTheme.js" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="nlog.config">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+	<ItemGroup>
+		<Content Update="electron.manifest.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Core\Core.csproj" />
+	  <ProjectReference Include="..\DB\DatabaseContext\DatabaseContext\DatabaseContext.csproj" />
+	  <ProjectReference Include="..\Modules\Numerology\Numerology.Application\Trades.Application.csproj" />
+	  <ProjectReference Include="..\Modules\Numerology\Numerology.Domain\Trades.Domain.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Assets\" />
+	</ItemGroup>
+	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+		<!-- Ensure Node.js is installed -->
+		<Exec Command="node --version" ContinueOnError="true">
+			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+		</Exec>
+		<Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+		<Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+	</Target>
+
+	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
+
+		<!-- Include the newly-built files in the publish output -->
+		<ItemGroup>
+			<DistFiles Include="$(SpaRoot)build\**" />
+			<ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+				<RelativePath>%(DistFiles.Identity)</RelativePath>
+				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			</ResolvedFileToPublish>
+		</ItemGroup>
+	</Target>
+</Project>
