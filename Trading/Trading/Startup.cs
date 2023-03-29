@@ -115,7 +115,6 @@ namespace Trading
             if (!Directory.Exists(basePath))
                 Directory.CreateDirectory(basePath);
 
-            //C:\ProgramData\Trading
             var filePath = Path.Combine(basePath, "appConfig");
 
             if (File.Exists(filePath))

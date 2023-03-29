@@ -1,4 +1,5 @@
 ﻿using ElectronNET.API;
+using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Trading.Controllers
@@ -22,8 +23,17 @@ namespace Trading.Controllers
             {
                 string viewPath = $"http://localhost:{BridgeSettings.WebPort}/{path}";
 
-                var win = await Electron.WindowManager.CreateWindowAsync(viewPath);
-                win.Show();
+                var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
+                {
+                    Show = false,
+                    WebPreferences = new WebPreferences { NodeIntegration = true, ContextIsolation = true, EnableRemoteModule = true, DevTools = true },
+                    Frame = false,
+                    Resizable = true,
+                    TitleBarStyle = TitleBarStyle.hidden,
+                    AutoHideMenuBar = true,
+                }, viewPath);
+                browserWindow.SetMenuBarVisibility(false);
+                browserWindow.OnReadyToShow += () => browserWindow.Show();
             }
             return Ok();
         }

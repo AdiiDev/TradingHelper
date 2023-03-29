@@ -31,6 +31,10 @@ namespace Trading.Controllers
             {
                 var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Trading");
                 var filePath = Path.Combine(basePath, "appConfig");
+
+                if (string.IsNullOrEmpty(appConfig.ConnectionString))
+                    appConfig.ConnectionString = _appConfiguration.ConnectionString;
+
                 var appConfigString = Newtonsoft.Json.JsonConvert.SerializeObject(appConfig, Newtonsoft.Json.Formatting.Indented);
                 var guard = new ConfigurationGuard();
                 var appConfigBytes = guard.Encrypt(appConfigString);
@@ -39,6 +43,7 @@ namespace Trading.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error writing app settings");
+                return BadRequest(ex.Message);
             }
 
             // Restart App
