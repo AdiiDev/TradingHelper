@@ -1,13 +1,13 @@
 import React from 'react'
 import WrapperBasicPage from '../components/common/WrapperBasicPage'
-import Dashboard from '../components/Dashboard'
+import DictionariesTab from '../components/dictionaries/DictionariesTab'
 
-const DashboardPage = () => {
+const DictionaryPage = () => {
   return (
     <WrapperBasicPage>
-      <Dashboard />
+      <DictionariesTab />
     </WrapperBasicPage>
   )
 }
 
-export default DashboardPage
+export default DictionaryPage

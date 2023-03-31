@@ -51,7 +51,7 @@ export const NavigationBarLeft = ({ themeMode, changeTheme }) => {
       }}
       className="fix-drawer"
     >
-      <NewWindow />
+      {process.env.REACT_APP_MYVAR === 'win' && <NewWindow />}
       <Divider />
       <List>
         {menuOptions.map((option, index) => (

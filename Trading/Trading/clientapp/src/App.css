@@ -9,19 +9,6 @@
   max-height: calc(100vh - 32px);
 }
 
-.blankPage {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  text-transform: uppercase;
-  font-weight: bold;
-}
-
-.Page {
-  padding-left: 68px;
-  padding-right: 4px;
-  overflow-y: auto;
-}
-
 .Page-win {
   min-height: calc(100vh - 32px);
   max-height: calc(100vh - 32px);
@@ -45,86 +32,6 @@
   box-shadow: 8px 6px 40px -7px rgba(66, 68, 90, 1);
 }
 
-.accordionSummary {
-  margin: 0 !important;
-}
-
-.css-o4b71y-MuiAccordionSummary-content {
-  margin: 0 !important;
-}
-
-.css-o4b71y-MuiAccordionSummary-content {
-  padding: 0 !important;
-}
-
-.css-15v22id-MuiAccordionDetails-root {
-  text-align: left !important;
-}
-
-.tabHeader-span {
-  position: absolute !important;
-  right: 50px !important;
-}
-
-.portraitHeader {
-  display: flex;
-}
-.portraitHeaderInfo {
-  margin-right: 300px;
-  font-weight: bolder;
-  text-align: left;
-  line-height: 15px;
-}
-
-.portraitFooter {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  padding: 2px;
-  text-align: left;
-}
-
-.portraitAddData {
-  display: flex !important;
-  flex-direction: row !important;
-}
-
-.portraitTextField {
-  margin-right: 10px !important;
-  min-width: 80% !important;
-}
-
-.portraitInput {
-  min-width: 232px !important;
-}
-.portraitButton {
-  margin-right: 10px !important;
-}
-
-.addPortraitBtn {
-  text-align: left !important;
-  padding-bottom: 20px !important;
-}
-.accordionTitle {
-  font-weight: bold !important;
-}
-
-.buttonTab {
-  margin: 4px !important;
-  border: 1px solid !important;
-  border-radius: 8px !important;
-}
-
-.dialog-title {
-  display: flex !important;
-  flex-direction: row !important;
-  min-width: 600px !important;
-  font-weight: bold !important;
-}
-
-.dialog-actions {
-  margin: 16px !important;
-}
-
 .close-btn {
   position: absolute;
   margin: 5px;
@@ -133,62 +40,17 @@
 }
 
 .delete-btn {
-  position: absolute;
-  margin: 24px;
-  bottom: 0px;
-  left: 0px;
+  border-radius: 10px !important;
+  border: 1px solid !important;
+  position: absolute !important;
+  bottom: 10px !important;
+  left: 24px !important;
 }
 
-.tabHeader {
-  display: flex;
-  flex-direction: row;
-  padding: 4px;
-}
-
-.tabHeader-typography {
-  margin-top: 2px !important;
-  margin-bottom: 2px !important;
-  margin-right: 20px !important;
-}
-
-.tabHeader-client {
-  margin-top: 2px !important;
-  margin-bottom: 2px !important;
-  margin-right: 200px !important;
-}
-
-.tabHeader-icon {
-  margin-left: 7px !important;
-  margin-right: 20px !important;
-  padding-top: 2px !important;
-}
-
-.tabHeader-button {
-  margin-top: 3px !important;
-  margin-bottom: 3px !important;
-  margin-right: 20px !important;
-  font-weight: bold !important;
-  border-radius: 8px !important;
-}
-
-.tabHeader-input {
-  margin-top: 3px !important;
-  margin-bottom: 3px !important;
-  min-width: 350px !important;
-  font-weight: bold !important;
-}
-
-.tabHeaderPortrait {
-  display: flex;
-  flex-direction: row;
-  padding-bottom: 4px;
-}
-
-.clientData {
-  text-transform: uppercase;
-  font-size: 20px;
-  font-weight: bolder;
-  font-family: 'JetBrains Mono';
+.dialog-form-btn {
+  margin-right: 16px !important;
+  border-radius: 10px !important;
+  border: 1px solid !important;
 }
 
 .confirm-icon {
@@ -199,39 +61,88 @@
   border: 1px solid !important;
   border-radius: 8px !important;
 }
-.dictionaryTab {
-  padding: 0 !important;
-}
 
-.numerologyNumbers {
-  font-weight: bold !important;
-  text-align: center !important;
-  font-family: 'JetBrains Mono';
-}
-
-.cardHeader {
+.card-header {
   padding: 0px !important;
 }
 
-.cardContent {
+.card-content {
   padding: 0px !important;
 }
 
-.dashboardContent {
-  margin: auto;
-  max-width: 94%;
-  padding: 5px;
-  display: flex;
-  flex-direction: row;
-}
-
-.css-19kzrtu {
-  padding: 0 !important;
-}
-
-.AdditionalMenu {
+.additional-menu {
   margin-top: auto !important;
   margin-bottom: 5px !important;
+}
+
+.Top-select-bar {
+  margin-left: 64px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.Top-select-bar-win {
+  margin-left: 64px;
+  margin-top: 32px;
+  height: calc(100vh - 32px);
+  max-height: calc(100vh - 32px);
+}
+
+.Top-select-bar-div {
+  display: flex;
+  position: absolute;
+  right: 0;
+  margin-left: 20px;
+}
+.Top-select-bar-form {
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+  max-width: 50vh !important;
+  min-width: 50vh !important;
+}
+
+.Top-select-bar-p {
+  text-transform: uppercase;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  max-height: 55px;
+  min-height: 55px;
+}
+
+.add-button {
+  margin-left: 10px !important;
+  border-radius: 10px !important;
+  border: 1px solid !important;
+}
+
+.action-btn {
+  margin-right: 5px !important;
+  border-radius: 10px !important;
+  border: 1px solid !important;
+}
+
+.search-field {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: 10px;
+  max-height: 80%;
+}
+
+.dialog-form-title {
+  display: flex !important;
+  flex-direction: row !important;
+  min-width: 500px !important;
+  font-weight: bold !important;
+}
+.dialog-form-actions {
+  margin-top: 24px !important;
 }
 
 .App-logo {
@@ -241,6 +152,9 @@
 
 .App-config-paper {
   padding: 16px;
+  margin: auto;
+  max-width: 40%;
+  min-width: 40%;
 }
 
 .Controller-text-field {

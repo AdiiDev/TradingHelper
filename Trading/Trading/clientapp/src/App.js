@@ -1,20 +1,25 @@
 import './App.css'
 import React, { useState, useEffect } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, HashRouter } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/system'
 import { createTheme } from '@mui/material/styles'
 import { getDesignTokens } from './styles/CustomTheme'
-import { NavigationBarLeft } from './components/basic/NavigationBarLeft'
-import { AppConfigPage } from './pages/AppConfigPage'
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { BrowserRouter, HashRouter } from 'react-router-dom'
 import AppConfigurationService from './services/AppConfigurationService'
-import { useDispatch } from 'react-redux'
 import { setConfig } from './services/ConfigSlice'
-import { ToastContainer, toast } from 'react-toastify'
+import { NavigationBarLeft } from './components/basic/NavigationBarLeft'
 import ApplicationBar from './components/basic/ApplicationBar'
+import { AppConfigPage } from './pages/AppConfigPage'
 import DashboardPage from './pages/DashboardPage'
+import DictionaryPage from './pages/DictionaryPage'
+import TradesPage from './pages/TradesPage'
+import WidgetsPage from './pages/WidgetsPage'
+import SettingsPage from './pages/SettingsPage'
+import ApplicationTopSelect from './components/basic/AppliactionTopSelect'
 
 // MUI controls with hook form
 //https://codesandbox.io/s/react-hook-form-v6-controller-qsd8r
@@ -24,7 +29,7 @@ import DashboardPage from './pages/DashboardPage'
 const AppRouter =
   process.env.REACT_APP_MYVAR === 'win' ? HashRouter : BrowserRouter
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => { } })
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} })
 
 const App = () => {
   const { t } = useTranslation()
@@ -35,7 +40,7 @@ const App = () => {
   const [user, setUser] = useState('')
 
   useEffect(() => {
-    async function checkConfig() {
+    const checkConfig = async () => {
       const res = await AppConfigurationService.GetBaseConfig()
       if (res.isError) {
         console.log('Error in config', res.result)
@@ -69,6 +74,7 @@ const App = () => {
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
+        limit={3}
         newestOnTop={false}
         closeOnClick
         rtl={false}
@@ -88,6 +94,7 @@ const App = () => {
           <AppRouter>
             {!configIsEmpty && callDone && (
               <div>
+                <ApplicationTopSelect />
                 <NavigationBarLeft
                   themeMode={mode}
                   changeTheme={colorMode.toggleColorMode}
@@ -103,6 +110,10 @@ const App = () => {
                     }
                   />
                   <Route path="*" element={<Navigate replace to="/home" />} />
+                  <Route path="/TradesPage" element={<TradesPage />} />
+                  <Route path="/DictionaryPage" element={<DictionaryPage />} />
+                  <Route path="/WidgetsPage" element={<WidgetsPage />} />
+                  <Route path="/SettingsPage" element={<SettingsPage />} />
                 </Routes>
               </div>
             )}
