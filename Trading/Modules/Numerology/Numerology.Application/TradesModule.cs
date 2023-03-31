@@ -1,5 +1,7 @@
 ﻿using Core.DB;
 using Microsoft.Extensions.DependencyInjection;
+using Trades.Application.Interfaces;
+using Trades.Application.Services;
 using Trades.Repository.Interfaces;
 using Trades.Repository.Maps;
 using Trades.Repository.Repositories;
@@ -16,13 +18,11 @@ namespace Trading.Application
             services.AddScoped<ITradeModelRepository, TradeModelRepository>();
             services.AddScoped<ITradingPairModelRepository, TradingPairModelRepository>();
 
-            /*services.AddScoped<IClientService, ClientService>();
-            services.AddScoped<ILetterService, LetterService>();
-            services.AddScoped<INameService, NameService>();
-            services.AddScoped<IPortraitService, PortraitService>();
-            services.AddScoped<ILetterDBInit, LetterDBInit>();
-            services.AddScoped<INumerologyCalculator, NumerologyCalculator>();
-            services.AddScoped<INumerologyPrinter, NumerologyPrinter>();*/
+            services.AddScoped<IBrokerAccountService, BrokerAccountService>();
+            services.AddScoped<IConfirmationService, ConfirmationService>();
+            services.AddScoped<ITradeConfirmationService, TradeConfirmationService>();
+            services.AddScoped<ITradeService, TradeService>();
+            services.AddScoped<ITradingPairService, TradingPairService>();
 
             return services;
         }
