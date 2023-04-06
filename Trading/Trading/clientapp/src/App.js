@@ -9,17 +9,23 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/system'
 import { createTheme } from '@mui/material/styles'
 import { getDesignTokens } from './styles/CustomTheme'
-import AppConfigurationService from './services/AppConfigurationService'
-import { setConfig } from './services/ConfigSlice'
+import AppConfigurationService from './services/config/AppConfigurationService'
+import DictionaryAccountService from './services/dictionary/DictionaryAccountService'
+import DictionaryConfirmationService from './services/dictionary/DictionaryConfirmationsService'
+import DictionaryTradingPairsService from './services/dictionary/DictionaryTradingPairsService'
+import { setConfig } from './services/config/ConfigSlice'
+import { LoadBrokerAccount } from './services/dictionary/BrokerAccountSlice'
+import { LoadConfirmations } from './services/dictionary/ConfirmationSlice'
+import { LoadTradingPairs } from './services/dictionary/TradingPairsSlice'
 import { NavigationBarLeft } from './components/basic/NavigationBarLeft'
 import ApplicationBar from './components/basic/ApplicationBar'
+import ApplicationTopSelect from './components/basic/AppliactionTopSelect'
 import { AppConfigPage } from './pages/AppConfigPage'
 import DashboardPage from './pages/DashboardPage'
 import DictionaryPage from './pages/DictionaryPage'
 import TradesPage from './pages/TradesPage'
 import WidgetsPage from './pages/WidgetsPage'
 import SettingsPage from './pages/SettingsPage'
-import ApplicationTopSelect from './components/basic/AppliactionTopSelect'
 
 // MUI controls with hook form
 //https://codesandbox.io/s/react-hook-form-v6-controller-qsd8r
@@ -52,6 +58,26 @@ const App = () => {
       setCallDone(true)
       toast.info(t('Welcome') + ' ' + res.result.username)
       setUser(res.result.username)
+
+      const getAccounts = await DictionaryAccountService.GetAccounts()
+      if (getAccounts.isError) {
+        return
+      }
+      dispatch(LoadBrokerAccount(getAccounts.result))
+
+      const getConfirmations =
+        await DictionaryConfirmationService.GetConfirmations()
+      if (getConfirmations.isError) {
+        return
+      }
+      dispatch(LoadConfirmations(getConfirmations.result))
+
+      const getTradingPairs =
+        await DictionaryTradingPairsService.GetTradingPairs()
+      if (getTradingPairs.isError) {
+        return
+      }
+      dispatch(LoadTradingPairs(getTradingPairs.result))
     }
     checkConfig()
   }, [])

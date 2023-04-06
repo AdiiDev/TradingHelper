@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import DialogTitle from '@mui/material/DialogTitle'
 import { Button } from '@mui/material'
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
-import { setOpenDialog } from '../../services/DictionarySlice'
+import { setOpenDialog } from '../../services/dictionary/DictionarySlice'
 
 const DictionaryFormTitle = ({ title }) => {
   const { t } = useTranslation()
@@ -17,7 +17,9 @@ const DictionaryFormTitle = ({ title }) => {
         <Button
           variant="text"
           size="medium"
-          onClick={() => dispatch(setOpenDialog(false))}
+          onClick={() => {
+            dispatch(setOpenDialog(false))
+          }}
         >
           <ClearOutlinedIcon />
         </Button>

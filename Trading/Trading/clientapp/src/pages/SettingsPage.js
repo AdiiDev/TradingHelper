@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography'
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import ReactHookFormSelect from '../components/common/ReactHookFormSelect'
-import AppConfigurationService from '../services/AppConfigurationService'
+import AppConfigurationService from '../services/config/AppConfigurationService'
 
 const SettingsPage = () => {
   const { t } = useTranslation()

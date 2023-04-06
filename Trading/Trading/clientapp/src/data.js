@@ -21,60 +21,79 @@ const menuOptions = [
 ]
 
 const brokerAccountsColumns = [
-  { id: 'id', label: 'ID', minWidth: 100, align: 'left' },
+  { id: 'id', label: 'ID', minWidth: 200, align: 'left', type: 'none' },
   {
     id: 'brokerName',
     label: 'BrokerName',
     minWidth: 250,
     align: 'center',
+    type: 'text',
   },
   {
     id: 'accountNumber',
     label: 'AccountNumber',
     minWidth: 250,
     align: 'center',
+    type: 'text',
   },
-  { id: 'name', label: 'Name', minWidth: 250, align: 'center' },
+  { id: 'name', label: 'Name', minWidth: 250, align: 'center', type: 'text' },
   {
     id: 'favourite',
     label: 'Favourite',
     minWidth: 250,
     align: 'center',
+    type: 'checkbox',
   },
   {
     id: 'actions',
     label: 'Actions',
     minWidth: 100,
     align: 'right',
+    type: 'none',
   },
 ]
 
 const tradingPairsColumns = [
-  { id: 'id', label: 'ID', minWidth: 100, align: 'left' },
-  { id: 'symbol', label: 'Symbol', minWidth: 200, align: 'center' },
-  { id: 'favourite', label: 'Favourite', minWidth: 200, align: 'right' },
+  { id: 'id', label: 'ID', minWidth: 250, align: 'left', type: 'none' },
+  {
+    id: 'symbol',
+    label: 'Symbol',
+    minWidth: 300,
+    align: 'center',
+    type: 'text',
+  },
+  {
+    id: 'favourite',
+    label: 'Favourite',
+    minWidth: 300,
+    align: 'center',
+    type: 'checkbox',
+  },
   {
     id: 'actions',
     label: 'Actions',
-    minWidth: 100,
+    minWidth: 300,
     align: 'right',
+    type: 'none',
   },
 ]
 
 const confirmationsColumns = [
-  { id: 'id', label: 'ID', minWidth: 100, align: 'left' },
-  { id: 'tradeID', label: 'TradeID', minWidth: 200, align: 'center' },
+  { id: 'id', label: 'ID', minWidth: 100, align: 'left', type: 'none' },
+  { id: 'name', label: 'Name', minWidth: 200, align: 'center', type: 'text' },
   {
-    id: 'confirmationID',
-    label: 'ConfirmationID',
+    id: 'favourite',
+    label: 'Favourite',
     minWidth: 200,
-    align: 'right',
+    align: 'center',
+    type: 'checkbox',
   },
   {
     id: 'actions',
     label: 'Actions',
     minWidth: 100,
     align: 'right',
+    type: 'none',
   },
 ]
 

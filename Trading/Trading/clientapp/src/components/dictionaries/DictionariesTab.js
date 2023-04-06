@@ -30,14 +30,32 @@ const DictionariesTab = () => {
   return (
     <div>
       <Tabs value={value} onChange={handleChange} centered>
-        <Tab label={t('TradingPairs')} />
-        <Tab label={t('Accounts')} />
-        <Tab label={t('Confirmations')} />
+        <Tab
+          sx={{
+            fontWeight: 'bolder',
+            fontSize: '1rem',
+          }}
+          label={t('Accounts')}
+        />
+        <Tab
+          sx={{
+            fontWeight: 'bolder',
+            fontSize: '1rem',
+          }}
+          label={t('TradingPairs')}
+        />
+        <Tab
+          sx={{
+            fontWeight: 'bolder',
+            fontSize: '1rem',
+          }}
+          label={t('Confirmations')}
+        />
       </Tabs>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={value} index={1}>
         <DictionaryTradingPairTable />
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={value} index={0}>
         <DictionaryAccountTable />
       </TabPanel>
       <TabPanel value={value} index={2}>

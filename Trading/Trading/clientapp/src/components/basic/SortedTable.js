@@ -1,107 +1,92 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  TableSortLabel,
-  TextField,
-  Button,
-} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { setOpenDialog } from '../../services/dictionary/DictionarySlice'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Paper from '@mui/material/Paper'
+import TextField from '@mui/material/TextField'
+import { InputAdornment } from '@mui/material'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
 import { Box } from '@mui/system'
 import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
-import { useTranslation } from 'react-i18next'
-import { setOpenDialog } from '../../services/DictionarySlice'
 import Pagination from '../common/Pagination'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import StarIcon from '@mui/icons-material/Star'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import { ConfirmDialog } from '../common/ConfirmDialog'
 
-const defaultData = [
-  {
-    id: 1,
-    brokerName: 'John',
-    accountNumber: 30,
-    name: 'test',
-    favourite: 'favourite',
-  },
-  {
-    id: 2,
-    brokerName: 'test',
-    accountNumber: 30,
-    name: 'test',
-    favourite: 'favourite',
-  },
-  {
-    id: 3,
-    brokerName: 'Jtest',
-    accountNumber: 30,
-    name: 'test',
-    favourite: 'favourite',
-  },
-]
-
-const SortedTable = ({ columns }) => {
+const SortedTable = ({ columns, onDelete, storedData, editDataTable }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [tableInfo, setTableInfo] = useState({ page: 0, rowsPerPage: 5 })
-  const [data, setData] = useState(defaultData)
-  const [orderBy, setOrderBy] = useState('')
-  const [order, setOrder] = useState('asc')
+  const [rowID, setRowID] = useState(null)
+  const [data, setData] = useState(storedData)
   const [searchText, setSearchText] = useState('')
-  const [filterLabel, setFilterLabel] = useState('')
+  const [sortInfo, setSortInfo] = useState({ column: null, direction: null })
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
 
-  const handleSort = (property) => {
-    const isAsc = orderBy === property && order === 'asc'
-    const newOrder = isAsc ? 'desc' : 'asc'
-    setOrder(newOrder)
-    setOrderBy(property)
-
-    const sortedData = data.sort((a, b) => {
-      const propertyA = a[orderBy]
-      const propertyB = b[orderBy]
-      if (propertyA < propertyB) {
-        return order === 'asc' ? -1 : 1
-      }
-      if (propertyA > propertyB) {
-        return order === 'asc' ? 1 : -1
-      }
-      return 0
-    })
-
-    setData(
-      sortedData.filter(
-        (row) => filterLabel === '' || row.label === filterLabel
-      )
-    )
-  }
+  useEffect(() => {
+    setData(storedData)
+  }, [storedData])
 
   const handleSearch = (event) => {
     const searchText = event.target.value
     setSearchText(searchText)
 
-    const filteredData = defaultData.filter((row) => {
+    const filteredData = storedData.filter((row) => {
       return (
-        (row.id.toString().includes(searchText) ||
-          row.name.toLowerCase().includes(searchText.toLowerCase()) ||
-          row.accountNumber.toString().includes(searchText)) &&
-        (filterLabel === '' || row.label === filterLabel)
+        row.id.toString().includes(searchText) ||
+        row.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        row.favourite.toString().includes(searchText)
       )
     })
-
     setData(filteredData)
+  }
+
+  const handleSort = (column) => {
+    const direction =
+      sortInfo.column === column && sortInfo.direction === 'asc'
+        ? 'desc'
+        : 'asc'
+
+    const sortedData = [...data].sort((a, b) => {
+      if (a[column] < b[column]) {
+        return direction === 'asc' ? -1 : 1
+      }
+      if (a[column] > b[column]) {
+        return direction === 'asc' ? 1 : -1
+      }
+      return 0
+    })
+
+    setData(sortedData)
+    setSortInfo({ column, direction })
   }
 
   const handleChangePage = (event, newPage) => {
     setTableInfo({ ...tableInfo, page: newPage })
+    setSortInfo({ column: null, direction: null })
   }
+
   const handleChangeRowsPerPage = (event) => {
-    setTableInfo({ ...tableInfo, page: 0, rowsPerPage: +event.target.value })
+    setTableInfo({
+      ...tableInfo,
+      page: 0,
+      rowsPerPage: +event.target.value,
+    })
+    setSortInfo({ column: null, direction: null })
   }
+
   return (
     <TableContainer component={Paper}>
       <Box className="search-container">
@@ -115,88 +100,130 @@ const SortedTable = ({ columns }) => {
         >
           {t('Add')}
         </Button>
-        <Box className="search-field">
-          <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+        <Box
+          className="search-field"
+          sx={{ display: 'flex', alignItems: 'center' }}
+        >
           <TextField
-            label={t('Search')}
             size="small"
-            variant="filled"
+            variant="outlined"
             value={searchText}
             onChange={handleSearch}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                </InputAdornment>
+              ),
+            }}
+            label={t('Search')}
+            sx={{ width: '12vw' }}
           />
         </Box>
       </Box>
       <Table stickyHeader>
         <TableHead>
           <TableRow>
-            {(columns !== undefined ? columns : []).map(
-              ({ id, label, align }) => (
-                <TableCell
-                  key={id}
-                  align={align}
-                  sx={{
-                    fontWeight: 'bolder',
-                    fontSize: '1rem',
-                  }}
-                  style={{
-                    minWidth: columns.minWidth,
-                  }}
-                >
-                  <TableSortLabel
-                    active={orderBy === label}
-                    direction={order}
-                    onClick={() => handleSort(label)}
-                  >
-                    {label}
-                  </TableSortLabel>
-                </TableCell>
-              )
-            )}
+            {columns.map(({ id, label, align }) => (
+              <TableCell
+                key={id}
+                align={align}
+                className="table-cell-header"
+                style={{
+                  minWidth: columns.minWidth,
+                }}
+                onClick={id !== 'actions' ? () => handleSort(id) : undefined}
+              >
+                {t(label)}
+                {sortInfo.column === id &&
+                  (sortInfo.direction === 'asc' ? (
+                    <ArrowUpwardIcon className="arrow-icon" />
+                  ) : (
+                    <ArrowDownwardIcon className="arrow-icon" />
+                  ))}
+              </TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => {
-            return (
-              <TableRow
-                hover
-                key={'row' + row.id}
-                role="checkbox"
-                tabIndex={-1}
-                align="right"
-              >
-                {(columns !== undefined ? columns : []).map((column) => {
-                  if (column.id === 'actions') {
-                    return null
-                  }
-                  const value = row[column.id]
-                  return (
-                    <TableCell key={column.id} align={column.align}>
-                      {value}
-                    </TableCell>
-                  )
-                })}
-                <TableCell key="actions" align="right">
-                  <Button
-                    className="action-btn"
-                    variant="filled"
-                    startIcon={<EditIcon />}
-                    size="small"
-                    onClick={() => dispatch(setOpenDialog(true))}
-                  >
-                    {t('Edit')}
-                  </Button>
-                  <Button
-                    className="action-btn"
-                    variant="filled"
-                    startIcon={<DeleteIcon />}
-                    size="small"
-                  >
-                    {t('Delete')}
-                  </Button>
-                </TableCell>
-              </TableRow>
+          {data
+            .slice(
+              tableInfo.page * tableInfo.rowsPerPage,
+              tableInfo.page * tableInfo.rowsPerPage + tableInfo.rowsPerPage
             )
-          })}
+            .map((row) => {
+              return (
+                <TableRow
+                  hover
+                  key={'row' + row.id}
+                  role="checkbox"
+                  tabIndex={-1}
+                  align="right"
+                >
+                  {(columns !== undefined ? columns : []).map((column) => {
+                    if (column.id === 'actions') {
+                      return null
+                    }
+                    const value = row[column.id]
+                    return (
+                      <TableCell key={column.id} align={column.align}>
+                        {column.id === 'favourite' ? (
+                          row.favourite ? (
+                            <Typography
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <StarIcon style={{ color: 'gold' }} />
+                            </Typography>
+                          ) : (
+                            <Typography
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}
+                            >
+                              <StarBorderIcon style={{ color: 'gold' }} />
+                            </Typography>
+                          )
+                        ) : (
+                          value
+                        )}
+                      </TableCell>
+                    )
+                  })}
+                  <TableCell key="actions" align="right">
+                    <Button
+                      className="action-btn"
+                      variant="filled"
+                      startIcon={<EditIcon />}
+                      size="small"
+                      onClick={() => {
+                        editDataTable(row)
+                        dispatch(setOpenDialog(true))
+                      }}
+                    >
+                      {t('Edit')}
+                    </Button>
+                    <Button
+                      className="action-btn"
+                      variant="filled"
+                      startIcon={<DeleteIcon />}
+                      size="small"
+                      onClick={() => {
+                        setOpenConfirmDialog(true)
+                        setRowID(row.id)
+                      }}
+                    >
+                      {t('Delete')}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              )
+            })}
         </TableBody>
       </Table>
       <Pagination
@@ -206,6 +233,15 @@ const SortedTable = ({ columns }) => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      {openConfirmDialog ? (
+        <ConfirmDialog
+          closeConfirmDialog={() => setOpenConfirmDialog(false)}
+          onConfirm={() => {
+            onDelete(rowID)
+            setOpenConfirmDialog(false)
+          }}
+        />
+      ) : null}
     </TableContainer>
   )
 }

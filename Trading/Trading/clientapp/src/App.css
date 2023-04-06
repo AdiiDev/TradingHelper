@@ -94,10 +94,11 @@
   margin-left: 20px;
 }
 .Top-select-bar-form {
-  padding-top: 3px !important;
-  padding-bottom: 3px !important;
-  max-width: 50vh !important;
-  min-width: 50vh !important;
+  margin-top: 15px !important;
+  margin-bottom: 10px !important;
+  padding-bottom: 5px !important;
+  max-width: 15vw !important;
+  min-width: 15vw !important;
 }
 
 .Top-select-bar-p {
@@ -106,11 +107,31 @@
   font-weight: bold;
 }
 
+a:-webkit-any-link {
+  cursor: pointer;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-align: center;
+}
+
 .search-container {
   display: flex;
   align-items: center;
   max-height: 55px;
   min-height: 55px;
+}
+
+.arrow-icon {
+  margin-left: 3px;
+  vertical-align: middle;
+  font-size: 18px !important;
+}
+
+.table-cell-header {
+  font-weight: bolder !important;
+  font-size: 1rem !important;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 
 .add-button {
@@ -135,14 +156,27 @@
   max-height: 80%;
 }
 
+.MuiOutlinedInput-root {
+  border-radius: 15px !important;
+  max-height: 40px !important;
+}
+
 .dialog-form-title {
   display: flex !important;
   flex-direction: row !important;
-  min-width: 500px !important;
+  min-width: 400px !important;
   font-weight: bold !important;
 }
 .dialog-form-actions {
-  margin-top: 24px !important;
+  margin-top: 36px !important;
+}
+
+.MuiAppBar-root {
+  max-height: 48px;
+}
+
+.MuiToolbar-root {
+  min-height: 48px !important;
 }
 
 .App-logo {

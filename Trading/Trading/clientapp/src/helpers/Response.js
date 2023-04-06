@@ -7,10 +7,10 @@ export default class APIResponse {
   }
 
   static CallResponse(apiCallResult) {
-    if (apiCallResult.status === 200) {
+    if (apiCallResult && apiCallResult.status === 200) {
       return new APIResponse(apiCallResult.data, false)
     }
-    return new APIResponse(apiCallResult.data, true)
+    return new APIResponse(apiCallResult ? apiCallResult.data : null, true)
   }
 
   static Call = async (endpoint, action, data) => {
@@ -21,6 +21,10 @@ export default class APIResponse {
       }
       if (action.toUpperCase() === 'POST') {
         const res = await API().post(endpoint, data)
+        return this.CallResponse(res)
+      }
+      if (action.toUpperCase() === 'DELETE') {
+        const res = await API().delete(endpoint, data)
         return this.CallResponse(res)
       }
     } catch (err) {
