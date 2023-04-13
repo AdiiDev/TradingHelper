@@ -20,6 +20,12 @@ namespace Core.QueryCriteria
             Direction = direction;
         }
 
+        public QuerySortSpecification(Expression<Func<T, object>> predicate, string direction)
+        {
+            Predicate = predicate;
+            Direction = direction == "asc" ? ListSortDirection.Ascending : ListSortDirection.Descending;
+        }
+
         public QuerySortSpecification(Expression<Func<T, object>> predicate, bool ascending = true)
         {
             Predicate = predicate;

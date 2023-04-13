@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Trades.Application.Interfaces;
+using Trades.Application.Requests;
 using Trades.Domain.Models;
+using Trades.Domain.ViewModels;
 
 namespace Trading.Controllers
 {
@@ -17,11 +19,15 @@ namespace Trading.Controllers
             _tradeService = tradeService;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpPost("filtered")]
+        public IActionResult Get([FromBody] TradesFilterRequest filter)
         {
-            return Ok();
-            //return Ok(_tradeService.Get(new QuerySpecification<BrokerAccountModel>(x => x.Id > 0)));
+            var result = _tradeService.GetTrades(filter);
+            return Ok(new
+            {
+                Count = result.Item2,
+                Trades = result.Item1.Select(x => new TradeViewModel(x)).ToArray(),
+            });
         }
 
         [HttpPost]
