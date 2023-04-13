@@ -1,13 +1,13 @@
 import * as React from 'react'
+import { useTranslation } from 'react-i18next'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
-import { Button } from '@mui/material'
+import Button from '@mui/material/Button'
 import RemoveCircleOutlinedIcon from '@mui/icons-material/RemoveCircleOutlined'
 import CheckIcon from '@mui/icons-material/Check'
 import WarningIcon from '@mui/icons-material/Warning'
-import { useTranslation } from 'react-i18next'
 
-export const ConfirmDialog = ({ closeConfirmDialog, onConfirm }) => {
+const ConfirmDialog = ({ closeConfirmDialog, onConfirm }) => {
   const { t } = useTranslation()
   return (
     <Dialog
@@ -42,3 +42,5 @@ export const ConfirmDialog = ({ closeConfirmDialog, onConfirm }) => {
     </Dialog>
   )
 }
+
+export default ConfirmDialog

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { AdditionalMenu } from './AdditionalMenu'
-import { NewWindow } from './NewWindow'
-import { menuOptions } from '../../data'
+
 import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
 import Divider from '@mui/material/Divider'
@@ -10,7 +9,9 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import Tooltip from '@mui/material/Tooltip'
-import { useTranslation } from 'react-i18next'
+import { AdditionalMenu } from './AdditionalMenu'
+import { NewWindow } from './NewWindow'
+import { menuOptions } from '../../data'
 
 export const NavigationBarLeft = ({ themeMode, changeTheme }) => {
   const navigate = useNavigate()
@@ -51,7 +52,7 @@ export const NavigationBarLeft = ({ themeMode, changeTheme }) => {
       }}
       className="fix-drawer"
     >
-      <NewWindow />
+      {process.env.REACT_APP_MYVAR === 'win' && <NewWindow />}
       <Divider />
       <List>
         {menuOptions.map((option, index) => (

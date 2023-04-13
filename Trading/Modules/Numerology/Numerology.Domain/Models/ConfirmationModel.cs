@@ -18,12 +18,12 @@ namespace Trades.Domain.Models
 
         public virtual string ToLogString()
         {
-            throw new NotImplementedException();
+            return "";
         }
 
         public virtual string WhatChanged(ConfirmationModel newObject)
         {
-            throw new NotImplementedException();
+            return "";
         }
     }
 }

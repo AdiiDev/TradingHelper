@@ -1,4 +1,4 @@
-import Response from '../helpers/Response'
+import Response from '../../helpers/Response'
 
 export default class AppConfigurationService {
   static GetBaseConfig = async () => {

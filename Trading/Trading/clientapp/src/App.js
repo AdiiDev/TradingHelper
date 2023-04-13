@@ -1,20 +1,31 @@
 import './App.css'
 import React, { useState, useEffect } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import { useDispatch } from 'react-redux'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, HashRouter } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/system'
 import { createTheme } from '@mui/material/styles'
 import { getDesignTokens } from './styles/CustomTheme'
+import AppConfigurationService from './services/config/AppConfigurationService'
+import DictionaryAccountService from './services/dictionary/DictionaryAccountService'
+import DictionaryConfirmationService from './services/dictionary/DictionaryConfirmationsService'
+import DictionaryTradingPairsService from './services/dictionary/DictionaryTradingPairsService'
+import { setConfig } from './services/config/ConfigSlice'
+import { setBrokerAccounts } from './services/dictionary/BrokerAccountSlice'
+import { setConfirmations } from './services/dictionary/ConfirmationSlice'
+import { setTradingPairs } from './services/dictionary/TradingPairsSlice'
 import { NavigationBarLeft } from './components/basic/NavigationBarLeft'
-import { AppConfigPage } from './pages/AppConfigPage'
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { BrowserRouter, HashRouter } from 'react-router-dom'
-import AppConfigurationService from './services/AppConfigurationService'
-import { useDispatch } from 'react-redux'
-import { setConfig } from './services/ConfigSlice'
-import { ToastContainer, toast } from 'react-toastify'
 import ApplicationBar from './components/basic/ApplicationBar'
+import ApplicationTopSelect from './components/basic/AppliactionTopSelect'
+import { AppConfigPage } from './pages/AppConfigPage'
 import DashboardPage from './pages/DashboardPage'
+import DictionaryPage from './pages/DictionaryPage'
+import TradesPage from './pages/TradesPage'
+import WidgetsPage from './pages/WidgetsPage'
+import SettingsPage from './pages/SettingsPage'
 
 // MUI controls with hook form
 //https://codesandbox.io/s/react-hook-form-v6-controller-qsd8r
@@ -24,7 +35,7 @@ import DashboardPage from './pages/DashboardPage'
 const AppRouter =
   process.env.REACT_APP_MYVAR === 'win' ? HashRouter : BrowserRouter
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => { } })
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} })
 
 const App = () => {
   const { t } = useTranslation()
@@ -35,7 +46,7 @@ const App = () => {
   const [user, setUser] = useState('')
 
   useEffect(() => {
-    async function checkConfig() {
+    const checkConfig = async () => {
       const res = await AppConfigurationService.GetBaseConfig()
       if (res.isError) {
         console.log('Error in config', res.result)
@@ -47,6 +58,28 @@ const App = () => {
       setCallDone(true)
       toast.info(t('Welcome') + ' ' + res.result.username)
       setUser(res.result.username)
+
+      const [fetchAccounts, fetchConfirmations, fetchTradingPairs] =
+        await Promise.all([
+          DictionaryAccountService.GetAccounts(),
+          DictionaryConfirmationService.GetConfirmations(),
+          DictionaryTradingPairsService.GetTradingPairs(),
+        ])
+
+      if (fetchAccounts.isError) {
+        return
+      }
+      dispatch(setBrokerAccounts(fetchAccounts.result))
+
+      if (fetchConfirmations.isError) {
+        return
+      }
+      dispatch(setConfirmations(fetchConfirmations.result))
+
+      if (fetchTradingPairs.isError) {
+        return
+      }
+      dispatch(setTradingPairs(fetchTradingPairs.result))
     }
     checkConfig()
   }, [])
@@ -69,6 +102,7 @@ const App = () => {
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
+        limit={3}
         newestOnTop={false}
         closeOnClick
         rtl={false}
@@ -88,6 +122,7 @@ const App = () => {
           <AppRouter>
             {!configIsEmpty && callDone && (
               <div>
+                <ApplicationTopSelect />
                 <NavigationBarLeft
                   themeMode={mode}
                   changeTheme={colorMode.toggleColorMode}
@@ -103,6 +138,10 @@ const App = () => {
                     }
                   />
                   <Route path="*" element={<Navigate replace to="/home" />} />
+                  <Route path="/TradesPage" element={<TradesPage />} />
+                  <Route path="/DictionaryPage" element={<DictionaryPage />} />
+                  <Route path="/WidgetsPage" element={<WidgetsPage />} />
+                  <Route path="/SettingsPage" element={<SettingsPage />} />
                 </Routes>
               </div>
             )}
