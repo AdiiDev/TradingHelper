@@ -17,13 +17,15 @@ const SortedTable = ({
 }) => {
   const [tableInfo, setTableInfo] = useState({ page: 0, rowsPerPage: 5 })
   const [rowID, setRowID] = useState(null)
-  const [data, setData] = useState(storedData)
+  const [data, setData] = useState([])
   const [searchText, setSearchText] = useState('')
   const [sortInfo, setSortInfo] = useState({ column: null, direction: null })
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
 
   useEffect(() => {
-    setData(storedData)
+    if (storedData.length > 0) {
+      setData(storedData)
+    }
   }, [storedData])
 
   const handleSearch = (event) => {
