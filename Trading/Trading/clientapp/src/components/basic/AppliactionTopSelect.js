@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { setSelectedBroker } from '../../services/dictionary/BrokerAccountSlice'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -13,19 +15,16 @@ import Menu from '@mui/material/Menu'
 
 const ApplicationTopSelect = () => {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
   const [openMenu, setOpenMenu] = useState(null)
   const brokerAccountData = useSelector(
-    (state) => state.brokerAccounts.loadBrokerAccount
+    (state) => state.brokerAccounts.brokerAccounts
   )
-  const defaultAccount = useSelector(
+
+  const brokerSelectedAccount = useSelector(
     (state) => state.brokerAccounts.selectedBroker
   )
   const userData = useSelector((state) => state.config)
-  const [selectedAccount, setSelectedAccount] = useState(null)
-
-  useEffect(() => {
-    setSelectedAccount(defaultAccount)
-  }, [defaultAccount])
 
   const handleMenu = (event) => {
     setOpenMenu(event.currentTarget)
@@ -40,36 +39,42 @@ const ApplicationTopSelect = () => {
     const selectedBroker = brokerAccountData.find(
       (account) => account.id === selectedId
     )
-    setSelectedAccount(selectedBroker)
+    dispatch(setSelectedBroker(selectedBroker))
   }
 
   return (
     <Box
-      sx={{ flexGrow: 1 }}
+      sx={{ flexGrow: 1, position: 'sticky', top: 0 }}
       className={
         process.env.REACT_APP_MYVAR === 'win'
           ? 'Top-select-bar-win'
           : 'Top-select-bar'
       }
     >
-      <AppBar position="static" variant="permanent">
+      <AppBar position="sticky" variant="permanent">
         <Toolbar>
-          <TextField
-            className="Top-select-bar-form"
-            id="user"
-            label={t('BrokerName')}
-            size="small"
-            variant="outlined"
-            select
-            value={selectedAccount ? selectedAccount.id : ''}
-            onChange={handleAccountChange}
-          >
-            {brokerAccountData.map((account) => (
-              <MenuItem key={account.id} value={account.id}>
-                {account.brokerName}
-              </MenuItem>
-            ))}
-          </TextField>
+          {brokerAccountData.length > 0 ? (
+            <TextField
+              className="Top-select-bar-form"
+              id="user"
+              label={t('BrokerName')}
+              size="small"
+              variant="outlined"
+              select
+              value={brokerSelectedAccount ? brokerSelectedAccount.id : ''}
+              onChange={handleAccountChange}
+            >
+              {brokerAccountData.map((account) => (
+                <MenuItem key={account.id} value={account.id}>
+                  {account.brokerName}
+                </MenuItem>
+              ))}
+            </TextField>
+          ) : (
+            <div>
+              <Link to="/DictionaryPage">{t('EnterYourBrokerAccount')}</Link>
+            </div>
+          )}
 
           <div className="Top-select-bar-div">
             <p className="Top-select-bar-p">{userData.username}</p>

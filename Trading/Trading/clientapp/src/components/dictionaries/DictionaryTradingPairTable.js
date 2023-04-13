@@ -3,19 +3,18 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { setOpenDialog } from '../../services/dictionary/DictionarySlice'
-import { LoadTradingPairs } from '../../services/dictionary/TradingPairsSlice'
+import { setTradingPairs } from '../../services/dictionary/TradingPairsSlice'
 import { tradingPairsColumns } from '../../data'
 import DictionaryTradingPairsService from '../../services/dictionary/DictionaryTradingPairsService'
-import SortedTable from '../basic/SortedTable'
+import SortedTable from '../sortedTable/SortedTable'
 import DictionaryForm from './DictionaryForm'
 
 const DictionaryTradingPairTable = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const openDialog = useSelector((state) => state.dict.openDialog)
-  const pairsData = useSelector((state) => state.tradingPairs.loadTradingPairs)
-  const [editData, setEditData] = useState(undefined)
+  const pairsData = useSelector((state) => state.tradingPairs.tradingPairs)
+  const [editData, setEditData] = useState(null)
+  const [openDialog, setOpenDialog] = useState(false)
 
   const handleFormSubmit = async (data) => {
     const tradingPairsData = JSON.stringify({
@@ -30,13 +29,13 @@ const DictionaryTradingPairTable = () => {
       toast.error(t('ErrorUpdate'))
       return
     }
-    toast.success(t('PairAdded'))
+    toast.success(t('Added'))
     const updatedTradingPairs = [
       ...pairsData.filter((pair) => pair.id !== res.result.id),
       res.result,
     ]
-    dispatch(LoadTradingPairs(updatedTradingPairs))
-    dispatch(setOpenDialog(false))
+    dispatch(setTradingPairs(updatedTradingPairs))
+    setOpenDialog(false)
   }
 
   const DeleteTradingPair = async (id) => {
@@ -46,11 +45,11 @@ const DictionaryTradingPairTable = () => {
       return
     }
     toast.success(t('Deleted'))
-    dispatch(setOpenDialog(false))
+    setOpenDialog(false)
 
     const response = await DictionaryTradingPairsService.GetTradingPairs()
     if (!response.isError) {
-      dispatch(LoadTradingPairs(response.result))
+      dispatch(setTradingPairs(response.result))
     }
   }
 
@@ -60,6 +59,7 @@ const DictionaryTradingPairTable = () => {
         title={'TradingPairs'}
         dataInputs={tradingPairsColumns}
         openDialog={openDialog}
+        setOpenDialog={(bool) => setOpenDialog(bool)}
         onSubmit={handleFormSubmit}
         editData={editData}
       />
@@ -68,6 +68,7 @@ const DictionaryTradingPairTable = () => {
         onDelete={DeleteTradingPair}
         storedData={pairsData}
         editDataTable={(data) => setEditData(data)}
+        setOpenDialog={(bool) => setOpenDialog(bool)}
       />
     </>
   )

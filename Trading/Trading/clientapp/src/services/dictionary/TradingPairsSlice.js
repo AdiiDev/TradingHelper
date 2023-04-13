@@ -1,19 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  loadTradingPairs: [],
+  tradingPairs: [],
 }
 
 export const TradingPairsSlice = createSlice({
   name: 'tradingPairs',
   initialState,
   reducers: {
-    LoadTradingPairs: (state, action) => {
-      state.loadTradingPairs = action.payload
+    setTradingPairs: (state, action) => {
+      state.tradingPairs = action.payload
     },
   },
 })
 
-export const { LoadTradingPairs } = TradingPairsSlice.actions
+export const { setTradingPairs } = TradingPairsSlice.actions
 
 export default TradingPairsSlice.reducer

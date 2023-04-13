@@ -1,17 +1,15 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import configSlice from './services/config/ConfigSlice'
-import DictionarySlice from './services/dictionary/DictionarySlice'
-import BrokerAccountSlice from './services/dictionary/BrokerAccountSlice'
-import ConfirmationSlice from './services/dictionary/ConfirmationSlice'
-import TradingPairsSlice from './services/dictionary/TradingPairsSlice'
+import brokerAccountSlice from './services/dictionary/BrokerAccountSlice'
+import confirmationSlice from './services/dictionary/ConfirmationSlice'
+import tradingPairsSlice from './services/dictionary/TradingPairsSlice'
 
 export const store = configureStore({
   reducer: {
     config: configSlice,
-    dict: DictionarySlice,
-    brokerAccounts: BrokerAccountSlice,
-    confirmations: ConfirmationSlice,
-    tradingPairs: TradingPairsSlice,
+    brokerAccounts: brokerAccountSlice,
+    confirmations: confirmationSlice,
+    tradingPairs: tradingPairsSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

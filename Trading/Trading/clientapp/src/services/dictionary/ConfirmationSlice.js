@@ -1,19 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  loadConfirmations: [],
+  confirmations: [],
 }
 
 export const ConfirmationSlice = createSlice({
   name: 'confirmations',
   initialState,
   reducers: {
-    LoadConfirmations: (state, action) => {
-      state.loadConfirmations = action.payload
+    setConfirmations: (state, action) => {
+      state.confirmations = action.payload
     },
   },
 })
 
-export const { LoadConfirmations } = ConfirmationSlice.actions
+export const { setConfirmations } = ConfirmationSlice.actions
 
 export default ConfirmationSlice.reducer

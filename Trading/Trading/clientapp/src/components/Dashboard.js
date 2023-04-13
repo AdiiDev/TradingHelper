@@ -55,32 +55,6 @@ const Dashboard = ({ user }) => {
             title={t('WhatYouWantToDo')}
             variant="h5"
           />
-          <List component="nav" aria-label="mailbox folders">
-            <Link variant="h5" href="/clientPage">
-              {t('AddAClient')}
-            </Link>
-            <Divider>
-              <Brightness1Icon />
-            </Divider>
-            <Link variant="h5" href="/portraitPage">
-              {t('AddAPortrait')}
-            </Link>
-            <Divider>
-              <Brightness1Icon />
-            </Divider>
-            <Link variant="h5" href="/dictionaresPage">
-              {t('AddALetterOrName')}
-            </Link>
-            <Divider>
-              <Brightness1Icon />
-            </Divider>
-            <Link variant="h5" href="/calendarPage">
-              {t('CompleteTheCalendar')}
-            </Link>
-            <Divider>
-              <Brightness1Icon />
-            </Divider>
-          </List>
         </CardContent>
       </Card>
     </Paper>

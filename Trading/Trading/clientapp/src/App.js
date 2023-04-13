@@ -14,9 +14,9 @@ import DictionaryAccountService from './services/dictionary/DictionaryAccountSer
 import DictionaryConfirmationService from './services/dictionary/DictionaryConfirmationsService'
 import DictionaryTradingPairsService from './services/dictionary/DictionaryTradingPairsService'
 import { setConfig } from './services/config/ConfigSlice'
-import { LoadBrokerAccount } from './services/dictionary/BrokerAccountSlice'
-import { LoadConfirmations } from './services/dictionary/ConfirmationSlice'
-import { LoadTradingPairs } from './services/dictionary/TradingPairsSlice'
+import { setBrokerAccounts } from './services/dictionary/BrokerAccountSlice'
+import { setConfirmations } from './services/dictionary/ConfirmationSlice'
+import { setTradingPairs } from './services/dictionary/TradingPairsSlice'
 import { NavigationBarLeft } from './components/basic/NavigationBarLeft'
 import ApplicationBar from './components/basic/ApplicationBar'
 import ApplicationTopSelect from './components/basic/AppliactionTopSelect'
@@ -59,25 +59,27 @@ const App = () => {
       toast.info(t('Welcome') + ' ' + res.result.username)
       setUser(res.result.username)
 
-      const getAccounts = await DictionaryAccountService.GetAccounts()
-      if (getAccounts.isError) {
-        return
-      }
-      dispatch(LoadBrokerAccount(getAccounts.result))
+      const [fetchAccounts, fetchConfirmations, fetchTradingPairs] =
+        await Promise.all([
+          DictionaryAccountService.GetAccounts(),
+          DictionaryConfirmationService.GetConfirmations(),
+          DictionaryTradingPairsService.GetTradingPairs(),
+        ])
 
-      const getConfirmations =
-        await DictionaryConfirmationService.GetConfirmations()
-      if (getConfirmations.isError) {
+      if (fetchAccounts.isError) {
         return
       }
-      dispatch(LoadConfirmations(getConfirmations.result))
+      dispatch(setBrokerAccounts(fetchAccounts.result))
 
-      const getTradingPairs =
-        await DictionaryTradingPairsService.GetTradingPairs()
-      if (getTradingPairs.isError) {
+      if (fetchConfirmations.isError) {
         return
       }
-      dispatch(LoadTradingPairs(getTradingPairs.result))
+      dispatch(setConfirmations(fetchConfirmations.result))
+
+      if (fetchTradingPairs.isError) {
+        return
+      }
+      dispatch(setTradingPairs(fetchTradingPairs.result))
     }
     checkConfig()
   }, [])

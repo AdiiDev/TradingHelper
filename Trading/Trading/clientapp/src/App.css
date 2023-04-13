@@ -5,20 +5,52 @@
 
 .App-win {
   margin-top: 32px;
-  height: calc(100vh - 32px);
-  max-height: calc(100vh - 32px);
+  height: calc(100vh - 84px);
+  max-height: calc(100vh - 84px);
 }
 
 .Page-win {
-  min-height: calc(100vh - 32px);
-  max-height: calc(100vh - 32px);
-  height: calc(100vh - 32px);
+  min-height: calc(100vh - 84px);
+  max-height: calc(100vh - 84px);
+  height: calc(100vh - 84px);
+}
+
+.testTVchart {
+  min-height: 100%;
+  background-color: white;
+}
+
+.tradingview-widget-container {
+  min-height: 100%;
+}
+
+.fullscreen-widget-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+
+.fullscreen-widget-container button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
 }
 
 .section {
-  height: 100vh;
-  max-height: 100vh;
-  min-height: 100vh;
+  height: calc(100vh - 52px); /* 32 i 52 */
+  /*max-height: calc(100vh - 52px);*/
+  min-height: calc(100vh - 52px);
+  overflow-y: auto;
+}
+
+.section-win {
+  height: calc(100vh - 84px); /* 32 i 52 */
+  /*max-height: calc(100vh - 84px);*/
+  min-height: calc(100vh - 84px);
+  overflow-y: auto;
 }
 
 .section-center {
@@ -78,13 +110,15 @@
 .Top-select-bar {
   margin-left: 64px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  min-height: 52px;
+  max-height: 52px;
 }
 
 .Top-select-bar-win {
   margin-left: 64px;
   margin-top: 32px;
-  height: calc(100vh - 32px);
-  max-height: calc(100vh - 32px);
+  min-height: 52px;
+  max-height: 52px;
 }
 
 .Top-select-bar-div {
@@ -156,6 +190,15 @@ a:-webkit-any-link {
   max-height: 80%;
 }
 
+.search-icon {
+  margin-right: 1px;
+  margin-top: 0.5px;
+}
+
+.search-input {
+  width: 12vw;
+}
+
 .MuiOutlinedInput-root {
   border-radius: 15px !important;
   max-height: 40px !important;
@@ -220,6 +263,39 @@ body div .Application-bar {
   position: fixed;
   top: 0;
   left: 0;
+}
+
+.popper-btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.drawer {
+  width: 200px;
+}
+
+.button-drawerOpen {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 100px);
+  gap: 10px;
+}
+
+.grid-item {
+  background-color: #fff;
+  border: 1px solid #000;
+  text-align: center;
+  font-size: 24px;
+  padding: 10px;
 }
 
 .Application-bar-buttons {

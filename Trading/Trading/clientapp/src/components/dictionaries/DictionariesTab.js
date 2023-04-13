@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Tabs, Tab, Paper } from '@mui/material'
 import DictionaryAccountTable from './DictionaryAccountTable'
 import DictionaryConfirmationTable from './DictionaryConfirmationTable'
 import DictionaryTradingPairTable from './DictionaryTradingPairTable'
-import { useTranslation } from 'react-i18next'
 
 const TabPanel = (props) => {
   const { children, value, index } = props

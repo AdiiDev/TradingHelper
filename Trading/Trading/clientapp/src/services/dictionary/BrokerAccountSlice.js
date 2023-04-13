@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  loadBrokerAccount: [],
+  brokerAccounts: [],
   selectedBroker: {
     id: 1,
     brokerAccount: '',
@@ -15,13 +15,17 @@ export const BrokerAccountSlice = createSlice({
   name: 'brokerAccounts',
   initialState,
   reducers: {
-    LoadBrokerAccount: (state, action) => {
-      state.loadBrokerAccount = action.payload
+    setBrokerAccounts: (state, action) => {
+      state.brokerAccounts = action.payload
       if (action.payload.length > 0) state.selectedBroker = action.payload[0]
+    },
+    setSelectedBroker: (state, action) => {
+      state.selectedBroker = action.payload
     },
   },
 })
 
-export const { LoadBrokerAccount } = BrokerAccountSlice.actions
+export const { setBrokerAccounts, setSelectedBroker } =
+  BrokerAccountSlice.actions
 
 export default BrokerAccountSlice.reducer

@@ -3,23 +3,18 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { setOpenDialog } from '../../services/dictionary/DictionarySlice'
-import { LoadConfirmations } from '../../services/dictionary/ConfirmationSlice'
+import { setConfirmations } from '../../services/dictionary/ConfirmationSlice'
 import DictionaryConfirmationService from '../../services/dictionary/DictionaryConfirmationsService'
 import { confirmationsColumns } from '../../data'
-import SortedTable from '../basic/SortedTable'
+import SortedTable from '../sortedTable/SortedTable'
 import DictionaryForm from './DictionaryForm'
 
 const DictionaryConfirmationTable = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const openDialog = useSelector((state) => state.dict.openDialog)
-  const confirmData = useSelector(
-    (state) => state.confirmations.loadConfirmations
-  )
-  const [editData, setEditData] = useState(undefined)
-
-  console.log(confirmData)
+  const confirmData = useSelector((state) => state.confirmations.confirmations)
+  const [editData, setEditData] = useState(null)
+  const [openDialog, setOpenDialog] = useState(false)
 
   const handleFormSubmit = async (data) => {
     const confirmationData = JSON.stringify({
@@ -35,14 +30,14 @@ const DictionaryConfirmationTable = () => {
       toast.error(t('ErrorUpdate'))
       return
     }
-    toast.success(t('ConfirmationAdded'))
+    toast.success(t('Added'))
     const updatedConfirmations = [
       ...confirmData.filter((confirm) => confirm.id !== res.result.id),
       res.result,
     ]
     setEditData(undefined)
-    dispatch(LoadConfirmations(updatedConfirmations))
-    dispatch(setOpenDialog(false))
+    dispatch(setConfirmations(updatedConfirmations))
+    setOpenDialog(false)
   }
 
   const DeleteConfirmation = async (id) => {
@@ -52,11 +47,11 @@ const DictionaryConfirmationTable = () => {
       return
     }
     toast.success(t('Deleted'))
-    dispatch(setOpenDialog(false))
+    setOpenDialog(false)
 
     const response = await DictionaryConfirmationService.GetConfirmations()
     if (!response.isError) {
-      dispatch(LoadConfirmations(response.result))
+      dispatch(setConfirmations(response.result))
     }
   }
 
@@ -66,6 +61,7 @@ const DictionaryConfirmationTable = () => {
         title={'Confirmations'}
         dataInputs={confirmationsColumns}
         openDialog={openDialog}
+        setOpenDialog={(bool) => setOpenDialog(bool)}
         onSubmit={handleFormSubmit}
         editData={editData}
       />
@@ -74,6 +70,7 @@ const DictionaryConfirmationTable = () => {
         onDelete={DeleteConfirmation}
         storedData={confirmData}
         editDataTable={(data) => setEditData(data)}
+        setOpenDialog={(bool) => setOpenDialog(bool)}
       />
     </>
   )

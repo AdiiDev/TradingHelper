@@ -1,7 +1,7 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useEffect } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { TextField } from '@mui/material'
+import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
 import Stack from '@mui/material/Stack'
@@ -13,18 +13,25 @@ import DictionaryFormTitle from './DictionaryFormTitle'
 export const DictionaryForm = ({
   dataInputs,
   openDialog,
+  setOpenDialog,
   title,
   onSubmit,
   editData,
 }) => {
   const { t } = useTranslation()
-  const { register, handleSubmit, setValue } = useForm({
-    defaultValues: editData !== undefined ? { ...editData } : null,
+  const { register, handleSubmit, reset, control } = useForm({
+    defaultValues: editData !== null ? editData : null,
   })
+
+  useEffect(() => {
+    if (editData !== undefined) {
+      reset(editData)
+    }
+  }, [openDialog])
 
   return (
     <Dialog open={openDialog}>
-      <DictionaryFormTitle title={title} />
+      <DictionaryFormTitle title={title} setOpenDialog={setOpenDialog} />
       <DialogContent>
         <Stack spacing={3} onSubmit={handleSubmit(onSubmit)}>
           {(dataInputs !== undefined ? dataInputs : []).map((input) => {
@@ -46,20 +53,16 @@ export const DictionaryForm = ({
                   <FormControlLabel
                     key={input.id}
                     control={
-                      <Switch
-                        key={input.id}
-                        {...register('favourite')}
-                        defaultChecked={false}
-                        onChange={(e) => {
-                          setValue('favourite', e.target.checked)
-                        }}
+                      <Controller
+                        control={control}
                         name="favourite"
-                        value={true}
-                        inputProps={{ 'aria-label': 'Favourite' }}
+                        defaultValue={false}
+                        render={({ field: { value, ...field } }) => {
+                          return <Switch checked={value} {...field} />
+                        }}
                       />
                     }
                     label={t('Favourite')}
-                    labelPlacement="start"
                   />
                 )
               case 'none':
@@ -70,7 +73,10 @@ export const DictionaryForm = ({
           })}
         </Stack>
       </DialogContent>
-      <DictionaryFormActions handleSubmit={handleSubmit(onSubmit)} />
+      <DictionaryFormActions
+        handleSubmit={handleSubmit(onSubmit)}
+        setOpenDialog={setOpenDialog}
+      />
     </Dialog>
   )
 }

@@ -1,26 +1,24 @@
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { LoadBrokerAccount } from '../../services/dictionary/BrokerAccountSlice'
-import { setOpenDialog } from '../../services/dictionary/DictionarySlice'
+import { setBrokerAccounts } from '../../services/dictionary/BrokerAccountSlice'
 import DictionaryAccountService from '../../services/dictionary/DictionaryAccountService'
-import SortedTable from '../basic/SortedTable'
 import { brokerAccountsColumns } from '../../data'
+import SortedTable from '../sortedTable/SortedTable'
 import DictionaryForm from './DictionaryForm'
 
 const DictionaryAccountTable = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const openDialog = useSelector((state) => state.dict.openDialog)
   const brokerAccountData = useSelector(
-    (state) => state.brokerAccounts.loadBrokerAccount
+    (state) => state.brokerAccounts.brokerAccounts
   )
-  const [editData, setEditData] = useState(undefined)
+  const [openDialog, setOpenDialog] = useState(false)
+  const [editData, setEditData] = useState(null)
 
   const handleFormSubmit = async (data) => {
-    console.log(data)
     const accountData = JSON.stringify({
       id: data.id,
       brokerName: data.brokerName,
@@ -34,13 +32,13 @@ const DictionaryAccountTable = () => {
       toast.error(t('ErrorUpdate'))
       return
     }
-    toast.success(t('AccountAdded'))
+    toast.success(t('Added'))
     const updatedBrokerAccounts = [
       ...brokerAccountData.filter((account) => account.id !== res.result.id),
       res.result,
     ]
-    dispatch(LoadBrokerAccount(updatedBrokerAccounts))
-    dispatch(setOpenDialog(false))
+    dispatch(setBrokerAccounts(updatedBrokerAccounts))
+    setOpenDialog(false)
   }
 
   const DeleteAccount = async (id) => {
@@ -50,11 +48,11 @@ const DictionaryAccountTable = () => {
       return
     }
     toast.success(t('Deleted'))
-    dispatch(setOpenDialog(false))
+    setOpenDialog(false)
 
     const response = await DictionaryAccountService.GetAccounts()
     if (!response.isError) {
-      dispatch(LoadBrokerAccount(response.result))
+      dispatch(setBrokerAccounts(response.result))
     }
   }
 
@@ -64,6 +62,7 @@ const DictionaryAccountTable = () => {
         title={'Accounts'}
         dataInputs={brokerAccountsColumns}
         openDialog={openDialog}
+        setOpenDialog={(bool) => setOpenDialog(bool)}
         onSubmit={handleFormSubmit}
         editData={editData}
       />
@@ -72,6 +71,7 @@ const DictionaryAccountTable = () => {
         onDelete={DeleteAccount}
         storedData={brokerAccountData}
         editDataTable={(data) => setEditData(data)}
+        setOpenDialog={(bool) => setOpenDialog(bool)}
       />
     </>
   )

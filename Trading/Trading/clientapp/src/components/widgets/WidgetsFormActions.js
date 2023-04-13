@@ -5,16 +5,15 @@ import Button from '@mui/material/Button'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
 
-const DictionaryFormActions = ({ handleSubmit, setOpenDialog }) => {
+const WidgetsFormActions = ({ setOpenWidgetsForm, handleSubmit, onSubmit }) => {
   const { t } = useTranslation()
-
   return (
-    <DialogActions className="dialog-form-actions">
+    <DialogActions>
       <Button
         variant="text"
         size="medium"
         startIcon={<ClearOutlinedIcon />}
-        onClick={() => setOpenDialog(false)}
+        onClick={() => setOpenWidgetsForm(false)}
       >
         {t('Cancel')}
       </Button>
@@ -24,9 +23,7 @@ const DictionaryFormActions = ({ handleSubmit, setOpenDialog }) => {
         startIcon={<AddOutlinedIcon />}
         size="medium"
         type="submit"
-        onClick={() => {
-          handleSubmit()
-        }}
+        onClick={handleSubmit(onSubmit)}
       >
         {t('Save')}
       </Button>
@@ -34,4 +31,4 @@ const DictionaryFormActions = ({ handleSubmit, setOpenDialog }) => {
   )
 }
 
-export default DictionaryFormActions
+export default WidgetsFormActions
