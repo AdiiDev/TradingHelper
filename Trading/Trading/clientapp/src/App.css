@@ -4,9 +4,7 @@
 }
 
 .test {
-  border: #61dafb;
-  border-style: solid;
-  padding: 12px;
+  position: relative;
 }
 
 .App-win {

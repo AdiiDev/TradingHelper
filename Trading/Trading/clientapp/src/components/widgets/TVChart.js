@@ -38,7 +38,7 @@ const TVChart = ({ rowId, columnId, height }) => {
         document.getElementById('tradingview_' + key) &&
         'TradingView' in window
       ) {
-        new window.TradingView.widget({
+        var test = new window.TradingView.widget({
           autosize: true,
           symbol: 'NASDAQ:AAPL',
           interval: 'D',
@@ -55,15 +55,24 @@ const TVChart = ({ rowId, columnId, height }) => {
           calendar: true,
           container_id: 'tradingview_' + key,
         })
+
+        console.log('widget info', test)
+        const id = 'tradingview_' + rowId + '-' + columnId;
+        setTimeout(() => {
+          var iframe = document.getElementById(test.id);
+          var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+          console.log('iframe', innerDoc.body);
+
+        }, 3000)
       }
     }
   }, [])
-
+  //console.log(document.querySelector('div[data-tooltip="Wykonaj snapshot"]'))
   return (
     <div className="tradingview-widget-container">
       <div
         id={'tradingview_' + rowId + '-' + columnId}
-        style={{ height: `${height - 48}px` }}
+        style={{ height: `${height - 24}px`, minHeight: `${height - 24}px`, transition: 'min-height 0.5s ease-in-out' }}
       />
     </div>
   )
