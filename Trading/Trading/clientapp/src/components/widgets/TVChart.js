@@ -63,7 +63,7 @@ const TVChart = ({ rowId, columnId, height }) => {
     <div className="tradingview-widget-container">
       <div
         id={'tradingview_' + rowId + '-' + columnId}
-        style={{ height: `${height}px` }}
+        style={{ height: `${height - 48}px` }}
       />
     </div>
   )

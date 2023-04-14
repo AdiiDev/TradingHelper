@@ -3,6 +3,12 @@
   overflow-y: auto;
 }
 
+.test {
+  border: #61dafb;
+  border-style: solid;
+  padding: 12px;
+}
+
 .App-win {
   margin-top: 32px;
   height: calc(100vh - 84px);

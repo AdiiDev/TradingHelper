@@ -8,13 +8,37 @@ import GridViewIcon from '@mui/icons-material/GridView'
 import WidgetsForm from '../components/widgets/WidgetsForm'
 import WidgetsDrawer from '../components/widgets/WidgetsDrawer'
 import WidgetsGridElement from '../components/widgets/WidgetsGridElement'
+import TVChart from '../components/widgets/TVChart'
+
+const TestGrid = ({ rows, columns, height }) => {
+  const [maximize, setMaximize] = useState({ row: -1, column: -1 })
+
+  const changeMax = (rowId, columnId) => {
+    if (maximize.row === rowId && maximize.column === columnId)
+      setMaximize({ row: -1, column: -1 })
+    else
+      setMaximize({ row: rowId, column: columnId })
+  }
+
+  return (<div>
+    {Array.from({ length: rows }, (_, rowIndex) => (
+      <Grid container spacing={2} key={`row-${rowIndex}`}>
+        {Array.from({ length: columns }, (_, columnIndex) => (
+          <Grid className='test' sx={{ height: `${height}px` }} item xs={(maximize.row === rowIndex && maximize.column === columnIndex) ? 12 : (12 / columns)} key={`column-${columnIndex}`} onClick={() => changeMax(rowIndex, columnIndex)}>
+            <TVChart rowId={rowIndex} columnId={columnIndex} height={height} />
+          </Grid>
+        ))}
+      </Grid>
+    ))}
+  </div>)
+}
 
 const WidgetsPage = () => {
   const { t } = useTranslation()
   const [openWidgetsForm, setOpenWidgetsForm] = useState(false)
-  const [columns, setColumns] = useState(0)
-  const [rows, setRows] = useState(0)
-  const [heights, setHeights] = useState(200)
+  const [columns, setColumns] = useState(2)
+  const [rows, setRows] = useState(2)
+  const [heights, setHeights] = useState(500)
 
   const handleFormSubmit = (data) => {
     setColumns(data.columns)
@@ -22,7 +46,7 @@ const WidgetsPage = () => {
     setHeights(data.height)
   }
 
-  const rowsArray = Array.from({ length: rows }, (_, rowIndex) => (
+  /*const rowsArray = Array.from({ length: rows }, (_, rowIndex) => (
     <Grid container spacing={3} key={`row-${rowIndex}`}>
       {Array.from({ length: columns }, (_, columnIndex) => (
         <Grid item xs={12 / columns} key={`column-${columnIndex}`}>
@@ -43,7 +67,7 @@ const WidgetsPage = () => {
         ></Grid>
       )}
     </Grid>
-  ))
+  ))*/
 
   return (
     <WrapperBasicPage>
@@ -64,7 +88,8 @@ const WidgetsPage = () => {
             <GridViewIcon />
           </Fab>
         </Tooltip>
-        {rowsArray}
+        {/*rowsArray*/}
+        <TestGrid rows={rows} columns={columns} height={heights} />
       </div>
       <WidgetsDrawer />
     </WrapperBasicPage>
