@@ -59,26 +59,26 @@ const App = () => {
       toast.info(t('Welcome') + ' ' + res.result.username)
       setUser(res.result.username)
 
-      const [Accounts, Confirmations, TradingPairs] = await Promise.all([
+      const [accounts, confirmations, tradingPairs] = await Promise.all([
         DictionaryAccountService.GetAccounts(),
         DictionaryConfirmationService.GetConfirmations(),
         DictionaryTradingPairsService.GetTradingPairs(),
       ])
 
-      if (Accounts.isError) {
+      if (accounts.isError) {
         return
       }
-      dispatch(setBrokerAccounts(Accounts.result))
+      dispatch(setBrokerAccounts(accounts.result))
 
-      if (Confirmations.isError) {
+      if (confirmations.isError) {
         return
       }
-      dispatch(setConfirmations(Confirmations.result))
+      dispatch(setConfirmations(confirmations.result))
 
-      if (TradingPairs.isError) {
+      if (tradingPairs.isError) {
         return
       }
-      dispatch(setTradingPairs(TradingPairs.result))
+      dispatch(setTradingPairs(tradingPairs.result))
     }
     checkConfig()
   }, [])
