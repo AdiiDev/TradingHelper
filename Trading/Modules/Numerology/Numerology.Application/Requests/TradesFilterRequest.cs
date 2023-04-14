@@ -5,7 +5,7 @@ namespace Trades.Application.Requests
     public class TradesFilterRequest : BaseFilterRequest
     {
         public int BrokerId { get; set; }
-        public IList<int> TradingPairs = new List<int>(); // ?
+        public IList<int> TradingPairs = new List<int>(); // ? Empty array of int's
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
         public bool? TradeConsistentStrategy { get; set; }
