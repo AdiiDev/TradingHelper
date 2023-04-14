@@ -24,7 +24,7 @@ export const DictionaryForm = ({
   })
 
   useEffect(() => {
-    if (editData !== undefined) {
+    if (editData !== null) {
       reset(editData)
     }
   }, [openDialog])
