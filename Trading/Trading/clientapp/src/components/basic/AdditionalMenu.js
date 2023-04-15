@@ -53,7 +53,7 @@ export const AdditionalMenu = ({ themeMode, changeTheme }) => {
             <Language />
           </ListItem>
         </Tooltip>
-        <Tooltip key={'tol2'} title={t('ChangeTheme')} placement="right">
+        <Tooltip key={'tol2'} title={t('ChangeTheme')} placement="right" open={true}>
           <ListItem key="optionTheme" disablePadding sx={{ display: 'block' }}>
             <ListItemButton
               sx={{

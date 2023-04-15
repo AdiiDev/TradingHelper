@@ -3,6 +3,11 @@
   overflow-y: auto;
 }
 
+.test {
+  position: relative;
+}
+
+
 .App-win {
   margin-top: 32px;
   height: calc(100vh - 84px);
