@@ -1,4 +1,5 @@
-﻿using Core.QueryCriteria;
+﻿using Core.BaseModels;
+using Core.QueryCriteria;
 using Core.Services;
 using System.ComponentModel;
 using Trades.Application.Interfaces;
@@ -12,6 +13,29 @@ namespace Trades.Application.Services
     {
         public TradeService(ITradeModelRepository repository) : base(repository)
         {
+        }
+
+        public TradeModel AddOrUpdate(TradeModel obj)
+        {
+            if (!(obj is IBaseModel<TradeModel>))
+                throw new ArgumentException("Passed object does not implement IBaseModel");
+
+            if (((IBaseModel<TradeModel>)obj).Id > 0)
+            {
+                var objInDB = GetById(((IBaseModel<TradeModel>)obj).Id);
+
+
+                objInDB = (TradeModel)(((IBaseModel<TradeModel>)objInDB).CopyFrom(obj));
+
+                _repository.Save(objInDB);
+                _repository.Flush();
+
+                return objInDB;
+            }
+            _repository.Save(obj);
+            _repository.Flush();
+
+            return obj;
         }
 
         public Tuple<List<TradeModel>, long> GetTrades(TradesFilterRequest filter)

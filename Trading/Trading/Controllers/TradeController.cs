@@ -12,11 +12,13 @@ namespace Trading.Controllers
     {
         private readonly ILogger<TradeController> _logger;
         private readonly ITradeService _tradeService;
+        private readonly ITradeConfirmationService _tradeConfirmationService;
 
-        public TradeController(ILogger<TradeController> logger, ITradeService tradeService)
+        public TradeController(ILogger<TradeController> logger, ITradeService tradeService, ITradeConfirmationService tradeConfirmationService)
         {
             _logger = logger;
             _tradeService = tradeService;
+            _tradeConfirmationService = tradeConfirmationService;
         }
 
         [HttpPost("filtered")]
@@ -31,10 +33,23 @@ namespace Trading.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddOrUpdate([FromBody] TradeModel model)
+        public IActionResult AddOrUpdate([FromBody] TradeViewModel viewModel)
         {
-            _tradeService.AddOrUpdate(model);
-            return Ok(model);
+            var modelId = _tradeService.AddOrUpdate(viewModel.ToModel()).Id;
+            var model = _tradeService.GetById(modelId);
+
+            for (int i = 0; i < viewModel.Confirmations.Count; i++)
+            {
+                if (!model.Confirmations.Any(x => viewModel.Confirmations[i] == x.ConfirmationId))
+                    _tradeConfirmationService.AddOrUpdate(new TradeConfirmationModel { TradeId = model.Id, ConfirmationId = model.Confirmations[i].Id });
+            }
+            for (int i = 0; i < model.Confirmations.Count; i++)
+            {
+                if (!viewModel.Confirmations.Any(x => model.Confirmations[i].Id == x))
+                    _tradeConfirmationService.Delete(model.Confirmations[i].Id);
+            }
+
+            return Ok(new TradeViewModel(_tradeService.GetById(modelId)));
         }
 
         [HttpDelete("{id:int}")]

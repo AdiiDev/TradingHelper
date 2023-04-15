@@ -68,6 +68,8 @@ const TVChart = ({ rowId, columnId, height }) => {
     }
   }, [])
   //console.log(document.querySelector('div[data-tooltip="Wykonaj snapshot"]'))
+  // There is a change that setting up min-width will solbe problem with resize. But how to set this size correctly?
+  // More info: https://github.com/mui/material-ui/issues/23266
   return (
     <div className="tradingview-widget-container">
       <div
