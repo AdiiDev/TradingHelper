@@ -38,7 +38,7 @@ const DictionaryTradingPairTable = () => {
     setOpenDialog(false)
   }
 
-  const DeleteTradingPair = async (id) => {
+  const deleteTradingPair = async (id) => {
     const res = await DictionaryTradingPairsService.DeleteTradingPair(id)
     if (res.isError) {
       toast.error(t('ErrorDelete'))
@@ -65,7 +65,7 @@ const DictionaryTradingPairTable = () => {
       />
       <SortedTable
         columns={tradingPairsColumns}
-        onDelete={DeleteTradingPair}
+        onDelete={deleteTradingPair}
         storedData={pairsData}
         editDataTable={(data) => setEditData(data)}
         setOpenDialog={(bool) => setOpenDialog(bool)}

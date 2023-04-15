@@ -66,7 +66,7 @@ const ApplicationTopSelect = () => {
             >
               {brokerAccountData.map((account) => (
                 <MenuItem key={account.id} value={account.id}>
-                  {account.brokerName}
+                  {account.name}
                 </MenuItem>
               ))}
             </TextField>

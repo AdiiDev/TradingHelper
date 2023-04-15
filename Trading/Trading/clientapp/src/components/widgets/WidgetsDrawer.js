@@ -31,7 +31,9 @@ export const WidgetsDrawer = () => {
       <Drawer anchor={'right'} open={drawerOpen} onClose={toggleDrawer}>
         <div className={'drawer'}>
           <List>
-            <Typography>{t('Symbols')}</Typography>
+            <Typography className="drawer-Typography">
+              {t('Symbols')}
+            </Typography>
             {symbols.map((symbol) => (
               <ListItem button key={symbol.id}>
                 <ListItemText primary={symbol.symbol} />

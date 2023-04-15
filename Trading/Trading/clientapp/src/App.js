@@ -44,6 +44,8 @@ const App = () => {
   const [mode, setMode] = useState('dark')
   const dispatch = useDispatch()
   const [user, setUser] = useState('')
+  const [showTopBar, setShowTopBar] = useState(true)
+  const [showLeftBar, setShowLeftBar] = useState(true)
 
   useEffect(() => {
     const checkConfig = async () => {
@@ -81,6 +83,21 @@ const App = () => {
       dispatch(setTradingPairs(TradingPairs.result))
     }
     checkConfig()
+  }, [])
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.key === '') {
+        setShowTopBar((prevShowTopBar) => !prevShowTopBar)
+      }
+      if (e.ctrlKey && e.key === 'b') {
+        setShowLeftBar((prevShowLeftBar) => !prevShowLeftBar)
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
   }, [])
 
   const colorMode = React.useMemo(
@@ -121,11 +138,13 @@ const App = () => {
           <AppRouter>
             {!configIsEmpty && callDone && (
               <div>
-                <ApplicationTopSelect />
-                <NavigationBarLeft
-                  themeMode={mode}
-                  changeTheme={colorMode.toggleColorMode}
-                />
+                {showTopBar && <ApplicationTopSelect />}
+                {showLeftBar && (
+                  <NavigationBarLeft
+                    themeMode={mode}
+                    changeTheme={colorMode.toggleColorMode}
+                  />
+                )}
                 <Routes>
                   <Route
                     path="/home"

@@ -41,7 +41,7 @@ const DictionaryAccountTable = () => {
     setOpenDialog(false)
   }
 
-  const DeleteAccount = async (id) => {
+  const deleteAccount = async (id) => {
     const res = await DictionaryAccountService.DeleteAccount(id)
     if (res.isError) {
       toast.error(t('ErrorDelete'))
@@ -68,7 +68,7 @@ const DictionaryAccountTable = () => {
       />
       <SortedTable
         columns={brokerAccountsColumns}
-        onDelete={DeleteAccount}
+        onDelete={deleteAccount}
         storedData={brokerAccountData}
         editDataTable={(data) => setEditData(data)}
         setOpenDialog={(bool) => setOpenDialog(bool)}

@@ -40,7 +40,7 @@ const DictionaryConfirmationTable = () => {
     setOpenDialog(false)
   }
 
-  const DeleteConfirmation = async (id) => {
+  const deleteConfirmation = async (id) => {
     const res = await DictionaryConfirmationService.DeleteConfirmation(id)
     if (res.isError) {
       toast.error(t('ErrorDelete'))
@@ -67,7 +67,7 @@ const DictionaryConfirmationTable = () => {
       />
       <SortedTable
         columns={confirmationsColumns}
-        onDelete={DeleteConfirmation}
+        onDelete={deleteConfirmation}
         storedData={confirmData}
         editDataTable={(data) => setEditData(data)}
         setOpenDialog={(bool) => setOpenDialog(bool)}

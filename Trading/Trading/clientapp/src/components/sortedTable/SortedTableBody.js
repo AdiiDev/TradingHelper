@@ -40,14 +40,8 @@ const SortedTableBody = ({
                   <TableCell key={column.id} align={column.align}>
                     {column.id === 'favourite' ? (
                       row.favourite ? (
-                        <Typography
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          <StarIcon style={{ color: 'gold' }} />
+                        <Typography className="favourite-table">
+                          <StarIcon />
                         </Typography>
                       ) : null
                     ) : (
