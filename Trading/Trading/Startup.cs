@@ -175,10 +175,52 @@ namespace Trading
                 AutoHideMenuBar = true,
             });
             browserWindow.SetMenuBarVisibility(false);
+
             browserWindow.OnReadyToShow += () => browserWindow.Show();
-            //https://github.com/ElectronNET/electron.net-api-demos/blob/master/ElectronNET-API-Demos/Views/Ipc/Index.cshtml
+
+            AddIPCListeners();
 
             Electron.Notification.Show(new ElectronNET.API.Entities.NotificationOptions("Trading start", "Current Version: 1.0.0"));
+        }
+
+        private void AddIPCListeners()
+        {
+            Electron.IpcMain.On("toggle-maximize-window", async (args) =>
+            {
+                var mainWindow = Electron.WindowManager.BrowserWindows.First();
+                var res = await mainWindow.IsMaximizedAsync();
+                if (res)
+                    mainWindow.Unmaximize();
+                else
+                    mainWindow.Maximize();
+                //Electron.IpcMain.Send(mainWindow, "asynchronous-reply", "pong");
+            });
+            //https://github.com/ElectronNET/electron.net-api-demos/blob/master/ElectronNET-API-Demos/Views/Ipc/Index.cshtml
+            Electron.IpcMain.On("reload-web", async (args) =>
+            {
+                var mainWindow = Electron.WindowManager.BrowserWindows.First();
+                mainWindow.Reload();
+            });
+            Electron.IpcMain.On("reload-web", async (args) =>
+            {
+                var mainWindow = Electron.WindowManager.BrowserWindows.First();
+                mainWindow.Reload();
+            });
+            Electron.IpcMain.On("minimize", async (args) =>
+            {
+                var mainWindow = Electron.WindowManager.BrowserWindows.First();
+                mainWindow.Minimize();
+            });
+            Electron.IpcMain.On("dev-tools", async (args) =>
+            {
+                var mainWindow = Electron.WindowManager.BrowserWindows.First();
+                mainWindow.WebContents.OpenDevTools();
+            });
+            Electron.IpcMain.On("close", async (args) =>
+            {
+                var mainWindow = Electron.WindowManager.BrowserWindows.First();
+                mainWindow.Close();
+            });
         }
     }
 }

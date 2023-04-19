@@ -9,6 +9,7 @@ import { Provider } from 'react-redux'
 import { InitLocales } from './locales/Locales'
 
 InitLocales()
+
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <Provider store={store}>

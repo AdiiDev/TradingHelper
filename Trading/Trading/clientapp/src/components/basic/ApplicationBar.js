@@ -12,48 +12,36 @@ const ApplicationBar = () => {
 
   const close = () => {
     if (process.env.REACT_APP_MYVAR === 'win') {
-      const { remote } = window.require('electron')
-      console.log('Electron', remote)
-      const win = remote.getCurrentWindow()
-
-      win.close()
+      const { ipcRenderer } = window.require('electron')
+      ipcRenderer.send("close")
     }
   }
 
   const devTools = () => {
     if (process.env.REACT_APP_MYVAR === 'win') {
-      const { remote } = window.require('electron')
-      console.log('Electron', remote)
-      const win = remote.getCurrentWindow()
-
-      win.webContents.openDevTools()
+      const { ipcRenderer } = window.require('electron')
+      ipcRenderer.send("dev-tools")
     }
   }
 
   const size = () => {
     if (process.env.REACT_APP_MYVAR === 'win') {
-      const { remote } = window.require('electron')
-      console.log('Electron', remote)
-      const win = remote.getCurrentWindow()
-      win.isMaximized() ? win.unmaximize() : win.maximize()
+      const { ipcRenderer } = window.require('electron')
+      ipcRenderer.send("toggle-maximize-window")
     }
   }
 
   const reload = () => {
     if (process.env.REACT_APP_MYVAR === 'win') {
-      const { remote } = window.require('electron')
-      console.log('Electron', remote)
-      const win = remote.getCurrentWindow()
-      win.webContents.reload()
+      const { ipcRenderer } = window.require('electron')
+      ipcRenderer.send("reload-web")
     }
   }
 
   const minimize = () => {
     if (process.env.REACT_APP_MYVAR === 'win') {
-      const { remote } = window.require('electron')
-      console.log('Electron', remote)
-      const win = remote.getCurrentWindow()
-      win.minimize()
+      const { ipcRenderer } = window.require('electron')
+      ipcRenderer.send("minimize")
     }
   }
 
