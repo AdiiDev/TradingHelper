@@ -73,14 +73,14 @@ namespace Core.Services
             return GetLogString(obj, log);
         }
 
-        private string GetWhatChanged(T objInDb, T newObj, bool log)
+        protected string GetWhatChanged(T objInDb, T newObj, bool log)
         {
             if (log)
                 return ((IBaseModel<T>)objInDb).WhatChanged(newObj);
             return "";
         }
 
-        private string GetLogString(T obj, bool log)
+        protected string GetLogString(T obj, bool log)
         {
             if (log)
                 return ((IBaseModel<T>)obj).ToLogString();
