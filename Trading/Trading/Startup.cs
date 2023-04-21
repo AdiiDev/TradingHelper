@@ -196,27 +196,27 @@ namespace Trading
                 //Electron.IpcMain.Send(mainWindow, "asynchronous-reply", "pong");
             });
             //https://github.com/ElectronNET/electron.net-api-demos/blob/master/ElectronNET-API-Demos/Views/Ipc/Index.cshtml
-            Electron.IpcMain.On("reload-web", async (args) =>
+            Electron.IpcMain.On("reload-web", (args) =>
             {
                 var mainWindow = Electron.WindowManager.BrowserWindows.First();
                 mainWindow.Reload();
             });
-            Electron.IpcMain.On("reload-web", async (args) =>
+            Electron.IpcMain.On("reload-web", (args) =>
             {
                 var mainWindow = Electron.WindowManager.BrowserWindows.First();
                 mainWindow.Reload();
             });
-            Electron.IpcMain.On("minimize", async (args) =>
+            Electron.IpcMain.On("minimize", (args) =>
             {
                 var mainWindow = Electron.WindowManager.BrowserWindows.First();
                 mainWindow.Minimize();
             });
-            Electron.IpcMain.On("dev-tools", async (args) =>
+            Electron.IpcMain.On("dev-tools", (args) =>
             {
                 var mainWindow = Electron.WindowManager.BrowserWindows.First();
                 mainWindow.WebContents.OpenDevTools();
             });
-            Electron.IpcMain.On("close", async (args) =>
+            Electron.IpcMain.On("close", (args) =>
             {
                 var mainWindow = Electron.WindowManager.BrowserWindows.First();
                 mainWindow.Close();

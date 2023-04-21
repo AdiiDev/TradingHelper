@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 
 let tvScriptLoadingPromise = []
 
-const TVChart = ({ rowId, columnId, height }) => {
+const TVChart = ({ rowId, columnId, height, tradingSymbol }) => {
   const onLoadScriptRef = useRef()
 
   useEffect(() => {
@@ -38,9 +38,9 @@ const TVChart = ({ rowId, columnId, height }) => {
         document.getElementById('tradingview_' + key) &&
         'TradingView' in window
       ) {
-        var test = new window.TradingView.widget({
+        new window.TradingView.widget({
           autosize: true,
-          symbol: 'NASDAQ:AAPL',
+          symbol: tradingSymbol !== '' ? tradingSymbol : 'NASDAQ:AAPL',
           interval: 'D',
           timezone: 'Etc/UTC',
           theme: 'dark',
@@ -55,15 +55,6 @@ const TVChart = ({ rowId, columnId, height }) => {
           calendar: true,
           container_id: 'tradingview_' + key,
         })
-
-        console.log('widget info', test)
-        const id = 'tradingview_' + rowId + '-' + columnId;
-        setTimeout(() => {
-          var iframe = document.getElementById(test.id);
-          var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
-          console.log('iframe', innerDoc.body);
-
-        }, 3000)
       }
     }
   }, [])
