@@ -8,6 +8,10 @@
 }
 
 
+.Conditional-select {
+  width: calc(100% - 40px) !important;
+}
+
 .App-win {
   margin-top: 32px;
   height: calc(100vh - 84px);

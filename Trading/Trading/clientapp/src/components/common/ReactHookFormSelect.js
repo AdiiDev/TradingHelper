@@ -11,11 +11,12 @@ const ReactHookFormSelect = ({
   control,
   defaultValue,
   children,
+  className,
   ...props
 }) => {
   const labelId = `${name}-label`
   return (
-    <FormControl sx={{ width: '100%' }}>
+    <FormControl sx={{ width: '100%' }} className={className}>
       <InputLabel id={labelId}>{label}</InputLabel>
       <Controller
         control={control}
