@@ -3,6 +3,13 @@ import FormControl from '@mui/material/FormControl'
 import Chip from '@mui/material/Chip'
 import { Controller } from 'react-hook-form'
 import { TextField, MenuItem, Checkbox, ListItemText } from '@mui/material'
+/*
+  How to use
+ const options = [{ id: 1, label: 'Test1', val: 1 }, { id: 2, label: 'Test2', val: 2 }, { id: 3, label: 'Test3', val: 3 }, { id: 4, label: 'Test4', val: 4 },]
+
+  <ReactHookFormMultiSelect control={control} name="selectedNumbers" label="Test multiselect" options={options} optionsKeyProp="id" optionsValueProp="val" optionsLabelProp="label" />
+*/
+
 
 const ReactHookFormMultiSelect = ({ control, name, label, options, optionsKeyProp, optionsValueProp, optionsLabelProp }) => {
 

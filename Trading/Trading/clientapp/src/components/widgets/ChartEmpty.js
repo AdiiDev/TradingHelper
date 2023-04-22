@@ -25,7 +25,7 @@ const ChartEmpty = ({ heightTV, isSelected, columns, columnIndex, rowIndex, addN
 
   // add tooltips
   return (<Grid sx={{ height: heightTV <= 100 ? heightTV + 'vh' : heightTV, minHeight: heightTV <= 100 ? heightTV + 'vh' : heightTV, padding: 5 }} item xs={isSelected ? 12 : (12 / columns)} key={`column-${columnIndex}`}>
-    {openNewChartDialog && <NewChartsDialog onCancel={() => setOpenNewChartDialog(false)} />}
+    {openNewChartDialog && <NewChartsDialog onCancel={() => setOpenNewChartDialog(false)} columns={columns} />}
     <Paper style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-evenly', alignContent: 'center' }}>
       <IoAdd style={{ height: 48, width: 48, cursor: 'pointer' }} onClick={() => addChart()} />
       {columnIndex === 0 && <AiOutlineAppstoreAdd style={{ height: 48, width: 48, cursor: 'pointer' }} />}
