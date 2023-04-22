@@ -21,11 +21,7 @@ const schema = yup.object().shape({
   height: yup.number().min(50).max(1000),
 })
 
-export const WidgetsForm = ({
-  handleFormSubmit,
-  openWidgetsForm,
-  setOpenWidgetsForm,
-}) => {
+export const WidgetsForm = ({ handleFormSubmit, openWidgetsForm, setOpenWidgetsForm }) => {
   const {
     register,
     handleSubmit,

@@ -56,7 +56,6 @@ export const InitLocales = () => {
             Value: 'Value',
             Clear: 'Clear',
             AreYouSureYouWantToDeleteIt: 'Are you sure you want to delete it?',
-            Confirm: 'Confirm',
             True: 'True',
             False: 'False',
             Delete: 'Delete',
@@ -110,6 +109,10 @@ export const InitLocales = () => {
             EnterYourBrokerAccount: 'Enter your broker account',
             SetView: 'Set view',
             OpenDrawer: 'Open sidebar',
+            AddChart: 'Add chart',
+            AddCharts: 'Add charts',
+            Symbol: 'Symbol',
+            Interval: 'Interval'
           },
         },
         pl: {
@@ -160,7 +163,6 @@ export const InitLocales = () => {
             Clear: 'Resetuj',
             AreYouSureYouWantToDeleteIt:
               'Czy jesteś pewny, ze chcesz to usunąć?',
-            Confirm: 'Potwierdź',
             True: 'Tak',
             False: 'Nie',
             Name: 'Imię',
@@ -214,6 +216,10 @@ export const InitLocales = () => {
             EnterYourBrokerAccount: 'Wprowadź konto brokera',
             SetView: 'Ustaw widok',
             OpenDrawer: 'Otwórz pasek boczny',
+            AddChart: 'Dodaj wykres',
+            AddCharts: 'Dodaj wykresy',
+            Symbol: 'Symbol',
+            Interval: 'Interval'
           },
         },
       },

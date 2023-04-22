@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 
 let tvScriptLoadingPromise = []
 
-const TVChart = ({ rowId, columnId, height, tradingSymbol }) => {
+const TVChart = ({ rowId, columnId, height, symbol, interval }) => {
   const onLoadScriptRef = useRef()
 
   useEffect(() => {
@@ -34,14 +34,15 @@ const TVChart = ({ rowId, columnId, height, tradingSymbol }) => {
     function createWidget() {
       //Tej funkcji nie da się zmienić na strzałkową
       const key = rowId + '-' + columnId
+      console.log('symbol and interval', { symbol, interval })
       if (
         document.getElementById('tradingview_' + key) &&
         'TradingView' in window
       ) {
         new window.TradingView.widget({
           autosize: true,
-          symbol: tradingSymbol !== '' ? tradingSymbol : 'NASDAQ:AAPL',
-          interval: 'D',
+          symbol: symbol !== '' ? symbol : 'NASDAQ:AAPL',
+          interval: interval,
           timezone: 'Etc/UTC',
           theme: 'dark',
           style: '1',
