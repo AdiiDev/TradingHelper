@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import Tooltip from '@mui/material/Tooltip'
 import Fab from '@mui/material/Fab'
 import GridViewIcon from '@mui/icons-material/GridView'
+import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
 import WrapperBasicPage from '../components/common/WrapperBasicPage'
 import WidgetsForm from '../components/widgets/form/WidgetsForm'
 import WidgetsDrawer from '../components/widgets/WidgetsDrawer'
@@ -30,17 +31,30 @@ const WidgetsPage = () => {
         setOpenWidgetsForm={(bool) => setOpenWidgetsForm(bool)}
       />
       <div style={{ minHeight: '80vh', width: '100%' }}>
-        <Tooltip title={t('SetView')}>
-          <Fab
-            color="primary"
-            aria-label="add"
-            size="small"
-            sx={{ position: 'absolute', top: 76, right: 14 }}
-            onClick={() => setOpenWidgetsForm(true)}
-          >
-            <GridViewIcon />
-          </Fab>
-        </Tooltip>
+        <div className='Chart-settings-buttons' style={{ top: 4, width: '100px', right: '40%' }}>
+          <Tooltip title={t('SetView')}>
+            <Fab
+              color="primary"
+              aria-label="add"
+              size="small"
+              className='M-5p-r'
+              onClick={() => setOpenWidgetsForm(true)}
+            >
+              <GridViewIcon />
+            </Fab>
+          </Tooltip>
+          <Tooltip title={t('SetView')}>
+            <Fab
+              color="primary"
+              aria-label="add"
+              size="small"
+              onClick={() => setOpenWidgetsForm(true)}
+            >
+              <DisplaySettingsIcon />
+            </Fab>
+          </Tooltip>
+
+        </div>
         <ChartGrid rows={rows} columns={columns} height={heights} currentWidgetsArray={currentWidgetsArray} setCurrentWidgetsArray={setCurrentWidgetsArray} />
       </div>
       <WidgetsDrawer />

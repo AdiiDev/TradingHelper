@@ -3,34 +3,56 @@ import { AiOutlineAppstoreAdd } from 'react-icons/ai';
 import { IoAdd } from 'react-icons/io5'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
+import { useTranslation } from 'react-i18next'
+import Tooltip from '@mui/material/Tooltip';
 import NewChartsDialog from './NewChartsDialog';
 
-const ChartEmpty = ({ heightTV, isSelected, columns, columnIndex, rowIndex, addNewChart }) => {
-  const [openNewChartDialog, setOpenNewChartDialog] = useState(false)
-  const [chartData, setChartData] = useState(null)
+const ChartEmpty = ({ heightTV, isSelected, columns, columnIndex, rowIndex, addNewCharts }) => {
+  const { t } = useTranslation()
+  const [openNewChartDialog, setOpenNewChartDialog] = useState({ open: false, singleMode: true })
 
-  const addChart = () => {
-    // open drawer with tradingpairs // Now that I think about it dialog will look better
-    // select tradingpair
-    // add new chart
-    setOpenNewChartDialog(true)
-    //addNewChart(rowIndex, columnIndex)
+  const addCharts = (chartInfo) => {
+    const info = { ...chartInfo, row: rowIndex, column: columnIndex }
+    setOpenNewChartDialog({ open: false, singleMode: true })
+    addNewCharts(info)
   }
 
-  const addCharts = () => {
-    // open dialog with input how many, with selection of timeframes and pair
-    // add new charts
-    // this should work only for one row
-  }
-
-  // add tooltips
-  return (<Grid sx={{ height: heightTV <= 100 ? heightTV + 'vh' : heightTV, minHeight: heightTV <= 100 ? heightTV + 'vh' : heightTV, padding: 5 }} item xs={isSelected ? 12 : (12 / columns)} key={`column-${columnIndex}`}>
-    {openNewChartDialog && <NewChartsDialog onCancel={() => setOpenNewChartDialog(false)} columns={columns} />}
-    <Paper style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-evenly', alignContent: 'center' }}>
-      <IoAdd style={{ height: 48, width: 48, cursor: 'pointer' }} onClick={() => addChart()} />
-      {columnIndex === 0 && <AiOutlineAppstoreAdd style={{ height: 48, width: 48, cursor: 'pointer' }} />}
-    </Paper>
-  </Grid>)
+  return (
+    <Grid sx={{ height: heightTV <= 100 ? heightTV + 'vh' : heightTV, minHeight: heightTV <= 100 ? heightTV + 'vh' : heightTV, padding: 5 }} item xs={isSelected ? 12 : (12 / columns)} key={`column-${columnIndex}`}>
+      {openNewChartDialog.open &&
+        <NewChartsDialog
+          onCancel={() => setOpenNewChartDialog({ open: false, singleMode: true })}
+          singleMode={openNewChartDialog.singleMode}
+          columns={columns}
+          onConfirm={(info) => addCharts(info)}
+        />}
+      <Paper className='Chart-empty-paper'>
+        <Tooltip
+          key='charts'
+          title={t('AddChart')}
+          placement="right"
+        >
+          <div>
+            <IoAdd className='Chart-add-icon'
+              onClick={() => setOpenNewChartDialog({ open: true, singleMode: true })}
+            />
+          </div>
+        </Tooltip>
+        {columnIndex === 0 &&
+          <Tooltip
+            key='charts2'
+            title={t('AddCharts')}
+            placement="right"
+          >
+            <div>
+              <AiOutlineAppstoreAdd className='Chart-add-icon'
+                onClick={() => setOpenNewChartDialog({ open: true, singleMode: false })}
+              />
+            </div>
+          </Tooltip>}
+      </Paper>
+    </Grid>
+  )
 }
 
 export default ChartEmpty
