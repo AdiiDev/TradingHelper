@@ -7,13 +7,13 @@ namespace Trades.Domain.Models
         public virtual int Id { get; set; }
         public virtual int BrokerAccountId { get; set; }
         public virtual BrokerAccountModel BrokerAccount { get; set; }
-        public virtual int TradingPairId { get; set; } 
+        public virtual int TradingPairId { get; set; }
         public virtual TradeModel TradingPair { get; set; } //
         public virtual bool TradeConsistentStrategy { get; set; } //
         public virtual DateTime StartTrade { get; set; } //
         public virtual DateTime? EndTrade { get; set; } //
-        public virtual double? ProfitLoos { get; set; } //
-        public virtual string Note { get; set; } 
+        public virtual double? ProfitLoss { get; set; } //
+        public virtual string Note { get; set; }
         public virtual IList<TradeConfirmationModel> Confirmations { get; set; } = new List<TradeConfirmationModel>(); //
 
         public virtual object CopyFrom(TradeModel newObject)
@@ -23,7 +23,7 @@ namespace Trades.Domain.Models
             TradeConsistentStrategy = newObject.TradeConsistentStrategy;
             StartTrade = newObject.StartTrade;
             EndTrade = newObject.EndTrade;
-            ProfitLoos = newObject.ProfitLoos;
+            ProfitLoss = newObject.ProfitLoss;
             Note = newObject.Note;
             Confirmations = newObject.Confirmations;
             return this;
