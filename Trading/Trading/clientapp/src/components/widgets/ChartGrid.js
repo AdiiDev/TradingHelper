@@ -2,8 +2,8 @@ import { useState } from 'react'
 import Grid from '@mui/material/Grid'
 import ChartEmpty from './ChartEmpty'
 import Chart from './Chart'
-
-const ChartGrid = ({ rows, columns, height, currentWidgetsArray, setCurrentWidgetsArray }) => {
+// rows, columns, height
+const ChartGrid = ({ settings, currentWidgetsArray, setCurrentWidgetsArray }) => {
   const [maximize, setMaximize] = useState({ row: -1, column: -1 })
 
   const changeMax = (rowId, columnId) => {
@@ -27,21 +27,21 @@ const ChartGrid = ({ rows, columns, height, currentWidgetsArray, setCurrentWidge
 
   return (
     <div>
-      {Array.from({ length: rows }, (_, rowIndex) => (
+      {Array.from({ length: settings.rows }, (_, rowIndex) => (
         <Grid container spacing={2} key={`row-${rowIndex}`}>
-          {Array.from({ length: columns }, (_, columnIndex) => {
+          {Array.from({ length: settings.columns }, (_, columnIndex) => {
             const isInArray = currentWidgetsArray.find(element => element.row === rowIndex && element.column === columnIndex)
             const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
             const isSelected = maximize.row === rowIndex && maximize.column === columnIndex
-            const heightTV = isSelected ? vh - 48 : height
+            const heightTV = isSelected ? vh - 48 : settings.height
 
             if (!isInArray)
               return (<ChartEmpty key={`column-${columnIndex}-r-${rowIndex}`} heightTV={heightTV}
-                rowIndex={rowIndex} columnIndex={columnIndex} columns={columns}
+                rowIndex={rowIndex} columnIndex={columnIndex} columns={settings.columns}
                 addNewCharts={(chartInfo) => addNewCharts(chartInfo)} />)
 
             return (<Chart key={`column-${columnIndex}-r-${rowIndex}`} heightTV={heightTV}
-              isSelected={isSelected} columns={columns} columnIndex={columnIndex} rowIndex={rowIndex}
+              isSelected={isSelected} columns={settings.columns} columnIndex={columnIndex} rowIndex={rowIndex}
               changeMax={(row, col) => changeMax(row, col)} symbol={isInArray.symbol} interval={isInArray.interval} />)
           })}
         </Grid>

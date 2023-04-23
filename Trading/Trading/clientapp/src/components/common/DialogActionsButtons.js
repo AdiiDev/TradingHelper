@@ -5,15 +5,16 @@ import Button from '@mui/material/Button'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
 
-const WidgetsFormActions = ({ setOpenWidgetsForm, handleSubmit, onSubmit }) => {
+const DialogActionsButtons = ({ close, handleSubmit, saveTitle, onSubmit }) => {
   const { t } = useTranslation()
+
   return (
     <DialogActions>
       <Button
         variant="text"
         size="medium"
         startIcon={<ClearOutlinedIcon />}
-        onClick={() => setOpenWidgetsForm(false)}
+        onClick={() => close()}
       >
         {t('Cancel')}
       </Button>
@@ -25,10 +26,10 @@ const WidgetsFormActions = ({ setOpenWidgetsForm, handleSubmit, onSubmit }) => {
         type="submit"
         onClick={handleSubmit(onSubmit)}
       >
-        {t('Save')}
+        {saveTitle ? t(saveTitle) : t('Save')}
       </Button>
     </DialogActions>
   )
 }
 
-export default WidgetsFormActions
+export default DialogActionsButtons

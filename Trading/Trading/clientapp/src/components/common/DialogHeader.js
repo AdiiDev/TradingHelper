@@ -1,19 +1,18 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
 
-const WidgetsFormTitle = ({ setOpenWidgetsForm }) => {
-  const { t } = useTranslation()
+const DialogHeader = ({ title, closeDialog }) => {
+
   return (
     <DialogTitle className="dialog-form-title">
-      {t('View')}
+      {title}
       <span className="close-btn">
         <Button
           variant="text"
           size="medium"
-          onClick={() => setOpenWidgetsForm(false)}
+          onClick={() => closeDialog()}
         >
           <ClearOutlinedIcon />
         </Button>
@@ -22,4 +21,4 @@ const WidgetsFormTitle = ({ setOpenWidgetsForm }) => {
   )
 }
 
-export default WidgetsFormTitle
+export default DialogHeader
