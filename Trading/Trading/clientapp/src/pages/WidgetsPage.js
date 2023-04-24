@@ -33,12 +33,11 @@ const WidgetsPage = () => {
 
   const useMiltipleForm = (defaultValues, resolver) => {
     console.log('Call')
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({ resolver: resolver, defaultValues: defaultValues })
-    return { register, handleSubmit, reset, formState: { errors } }
+    return useForm({ resolver: resolver, defaultValues: defaultValues })
   }
 
-  const baseSettingsForm = useMiltipleForm(yupResolver(baseSettingsSchema))
-  const advancedSettingsForm = useMiltipleForm()
+  const baseSettingsForm = useMiltipleForm(null, yupResolver(baseSettingsSchema))
+  const layoutSettingsForm = useMiltipleForm(null, yupResolver(baseSettingsSchema))
 
   const handleBaseFormSubmit = (data) => {
     setBaseSettings({ columns: data.columns, rows: data.rows, height: data.height })
@@ -55,7 +54,8 @@ const WidgetsPage = () => {
     <WrapperBasicPage>
       {openChartGridSettings &&
         <ChartsSettingsDialog close={() => setOpenChartGridSettings(false)}
-          baseSettings={baseSettingsForm} handleBase={(data) => handleBaseFormSubmit(data)} />}
+          baseSettings={baseSettingsForm} handleBase={(data) => handleBaseFormSubmit(data)}
+          layoutHook={layoutSettingsForm} />}
       <div style={{ minHeight: '80vh', width: '100%' }}>
         <div className='Chart-settings-buttons' style={{ top: 4, width: '100px', right: '40%' }}>
           <Tooltip title={t('SetView')}>

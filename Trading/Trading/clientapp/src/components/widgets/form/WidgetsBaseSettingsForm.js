@@ -1,14 +1,12 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import TextField from '@mui/material/TextField'
-import Stack from '@mui/material/Stack'
-
 
 export const WidgetsBaseSettingsForm = ({ hookForm }) => {
   const { t } = useTranslation()
 
   return (
-    <Stack spacing={3}>
+    <>
       <TextField
         type="number"
         variant="standard"
@@ -38,7 +36,7 @@ export const WidgetsBaseSettingsForm = ({ hookForm }) => {
         error={Boolean(hookForm.formState.errors.height)}
         helperText={hookForm.formState.errors.height?.message}
       />
-    </Stack>
+    </>
   )
 }
 
