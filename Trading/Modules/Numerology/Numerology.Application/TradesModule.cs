@@ -17,12 +17,14 @@ namespace Trading.Application
             services.AddScoped<ITradeConfirmationModelRepository, TradeConfirmationModelRepository>();
             services.AddScoped<ITradeModelRepository, TradeModelRepository>();
             services.AddScoped<ITradingPairModelRepository, TradingPairModelRepository>();
+            services.AddScoped<IIntervalModelRepository, IntervalModelRepository>();
 
             services.AddScoped<IBrokerAccountService, BrokerAccountService>();
             services.AddScoped<IConfirmationService, ConfirmationService>();
             services.AddScoped<ITradeConfirmationService, TradeConfirmationService>();
             services.AddScoped<ITradeService, TradeService>();
             services.AddScoped<ITradingPairService, TradingPairService>();
+            services.AddScoped<IIntervalService, IntervalService>();
 
             return services;
         }
@@ -34,6 +36,7 @@ namespace Trading.Application
                 .AddMap<ConfirmationModelMap>()
                 .AddMap<TradeConfirmationModelMap>()
                 .AddMap<TradeModelMap>()
+                .AddMap<IntervalModelMap>()
                 .AddMap<TradingPairModelMap>();
         }
     }

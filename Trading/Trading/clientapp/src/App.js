@@ -13,10 +13,12 @@ import AppConfigurationService from './services/config/AppConfigurationService'
 import DictionaryAccountService from './services/dictionary/DictionaryAccountService'
 import DictionaryConfirmationService from './services/dictionary/DictionaryConfirmationsService'
 import DictionaryTradingPairsService from './services/dictionary/DictionaryTradingPairsService'
+import IntervalService from './services/dictionary/IntervalService'
 import { setConfig } from './services/config/ConfigSlice'
 import { setBrokerAccounts } from './services/dictionary/BrokerAccountSlice'
 import { setConfirmations } from './services/dictionary/ConfirmationSlice'
 import { setTradingPairs } from './services/dictionary/TradingPairsSlice'
+import { setIntervals } from './services/dictionary/IntervalsSlice'
 import { NavigationBarLeft } from './components/basic/NavigationBarLeft'
 import ApplicationBar from './components/basic/ApplicationBar'
 import ApplicationTopSelect from './components/basic/AppliactionTopSelect'
@@ -26,6 +28,8 @@ import DictionaryPage from './pages/DictionaryPage'
 import TradesPage from './pages/TradesPage'
 import WidgetsPage from './pages/WidgetsPage'
 import SettingsPage from './pages/SettingsPage'
+import LayoutsService from './services/config/LayoutsService'
+import { setLayouts } from './services/config/LayoutsConfigSlice'
 
 // MUI controls with hook form
 //https://codesandbox.io/s/react-hook-form-v6-controller-qsd8r
@@ -35,7 +39,7 @@ import SettingsPage from './pages/SettingsPage'
 const AppRouter =
   process.env.REACT_APP_MYVAR === 'win' ? HashRouter : BrowserRouter
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} })
+const ColorModeContext = React.createContext({ toggleColorMode: () => { } })
 
 const App = () => {
   const { t } = useTranslation()
@@ -59,10 +63,12 @@ const App = () => {
       toast.info(t('Welcome') + ' ' + res.result.username)
       setUser(res.result.username)
 
-      const [accounts, confirmations, tradingPairs] = await Promise.all([
+      const [accounts, confirmations, tradingPairs, intervals, layouts] = await Promise.all([
         DictionaryAccountService.GetAccounts(),
         DictionaryConfirmationService.GetConfirmations(),
         DictionaryTradingPairsService.GetTradingPairs(),
+        IntervalService.Get(),
+        LayoutsService.Get()
       ])
 
       if (accounts.isError) {
@@ -79,6 +85,20 @@ const App = () => {
         return
       }
       dispatch(setTradingPairs(tradingPairs.result))
+
+      if (intervals.isError) {
+        // Here should be log or toast
+        return
+      }
+      else
+        dispatch(setIntervals(intervals.result))
+
+      if (layouts.isError) {
+        // Here should be log or toast
+        return
+      }
+      else
+        dispatch(setLayouts(layouts.result))
     }
     checkConfig()
   }, [])

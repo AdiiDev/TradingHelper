@@ -112,7 +112,9 @@ export const InitLocales = () => {
             AddChart: 'Add chart',
             AddCharts: 'Add charts',
             Symbol: 'Symbol',
-            Interval: 'Interval'
+            Interval: 'Interval',
+            Intervals: 'Intervals',
+            Hiden: 'Ukryte'
           },
         },
         pl: {
@@ -219,7 +221,9 @@ export const InitLocales = () => {
             AddChart: 'Dodaj wykres',
             AddCharts: 'Dodaj wykresy',
             Symbol: 'Symbol',
-            Interval: 'Interval'
+            Interval: 'Interval',
+            Intervals: 'Intervals',
+            Hiden: 'Ukryte'
           },
         },
       },

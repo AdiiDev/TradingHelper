@@ -97,9 +97,36 @@ const confirmationsColumns = [
   },
 ]
 
+const intervalsColumns = [
+  { id: 'id', label: 'ID', minWidth: 100, align: 'left', type: 'none' },
+  { id: 'label', label: 'Name', minWidth: 200, align: 'center', type: 'text' },
+  {
+    id: 'interval',
+    label: 'Interval',
+    minWidth: 200,
+    align: 'center',
+    type: 'text',
+  },
+  {
+    id: 'hiden',
+    label: 'Hiden',
+    minWidth: 200,
+    align: 'center',
+    type: 'checkbox',
+  },
+  {
+    id: 'actions',
+    label: 'Actions',
+    minWidth: 100,
+    align: 'right',
+    type: 'none',
+  },
+]
+
 export {
   menuOptions,
   brokerAccountsColumns,
   tradingPairsColumns,
   confirmationsColumns,
+  intervalsColumns
 }

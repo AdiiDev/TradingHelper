@@ -15,9 +15,13 @@ import LayoutsForm from './form/LayoutsForm';
 const layouts = [
   {
     id: 1, name: 'Test', rows: 2, columns: 3, height: 250, grid: [
-      { row: 0, column: 0, symbol: "", interval: '15' },
-      { row: 0, column: 1, symbol: "", interval: '30' },
-      { row: 0, column: 2, symbol: "", interval: '60' },
+      { row: 0, column: 0, symbol: "BINANCE:BTCUSDT", interval: '15' },
+      { row: 0, column: 1, symbol: "BINANCE:BTCUSDT", interval: '30' },
+      { row: 0, column: 2, symbol: "BINANCE:BTCUSDT", interval: '60' },
+      { row: 1, column: 0, symbol: "BINANCE:BNBUSDT", interval: '15' },
+      { row: 1, column: 1, symbol: "BINANCE:BNBUSDT", interval: '30' },
+      { row: 1, column: 2, symbol: "BINANCE:BNBUSDT", interval: '60' },
+
     ]
   },
   {
@@ -45,7 +49,7 @@ const ChartsSettingsDialog = ({ close, baseSettings, handleBase, layoutsSettings
   }
 
   return (
-    <Dialog open={true} maxWidth='md' fullWidth>
+    <Dialog open={true} maxWidth='xl' fullWidth>
       <DialogHeader title={t('View')} closeDialog={() => close()} />
       <DialogContent>
         <Box sx={{ width: '100%' }}>

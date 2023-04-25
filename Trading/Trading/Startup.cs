@@ -6,6 +6,7 @@ using ElectronNET.API;
 using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Newtonsoft.Json;
+using Trades.Application.Interfaces;
 using Trading.Application;
 
 namespace Trading
@@ -64,6 +65,9 @@ namespace Trading
         {
             if (!string.IsNullOrEmpty(_appConfiguration.ConnectionString))
                 ConfigureDB(serviceProvider);
+
+            var intervalService = serviceProvider.GetService<IIntervalService>();
+            intervalService?.Init();
 
             if (env.IsDevelopment())
             {
