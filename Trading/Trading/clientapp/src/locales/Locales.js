@@ -114,7 +114,8 @@ export const InitLocales = () => {
             Symbol: 'Symbol',
             Interval: 'Interval',
             Intervals: 'Intervals',
-            Hiden: 'Ukryte'
+            Hiden: 'Ukryte',
+            GenName: "Name",
           },
         },
         pl: {
@@ -223,7 +224,8 @@ export const InitLocales = () => {
             Symbol: 'Symbol',
             Interval: 'Interval',
             Intervals: 'Intervals',
-            Hiden: 'Ukryte'
+            Hiden: 'Ukryte',
+            GenName: "Nazwa",
           },
         },
       },

@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   selectedLayout: null,
-  layouts: []
+  layouts: [],
+  showLayoutsSelect: false
 }
 
 export const layoutConfigSlice = createSlice({
@@ -14,12 +15,13 @@ export const layoutConfigSlice = createSlice({
     },
     setLayouts: (state, action) => {
       state.layouts = action.payload.layouts
-      if (action.payload.layouts.length > 0)
-        state.selectedLayout = action.payload.layouts[0]
     },
+    setShowLayout: (state, action) => {
+      state.showLayoutsSelect = action.payload
+    }
   },
 })
 
-export const { changeLayout, setLayouts } = layoutConfigSlice.actions
+export const { changeLayout, setLayouts, setShowLayout } = layoutConfigSlice.actions
 
 export default layoutConfigSlice.reducer

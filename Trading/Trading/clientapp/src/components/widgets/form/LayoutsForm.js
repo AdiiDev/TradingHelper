@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Stack from '@mui/material/Stack'
 import { useTranslation } from 'react-i18next'
 import { useFieldArray } from 'react-hook-form'
@@ -9,34 +9,42 @@ import { useSelector } from 'react-redux'
 import ReactHookFormSelect from '../../common/ReactHookFormSelect'
 import WidgetsBaseSettingsForm from './WidgetsBaseSettingsForm'
 import NewChartForm from './NewChartForm'
+import { TextField } from '@mui/material'
 
-const baseLayout = {
-  id: 0,
-  name: '',
-  rows: 1,
-  columns: 1,
-  height: 250,
-  grid: [
-    { row: 0, column: 0, symbol: "BINANCE:BTCUSDT", interval: '15' },
-  ]
-
-}
-
-const LayoutsForm = ({ layouts, hookForm }) => {
+const LayoutsForm = ({ hookForm }) => {
   const { t } = useTranslation();
   const symbols = useSelector((state) => state.tradingPairs.tradingPairs)
+  const layouts = useSelector((state) => state.layouts.layouts)
   const intervalOptionsInit = useSelector((state) => state.intervals.intervals)
+  const [addMode, setAddMode] = useState(false)
 
   const watchRows = hookForm.watch("rows") // after , you can provide default value
   const watchColumns = hookForm.watch("columns")
+  const watchName = hookForm.watch("name")
   const { fields, replace } = useFieldArray({
     control: hookForm.control, // control props comes from useForm (optional: if you are using FormContext)
     name: "grid", // unique name for your Field Array
   });
 
   useEffect(() => {
-    hookForm.reset(layouts[0])
-  }, [])
+    console.log('layouts', layouts)
+    if (layouts.length > 0)
+      hookForm.reset(layouts[0])
+    else {
+      const baseLayout = {
+        id: 0,
+        name: '',
+        rows: 1,
+        columns: 1,
+        height: 250,
+        grid: [
+          { row: 0, column: 0, symbol: symbols[0].symbol, interval: '15' },
+        ]
+      }
+      hookForm.reset(baseLayout)
+      setAddMode(true)
+    }
+  }, [layouts])
 
   useEffect(() => {
     const rows = hookForm.getValues("rows")
@@ -49,7 +57,18 @@ const LayoutsForm = ({ layouts, hookForm }) => {
     adjustGrid(rows, columns, grid)
   }, [watchRows, watchColumns])
 
+  useEffect(() => {
+    const name = hookForm.getValues("name")
+    console.log('Id', name)
+    const layout = layouts.find(x => x.name === name)
+    console.log('Found layout', layout)
+    hookForm.reset(layout)
+  }, [watchName])
+
   const adjustGrid = (rows, columns, grid) => {
+    // Temp fix
+    if (grid.length === 0)
+      return
     const columnsLength = grid.filter(x => x.row === 0).length
     const rowsLength = grid.length / columnsLength
 
@@ -111,27 +130,55 @@ const LayoutsForm = ({ layouts, hookForm }) => {
     }
   }
 
-  const newLayout = () => {
-    console.log('data', hookForm.getValues())
+  const addModeChange = () => {
+    if (addMode) {
+      const layoutSelected = hookForm.getValues("id")
+      const lay = layouts.find(x => x.id === layoutSelected)
+      hookForm.reset(lay)
+      setAddMode(false)
+    }
+    else {
+      setAddMode(true)
+      const baseLayout = {
+        id: 0,
+        name: '',
+        rows: 1,
+        columns: 1,
+        height: 250,
+        grid: [
+          { row: 0, column: 0, symbol: symbols[0].symbol, interval: '15' },
+        ]
+      }
+      hookForm.reset(baseLayout)
+      setAddMode(true)
+    }
   }
 
-  console.log('Render')
   return (
     <Stack>
       <Grid container spacing={2}>
         <Grid item xs={6} >
-          <ReactHookFormSelect
-            id="symbol"
-            name="symbol"
+          {!addMode && <ReactHookFormSelect
+            id="name"
+            name="name"
             label={t('Symbol')}
             control={hookForm.control}
-            defaultValue={layouts[0].id}
+            defaultValue=""
           >
-            {layouts.map((lay) => <MenuItem key={'symbol' + lay.id} value={lay.id}>{lay.name}</MenuItem>)}
-          </ReactHookFormSelect>
+            {layouts.map((lay) => <MenuItem key={'name' + lay.id} value={lay.name}>{lay.name}</MenuItem>)}
+          </ReactHookFormSelect>}
+          {addMode &&
+            <TextField
+              variant="standard"
+              fullWidth
+              required
+              label={t('GenName')}
+              {...hookForm.register('name')}
+            />
+          }
         </Grid>
         <Grid item xs={6} >
-          <Button onClick={() => newLayout()}>Add new Layout</Button>
+          <Button onClick={() => addModeChange()}>{addMode ? "Cancel" : "Add new Layout"}</Button>
         </Grid>
         <Grid item xs={12}>
           <Stack direction="row" spacing={2}>

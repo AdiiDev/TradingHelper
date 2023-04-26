@@ -38,7 +38,10 @@ namespace Trading.Controllers
             }
             else
             {
-                var lastId = config.Layouts.Max(x => x.Id);
+                var lastId = 0;
+                if (config.Layouts.Count > 0)
+                    lastId = config.Layouts.Max(x => x.Id);
+                lastId++;
                 layout.Id = lastId++;
                 config.Layouts.Add(layout);
             }

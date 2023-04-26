@@ -12,28 +12,7 @@ import { TabPanel, a11yProps } from '../common/TabPanel'
 import WidgetsBaseSettingsForm from './form/WidgetsBaseSettingsForm'
 import LayoutsForm from './form/LayoutsForm';
 
-const layouts = [
-  {
-    id: 1, name: 'Test', rows: 2, columns: 3, height: 250, grid: [
-      { row: 0, column: 0, symbol: "BINANCE:BTCUSDT", interval: '15' },
-      { row: 0, column: 1, symbol: "BINANCE:BTCUSDT", interval: '30' },
-      { row: 0, column: 2, symbol: "BINANCE:BTCUSDT", interval: '60' },
-      { row: 1, column: 0, symbol: "BINANCE:BNBUSDT", interval: '15' },
-      { row: 1, column: 1, symbol: "BINANCE:BNBUSDT", interval: '30' },
-      { row: 1, column: 2, symbol: "BINANCE:BNBUSDT", interval: '60' },
-
-    ]
-  },
-  {
-    id: 2, name: 'Test2', rows: 2, columns: 3, height: 250, grid: [
-      { row: 0, column: 0, symbol: "BINANCE:BNBUSDT", interval: '15' },
-      { row: 0, column: 1, symbol: "BINANCE:BNBUSDT", interval: '30' },
-      { row: 0, column: 2, symbol: "BINANCE:BNBUSDT", interval: '60' },
-    ]
-  }
-]
-
-const ChartsSettingsDialog = ({ close, baseSettings, handleBase, layoutsSettings, layoutHook }) => {
+const ChartsSettingsDialog = ({ close, baseSettings, handleBase, layoutHook, handleLayouts }) => {
   const { t } = useTranslation()
   const [value, setValue] = React.useState(0);
 
@@ -42,9 +21,11 @@ const ChartsSettingsDialog = ({ close, baseSettings, handleBase, layoutsSettings
   };
 
   const save = (data) => {
-    debugger
     if (value === 0) {
       handleBase(data)
+    }
+    if (value === 1) {
+      handleLayouts(data)
     }
   }
 
@@ -65,7 +46,7 @@ const ChartsSettingsDialog = ({ close, baseSettings, handleBase, layoutsSettings
             </Stack>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <LayoutsForm layouts={layouts} hookForm={layoutHook} />
+            <LayoutsForm hookForm={layoutHook} />
           </TabPanel>
         </Box>
       </DialogContent>

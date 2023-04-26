@@ -164,11 +164,15 @@
   margin-left: 20px;
 }
 .Top-select-bar-form {
-  margin-top: 15px !important;
+  /*margin-top: 15px !important;
   margin-bottom: 10px !important;
   padding-bottom: 5px !important;
   max-width: 15vw !important;
-  min-width: 15vw !important;
+  min-width: 15vw !important;*/
+}
+
+.test-hide {
+  display: none;
 }
 
 .Top-select-bar-p {
