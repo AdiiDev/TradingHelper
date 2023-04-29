@@ -3,6 +3,10 @@
   overflow-y: auto;
 }
 
+.Pad-top-0 .MuiInputBase-root input {
+  padding-top: 0px !important;
+}
+
 .Pos-relative {
   position: relative;
 }

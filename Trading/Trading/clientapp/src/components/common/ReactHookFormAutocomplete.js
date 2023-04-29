@@ -1,29 +1,51 @@
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Controller } from 'react-hook-form';
+import MenuItem from '@mui/material/MenuItem'
 
-// Need to fix this
-const ReactHookFormAutocomplete = ({ options = [], renderInput, getOptionLabel, onChange: ignored, control, defaultValue, name, renderOption, className }) => {
+const ReactHookFormAutocomplete = ({ control, options, optionsValueProp, optionsLabelProp, name, label, defaultValue }) => {
+  console.log('Default val', defaultValue)
   return (
     <Controller
-      render={({ field: { onChange, value, ...props } }) => (
-        <Autocomplete
-          className={className}
-          options={options}
-          value={value}
-          getOptionLabel={getOptionLabel}
-          renderOption={renderOption}
-          renderInput={renderInput}
-          onChange={(e, data) => onChange(data)}
-          {...props}
-        />
-      )}
-      onChange={([, data]) => data}
-      defaultValue={defaultValue}
       name={name}
       control={control}
+      render={({ field: { onChange, value } }) => (
+        <Autocomplete
+          onChange={(event, item) => {
+            console.log('OptionValueProp', optionsValueProp)
+            console.log('E', event)
+            if (item === null) {
+              onChange("")
+              return
+            }
+            if (optionsValueProp)
+              onChange(item[optionsValueProp])
+            else
+              onChange(item);
+          }}
+          options={options}
+          isOptionEqualToValue={(option, val) => option[optionsValueProp] === val}
+          defaultValue={defaultValue ? defaultValue : ""}
+          getOptionLabel={(item) => (item[optionsLabelProp] ? item[optionsLabelProp] : (item ? item : ""))}
+          renderOption={(props, option) => <MenuItem {...props} key={'symbol' + option[optionsValueProp]} value={option[optionsValueProp]}>{option[optionsLabelProp]}</MenuItem>}
+          renderInput={(params) => {
+            console.log('Params', params)
+            return (<TextField
+              {...params}
+              InputLabelProps={{ shrink: true }}
+              label={label}
+              margin="normal"
+              variant="outlined"
+              className='Pad-top-0'
+            />)
+          }
+          }
+        />
+      )
+      }
     />
   );
 }
+
 
 export default ReactHookFormAutocomplete

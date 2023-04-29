@@ -6,14 +6,13 @@ import IconButton from '@mui/material/IconButton'
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReactHookFormSelect from '../../common/ReactHookFormSelect'
 import ReactHookFormAutocomplete from '../../common/ReactHookFormAutocomplete'
-import TextField from '@mui/material/TextField'
 
 const NewChartForm = ({ defaultValue, symbolSelectName, intervalSelectName, symbols, intervalColumns, intervalOptions, deleteIntervalColumn, control }) => {
   const { t } = useTranslation()
 
   return (
     <Stack spacing={3} sx={{ paddingTop: 4 }}>
-      <ReactHookFormSelect
+      {/*<ReactHookFormSelect
         id="symbol"
         name={symbolSelectName}
         label={t('Symbol')}
@@ -21,17 +20,17 @@ const NewChartForm = ({ defaultValue, symbolSelectName, intervalSelectName, symb
         defaultValue={defaultValue}
       >
         {symbols.map((symbol) => <MenuItem key={'symbol' + symbol.id} value={symbol.symbol}>{symbol.symbol}</MenuItem>)}
-      </ReactHookFormSelect>
-      {/*<ReactHookFormAutocomplete
+  </ReactHookFormSelect>*/}
+      {<ReactHookFormAutocomplete
         control={control}
         id="symbol"
         name={symbolSelectName}
         label={t('Symbol')}
         options={symbols}
-        getOptionLabel={(option) => option.symbol}
-        renderInput={(params) => <TextField  {...params} label={t('Symbol')} margin="normal" />}
+        optionsValueProp={'symbol'}
+        optionsLabelProp={'symbol'}
         defaultValue={defaultValue}
-    />*/}
+      />}
       {intervalColumns.map((col, index) => {
         return (
           <div key={"intervaldiv" + index}>
@@ -56,18 +55,3 @@ const NewChartForm = ({ defaultValue, symbolSelectName, intervalSelectName, symb
 }
 
 export default NewChartForm
-
-/**
- *             <ReactHookFormAutocomplete
-              control={control}
-              key={intervalSelectName + index}
-              id={intervalSelectName + index}
-              name={intervalSelectName + (intervalColumns.length > 1 ? index : "")}
-              label={t('Interval')}
-              options={intervalOptions}
-              getOptionLabel={(option) => option.label}
-              renderInput={(params) => <TextField  {...params} label={t('Interval')} margin="normal" />}
-              defaultValue={intervalOptions[index].interval}
-            />
- * 
- */
