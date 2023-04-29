@@ -7,7 +7,7 @@ namespace Trades.Domain.Models
         public virtual int Id { get; set; }
         public virtual int BrokerAccountId { get; set; }
         public virtual BrokerAccountModel BrokerAccount { get; set; }
-        public virtual int TradingPairId { get; set; } 
+        public virtual int TradingPairId { get; set; }
         public virtual TradeModel TradingPair { get; set; } //
         public virtual bool TradeConsistentStrategy { get; set; } //
         public virtual DateTime StartTrade { get; set; } //
@@ -16,27 +16,17 @@ namespace Trades.Domain.Models
         public virtual string Note { get; set; } 
         public virtual IList<TradeConfirmationModel> Confirmations { get; set; } = new List<TradeConfirmationModel>(); //List<int>
 
-        public virtual object CopyFrom(TradeModel newObject)
+        public virtual TradeModel CopyFrom(TradeModel newObject)
         {
             BrokerAccountId = newObject.BrokerAccountId;
             TradingPairId = newObject.TradingPairId;
             TradeConsistentStrategy = newObject.TradeConsistentStrategy;
             StartTrade = newObject.StartTrade;
             EndTrade = newObject.EndTrade;
-            ProfitLoos = newObject.ProfitLoos;
+            ProfitLoss = newObject.ProfitLoss;
             Note = newObject.Note;
             Confirmations = newObject.Confirmations;
             return this;
-        }
-
-        public virtual string ToLogString()
-        {
-            return "";
-        }
-
-        public virtual string WhatChanged(TradeModel newObject)
-        {
-            return "";
         }
     }
 }

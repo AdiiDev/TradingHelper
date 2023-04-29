@@ -4,6 +4,7 @@ import { Tabs, Tab, Paper } from '@mui/material'
 import DictionaryAccountTable from './DictionaryAccountTable'
 import DictionaryConfirmationTable from './DictionaryConfirmationTable'
 import DictionaryTradingPairTable from './DictionaryTradingPairTable'
+import DictionaryIntervalsTable from './DictionaryIntervalsTable'
 
 const TabPanel = (props) => {
   const { children, value, index } = props
@@ -51,6 +52,13 @@ const DictionariesTab = () => {
           }}
           label={t('Confirmations')}
         />
+        <Tab
+          sx={{
+            fontWeight: 'bolder',
+            fontSize: '1rem',
+          }}
+          label={t('Intervals')}
+        />
       </Tabs>
       <TabPanel value={value} index={1}>
         <DictionaryTradingPairTable />
@@ -60,6 +68,9 @@ const DictionariesTab = () => {
       </TabPanel>
       <TabPanel value={value} index={2}>
         <DictionaryConfirmationTable />
+      </TabPanel>
+      <TabPanel value={value} index={3}>
+        <DictionaryIntervalsTable />
       </TabPanel>
     </div>
   )

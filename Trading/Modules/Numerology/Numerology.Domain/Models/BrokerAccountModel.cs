@@ -10,23 +10,13 @@ namespace Trades.Domain.Models
         public virtual string Name { get; set; }
         public virtual bool Favourite { get; set; }
 
-        public virtual object CopyFrom(BrokerAccountModel newObject)
+        public virtual BrokerAccountModel CopyFrom(BrokerAccountModel newObject)
         {
             BrokerName = newObject.BrokerName;
             AccountNumber = newObject.AccountNumber;
             Name = newObject.Name;
             Favourite = newObject.Favourite;
             return this;
-        }
-
-        public virtual string ToLogString()
-        {
-            return "";
-        }
-
-        public virtual string WhatChanged(BrokerAccountModel newObject)
-        {
-            return "";
         }
     }
 }

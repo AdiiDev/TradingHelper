@@ -228,4 +228,5 @@ export {
   confirmationsColumns,
   tradesColumns,
   tradesDrawerColumns,
+  intervalsColumns,
 }

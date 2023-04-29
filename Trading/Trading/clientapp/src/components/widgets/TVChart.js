@@ -1,19 +1,16 @@
 import React, { useEffect, useRef } from 'react'
+import { tvScriptLoadingPromise } from '../../services/ChartService'
 
-let tvScriptLoadingPromise = []
-
-const TVChart = ({ rowId, columnId, height }) => {
+const TVChart = ({ rowId, columnId, height, symbol, interval }) => {
   const onLoadScriptRef = useRef()
 
   useEffect(() => {
     onLoadScriptRef.current = createWidget
     let pointer = null
     const key = rowId + '-' + columnId
+    const prom = tvScriptLoadingPromise.find((x) => x.key === rowId + '-' + columnId)
 
-    if (
-      tvScriptLoadingPromise.find((x) => x.key === rowId + '-' + columnId) ===
-      undefined
-    ) {
+    if (prom === undefined || prom === null || prom?.value === null) {
       pointer = new Promise((resolve) => {
         const script = document.createElement('script')
         script.id = 'tradingview-widget-loading-script'
@@ -32,16 +29,16 @@ const TVChart = ({ rowId, columnId, height }) => {
     return () => (onLoadScriptRef.current = null)
 
     function createWidget() {
-      //Tej funkcji nie da się zmienić na strzałkową
       const key = rowId + '-' + columnId
+      console.log('symbol and interval', { symbol, interval })
       if (
         document.getElementById('tradingview_' + key) &&
         'TradingView' in window
       ) {
-        var test = new window.TradingView.widget({
+        new window.TradingView.widget({
           autosize: true,
-          symbol: 'NASDAQ:AAPL',
-          interval: 'D',
+          symbol: symbol !== '' ? symbol : 'NASDAQ:AAPL',
+          interval: interval,
           timezone: 'Etc/UTC',
           theme: 'dark',
           style: '1',
@@ -55,15 +52,6 @@ const TVChart = ({ rowId, columnId, height }) => {
           calendar: true,
           container_id: 'tradingview_' + key,
         })
-
-        console.log('widget info', test)
-        const id = 'tradingview_' + rowId + '-' + columnId;
-        setTimeout(() => {
-          var iframe = document.getElementById(test.id);
-          var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
-          console.log('iframe', innerDoc.body);
-
-        }, 3000)
       }
     }
   }, [])

@@ -3,8 +3,44 @@
   overflow-y: auto;
 }
 
-.test {
+.Pad-top-0 .MuiInputBase-root input {
+  padding-top: 0px !important;
+}
+
+.Pos-relative {
   position: relative;
+}
+
+.Conditional-select {
+  width: calc(100% - 40px) !important;
+}
+
+.Chart-empty-paper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  align-content: center;
+}
+
+.Chart-add-icon {
+  height: 48px;
+  width: 48px;
+  cursor: 'pointer';
+}
+
+.Chart-settings-buttons {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+}
+
+.M-5p-r {
+  margin-right: 5px !important;
 }
 
 .App-win {
@@ -137,11 +173,15 @@
   margin-left: 20px;
 }
 .Top-select-bar-form {
-  margin-top: 15px !important;
+  /*margin-top: 15px !important;
   margin-bottom: 10px !important;
   padding-bottom: 5px !important;
   max-width: 15vw !important;
-  min-width: 15vw !important;
+  min-width: 15vw !important;*/
+}
+
+.test-hide {
+  display: none;
 }
 
 .Top-select-bar-p {

@@ -53,13 +53,13 @@ namespace Trades.Application.Services
             if (filter.NumberOfConfirmations.HasValue)
                 spec &= new QuerySpecification<TradeModel>(x => x.Confirmations.Count >= filter.NumberOfConfirmations.Value);
             if (filter.Profit.HasValue)
-                spec &= new QuerySpecification<TradeModel>(x => x.ProfitLoos >= filter.Profit.Value);
+                spec &= new QuerySpecification<TradeModel>(x => x.ProfitLoss >= filter.Profit.Value);
             if (filter.Loos.HasValue)
-                spec &= new QuerySpecification<TradeModel>(x => x.ProfitLoos <= filter.Loos.Value);
+                spec &= new QuerySpecification<TradeModel>(x => x.ProfitLoss <= filter.Loos.Value);
             if (filter.OnlyProfit.HasValue)
-                spec &= new QuerySpecification<TradeModel>(x => x.ProfitLoos > 0);
+                spec &= new QuerySpecification<TradeModel>(x => x.ProfitLoss > 0);
             if (filter.OnlyLoss.HasValue)
-                spec &= new QuerySpecification<TradeModel>(x => x.ProfitLoos < 0);
+                spec &= new QuerySpecification<TradeModel>(x => x.ProfitLoss < 0);
 
             var sort = new QuerySortSpecification<TradeModel>(x => x.StartTrade, ListSortDirection.Descending);
 

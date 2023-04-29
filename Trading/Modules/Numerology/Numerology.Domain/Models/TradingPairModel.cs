@@ -8,22 +8,12 @@ namespace Trades.Domain.Models
         public virtual string Symbol { get; set; }
         public virtual bool Favourite { get; set; }
 
-        public virtual object CopyFrom(TradingPairModel newObject)
+        public virtual TradingPairModel CopyFrom(TradingPairModel newObject)
         {
             Symbol = newObject.Symbol;
             Favourite = newObject.Favourite;
 
             return this;
-        }
-
-        public virtual string ToLogString()
-        {
-            return "";
-        }
-
-        public virtual string WhatChanged(TradingPairModel newObject)
-        {
-            return "";
         }
     }
 }
