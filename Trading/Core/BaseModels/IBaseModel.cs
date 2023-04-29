@@ -4,8 +4,16 @@
     {
         public int Id { get; set; }
 
-        object CopyFrom(T newObject);
-        string WhatChanged(T newObject);
-        string ToLogString();
+        T CopyFrom(T newObject);
+
+        string WhatChanged(T newObject)
+        {
+            return "";
+        }
+
+        string ToLogString()
+        {
+            return "";
+        }
     }
 }

@@ -17,7 +17,7 @@ const ReactHookFormSelect = ({
   const labelId = `${name}-label`
   return (
     <FormControl sx={{ width: '100%' }} className={className}>
-      <InputLabel id={labelId}>{label}</InputLabel>
+      <InputLabel id={labelId} shrink={true}>{label}</InputLabel>
       <Controller
         control={control}
         name={name}
@@ -25,6 +25,7 @@ const ReactHookFormSelect = ({
         render={({ field: { onChange, value } }) => (
           <Select
             labelId={labelId}
+            notched={true}
             label={label}
             id={labelId + 'select'}
             value={value}

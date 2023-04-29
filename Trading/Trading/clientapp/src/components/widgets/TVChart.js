@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-
-let tvScriptLoadingPromise = []
+import { tvScriptLoadingPromise } from '../../services/ChartService'
 
 const TVChart = ({ rowId, columnId, height, symbol, interval }) => {
   const onLoadScriptRef = useRef()
@@ -9,11 +8,9 @@ const TVChart = ({ rowId, columnId, height, symbol, interval }) => {
     onLoadScriptRef.current = createWidget
     let pointer = null
     const key = rowId + '-' + columnId
+    const prom = tvScriptLoadingPromise.find((x) => x.key === rowId + '-' + columnId)
 
-    if (
-      tvScriptLoadingPromise.find((x) => x.key === rowId + '-' + columnId) ===
-      undefined
-    ) {
+    if (prom === undefined || prom === null || prom?.value === null) {
       pointer = new Promise((resolve) => {
         const script = document.createElement('script')
         script.id = 'tradingview-widget-loading-script'
@@ -32,7 +29,6 @@ const TVChart = ({ rowId, columnId, height, symbol, interval }) => {
     return () => (onLoadScriptRef.current = null)
 
     function createWidget() {
-      //Tej funkcji nie da się zmienić na strzałkową
       const key = rowId + '-' + columnId
       console.log('symbol and interval', { symbol, interval })
       if (

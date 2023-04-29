@@ -16,7 +16,7 @@ namespace Trades.Domain.Models
         public virtual string Note { get; set; }
         public virtual IList<TradeConfirmationModel> Confirmations { get; set; } = new List<TradeConfirmationModel>(); //
 
-        public virtual object CopyFrom(TradeModel newObject)
+        public virtual TradeModel CopyFrom(TradeModel newObject)
         {
             BrokerAccountId = newObject.BrokerAccountId;
             TradingPairId = newObject.TradingPairId;
@@ -27,16 +27,6 @@ namespace Trades.Domain.Models
             Note = newObject.Note;
             Confirmations = newObject.Confirmations;
             return this;
-        }
-
-        public virtual string ToLogString()
-        {
-            return "";
-        }
-
-        public virtual string WhatChanged(TradeModel newObject)
-        {
-            return "";
         }
     }
 }

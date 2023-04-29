@@ -11,7 +11,7 @@ namespace Trades.Repository.Maps
             Id(x => x.Id).GeneratedBy.Identity();
             Map(x => x.TradeConsistentStrategy).Not.Nullable();
             Map(x => x.Note).Nullable().Length(5000);
-            Map(x => x.ProfitLoos).Nullable();
+            Map(x => x.ProfitLoss).Nullable();
             Map(x => x.BrokerAccountId).Not.Nullable();
             References(x => x.BrokerAccount).Not.Nullable().Column("BrokerAccountId").ReadOnly().LazyLoad();
             Map(x => x.TradingPairId).Not.Nullable();
