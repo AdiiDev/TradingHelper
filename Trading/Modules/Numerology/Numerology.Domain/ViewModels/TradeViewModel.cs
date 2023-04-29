@@ -14,6 +14,11 @@ namespace Trades.Domain.ViewModels
         public virtual string Note { get; set; }
         public virtual IList<int> Confirmations { get; set; } = new List<int>(); // ?
 
+        public TradeViewModel()
+        {
+            
+        }
+
         public TradeViewModel(TradeModel model)
         {
             Id = model.Id;

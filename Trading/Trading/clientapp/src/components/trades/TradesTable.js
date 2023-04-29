@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
 import AddIcon from '@mui/icons-material/Add'
 import CheckIcon from '@mui/icons-material/Check'
+import WarningIcon from '@mui/icons-material/Warning'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import TradesService from '../../services/TradesService'
 import Pagination from '../common/Pagination'
@@ -29,17 +30,9 @@ const TradesTable = ({
   toggleDrawer,
 }) => {
   const { t } = useTranslation()
-  const [trades, setTrades] = useState([
-    {
-      tradingPairs: 'id: 1, symbol: 102',
-      tradeConsistentStrategy: true,
-      startTrade: '2023/14/04',
-      endTrade: '2023/14/04',
-      profitLoos: -10,
-      confirmations: "id: 1, name: 'test'",
-    },
-  ])
-  const [tableInfo, setTableInfo] = useState({ page: 0, rowsPerPage: 5 })
+  const [trades, setTrades] = useState([])
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage, setRowsPerPage] = React.useState(8)
   const [count, setCount] = useState(0)
   const [reload, setReload] = useState(0)
   const [rowID, setRowID] = useState(null)
@@ -47,18 +40,40 @@ const TradesTable = ({
 
   const clearTimeoutRef = useRef()
 
+  const fixProfitOrLoos = (data) => {
+    if (data === null || data === '') return null
+    return +data
+  }
+
   const loadTrades = async () => {
+    debugger
+    const loosNew = fixProfitOrLoos(filter.loos)
+    const profitNew = fixProfitOrLoos(filter.profit)
+
     const res = await TradesService.GetTrades({
-      Filter: filter,
-      Page: tableInfo.page,
-      PageSize: tableInfo.rowsPerPage,
+      brokerId: filter.brokerId,
+      tradingPairs: filter.tradingPairs,
+      dateFrom: filter.dateFrom,
+      dateTime: filter.dateTime,
+      tradeConsistentStrategy: filter.tradeConsistentStrategy,
+      numberOfConfirmations:
+        filter.numberOfConfirmations !== ''
+          ? +filter.numberOfConfirmations
+          : null,
+      confirmations: filter.confirmations,
+      profit: profitNew,
+      loos: loosNew,
+      onlyProfit: filter.onlyProfit,
+      onlyLoos: filter.onlyLoos,
+      Page: page,
+      PageSize: rowsPerPage,
     })
     if (res.isError) {
       toast.error(t('LoadingError'))
       return
     }
     console.log(res)
-    //setTrades(res.result.trades)
+    setTrades(res.result.trades)
     setCount(res.result.count)
     toast.success(t('Updated'))
   }
@@ -73,17 +88,18 @@ const TradesTable = ({
       }, 1000)
     }
     loadData()
-  }, [tableInfo.page, tableInfo.rowsPerPage, reload, filter])
+  }, [page, rowsPerPage, reload, filter])
 
   useEffect(() => {
-    setTableInfo({ ...tableInfo, page: 0 })
+    setPage(0)
   }, [filter])
 
   const handleChangePage = (event, newPage) => {
-    setTableInfo({ ...tableInfo, page: newPage })
+    setPage(newPage)
   }
   const handleChangeRowsPerPage = (event) => {
-    setTableInfo({ ...tableInfo, page: 0, rowsPerPage: +event.target.value })
+    setRowsPerPage(+event.target.value)
+    setPage(0)
   }
 
   return (
@@ -158,7 +174,9 @@ const TradesTable = ({
                           <Typography className="check-table">
                             <CheckIcon fontSize="large" />
                           </Typography>
-                        ) : null
+                        ) : (
+                          <WarningIcon className="warning-table" />
+                        )
                       ) : (
                         value
                       )}
@@ -180,8 +198,8 @@ const TradesTable = ({
       </Table>
       <Pagination
         count={count}
-        rowsPerPage={tableInfo.rowsPerPage}
-        page={tableInfo.page}
+        rowsPerPage={rowsPerPage}
+        page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />

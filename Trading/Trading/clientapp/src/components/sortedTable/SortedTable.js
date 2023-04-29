@@ -13,6 +13,7 @@ const SortedTable = ({
   onDelete,
   storedData,
   editDataTable,
+  setEditDataTable,
   setOpenDialog,
 }) => {
   const [tableInfo, setTableInfo] = useState({ page: 0, rowsPerPage: 5 })
@@ -83,6 +84,7 @@ const SortedTable = ({
         setOpenDialog={setOpenDialog}
         searchText={searchText}
         handleSearch={handleSearch}
+        setEditDataTable={setEditDataTable}
       />
       <Table stickyHeader>
         <SortedTableHead

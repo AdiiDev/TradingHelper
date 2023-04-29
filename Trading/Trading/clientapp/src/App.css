@@ -7,7 +7,6 @@
   position: relative;
 }
 
-
 .App-win {
   margin-top: 32px;
   height: calc(100vh - 84px);
@@ -202,6 +201,13 @@ a:-webkit-any-link {
   align-items: center;
   justify-content: center;
   color: green;
+}
+
+.warning-table {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: yellow;
 }
 
 .search-field {

@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next'
 import { Controller, useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import moment from 'moment'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { DesktopDateTimePicker } from '@mui/x-date-pickers'
-
 import Switch from '@mui/material/Switch'
 import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -26,10 +26,27 @@ const TradesForm = ({ openDialog, setOpenDialog, editData, onSubmit }) => {
   const confirmationsData = useSelector(
     (state) => state.confirmations.confirmations
   )
-  const { register, handleSubmit, reset, control, getValues, setValue } =
-    useForm({
-      defaultValues: editData !== null ? editData : null,
-    })
+  const brokerSelectedAccount = useSelector(
+    (state) => state.brokerAccounts.selectedBroker
+  )
+
+  console.log(brokerSelectedAccount)
+
+  const initTradeState = {
+    id: 0,
+    brokerAccountId: brokerSelectedAccount.id,
+    tradingPairId: null,
+    tradeConsistentStrategy: false,
+    startTrade: moment(),
+    endTrade: null,
+    profitLoos: null,
+    note: '',
+    confirmations: [],
+  }
+
+  const { register, handleSubmit, control, getValues, setValue } = useForm({
+    defaultValues: editData !== null ? editData : initTradeState,
+  })
 
   return (
     <Dialog open={openDialog}>

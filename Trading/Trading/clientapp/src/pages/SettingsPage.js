@@ -36,6 +36,7 @@ const SettingsPage = () => {
         data.connectionString === ''
           ? userData.connectionString
           : data.connectionString,
+      DBEngine: data.DBEngine,
     })
     const res = await AppConfigurationService.UpdateConfig(config)
     if (res.isError) {
@@ -82,13 +83,26 @@ const SettingsPage = () => {
             {t('Advanced')} {expanded ? <ExpandLess /> : <ExpandMore />}
           </Button>
           <Collapse in={expanded}>
-            <TextField
-              {...register('connectionString')}
-              fullWidth
-              label={t('ConnectionString')}
-              className="Controller-text-field"
-              defaultValue=""
-            />{' '}
+            <Stack spacing={3}>
+              <TextField
+                variant="standard"
+                {...register('connectionString')}
+                fullWidth
+                label={t('ConnectionString')}
+                className="Controller-text-field"
+                defaultValue=""
+              />
+              <ReactHookFormSelect
+                id="DBEngine"
+                name="DBEngine"
+                label={t('DatabaseEngine')}
+                control={control}
+                defaultValue="MSSQL"
+              >
+                <MenuItem value="MSSQL">{'MSSQL'}</MenuItem>
+                <MenuItem value="MySQL">{'MySQL'}</MenuItem>
+              </ReactHookFormSelect>
+            </Stack>
           </Collapse>
         </Stack>
         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>

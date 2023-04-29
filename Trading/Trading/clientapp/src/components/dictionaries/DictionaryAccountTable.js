@@ -71,6 +71,7 @@ const DictionaryAccountTable = () => {
         onDelete={deleteAccount}
         storedData={brokerAccountData}
         editDataTable={(data) => setEditData(data)}
+        setEditDataTable={(bool) => setEditData(bool)}
         setOpenDialog={(bool) => setOpenDialog(bool)}
       />
     </>

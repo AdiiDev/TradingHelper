@@ -16,6 +16,8 @@ const DictionaryConfirmationTable = () => {
   const [editData, setEditData] = useState(null)
   const [openDialog, setOpenDialog] = useState(false)
 
+  console.log(editData)
+
   const handleFormSubmit = async (data) => {
     const confirmationData = JSON.stringify({
       id: data.id,
@@ -70,6 +72,7 @@ const DictionaryConfirmationTable = () => {
         onDelete={deleteConfirmation}
         storedData={confirmData}
         editDataTable={(data) => setEditData(data)}
+        setEditDataTable={(bool) => setEditData(bool)}
         setOpenDialog={(bool) => setOpenDialog(bool)}
       />
     </>

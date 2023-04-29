@@ -3,11 +3,11 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   brokerAccounts: [],
   selectedBroker: {
-    id: 1,
+    id: 0,
     brokerAccount: '',
     accountNumber: '',
     name: '',
-    favourite: true,
+    favourite: false,
   },
 }
 

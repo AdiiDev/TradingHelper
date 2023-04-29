@@ -19,17 +19,18 @@ export const AppConfigPage = () => {
       Theme: data.theme,
       Language: data.language,
       ConnectionString: data.connectionString,
+      DBEngine: data.DBEngine,
     })
     const res = await AppConfigurationService.UpdateConfig(obj)
     if (res.isError) {
-      toast.error('Error updating config')
+      toast.error(t('ErrorUpdatingConfig'))
     } else {
-      toast.success('Config updated. Application restart ')
+      toast.success(t('ConfigUpdated'))
     }
   }
 
   return (
-    <Box sx={{ margin: 'auto', width: '40%' }}>
+    <>
       <Typography variant="h3">{t('Configuration')}</Typography>
       <Paper className="App-config-paper">
         <BaseConfigurationForm
@@ -37,17 +38,17 @@ export const AppConfigPage = () => {
           register={register}
           control={control}
         />
+        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+          <Box sx={{ flex: '1 1 auto' }} />
+          <Button
+            variant="contained"
+            disableElevation
+            onClick={handleSubmit(onSubmit)}
+          >
+            {t('Save')}
+          </Button>
+        </Box>
       </Paper>
-      <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-        <Box sx={{ flex: '1 1 auto' }} />
-        <Button
-          variant="contained"
-          disableElevation
-          onClick={handleSubmit(onSubmit)}
-        >
-          {t('Save')}
-        </Button>
-      </Box>
-    </Box>
+    </>
   )
 }

@@ -43,7 +43,6 @@ const App = () => {
   const [callDone, setCallDone] = useState(false)
   const [mode, setMode] = useState('dark')
   const dispatch = useDispatch()
-  const [user, setUser] = useState('')
   const [showTopBar, setShowTopBar] = useState(true)
   const [showLeftBar, setShowLeftBar] = useState(true)
 
@@ -59,7 +58,6 @@ const App = () => {
       setMode(res.result.theme)
       setCallDone(true)
       toast.info(t('Welcome') + ' ' + res.result.username)
-      setUser(res.result.username)
 
       const [accounts, confirmations, tradingPairs] = await Promise.all([
         DictionaryAccountService.GetAccounts(),
@@ -83,21 +81,6 @@ const App = () => {
       dispatch(setTradingPairs(tradingPairs.result))
     }
     checkConfig()
-  }, [])
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.ctrlKey && e.key === '') {
-        setShowTopBar((prevShowTopBar) => !prevShowTopBar)
-      }
-      if (e.ctrlKey && e.key === 'b') {
-        setShowLeftBar((prevShowLeftBar) => !prevShowLeftBar)
-      }
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-    }
   }, [])
 
   const colorMode = React.useMemo(
@@ -149,16 +132,21 @@ const App = () => {
                   <Route
                     path="/home"
                     element={
-                      <DashboardPage
-                        changeTheme={colorMode.toggleColorMode}
-                        user={user}
-                      />
+                      <DashboardPage changeTheme={colorMode.toggleColorMode} />
                     }
                   />
                   <Route path="*" element={<Navigate replace to="/home" />} />
                   <Route path="/TradesPage" element={<TradesPage />} />
                   <Route path="/DictionaryPage" element={<DictionaryPage />} />
-                  <Route path="/WidgetsPage" element={<WidgetsPage />} />
+                  <Route
+                    path="/WidgetsPage"
+                    element={
+                      <WidgetsPage
+                        setShowLeftBar={setShowLeftBar}
+                        setShowTopBar={setShowTopBar}
+                      />
+                    }
+                  />
                   <Route path="/SettingsPage" element={<SettingsPage />} />
                 </Routes>
               </div>

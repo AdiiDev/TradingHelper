@@ -16,7 +16,7 @@ import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined'
 import { tradesDrawerColumns } from '../../data'
 import TradesMultiSelectForm from './TradesMultiSelectForm'
 
-const TradesDrawer = ({ editData, onSubmit, drawerOpen, setDrawerOpen }) => {
+const TradesDrawer = ({ filter, onSubmit, drawerOpen, setDrawerOpen }) => {
   const { t } = useTranslation()
   const tradingPairsData = useSelector(
     (state) => state.tradingPairs.tradingPairs
@@ -25,10 +25,9 @@ const TradesDrawer = ({ editData, onSubmit, drawerOpen, setDrawerOpen }) => {
     (state) => state.confirmations.confirmations
   )
 
-  const { register, handleSubmit, reset, control, getValues, setValue } =
-    useForm({
-      defaultValues: editData !== null ? editData : null,
-    })
+  const { register, handleSubmit, control, getValues, setValue } = useForm({
+    defaultValues: filter !== null ? filter : null,
+  })
 
   return (
     <>
@@ -55,7 +54,6 @@ const TradesDrawer = ({ editData, onSubmit, drawerOpen, setDrawerOpen }) => {
                         variant="standard"
                         margin="normal"
                         fullWidth
-                        required
                         type="text"
                       />
                     )
@@ -68,7 +66,6 @@ const TradesDrawer = ({ editData, onSubmit, drawerOpen, setDrawerOpen }) => {
                         variant="standard"
                         margin="normal"
                         fullWidth
-                        required
                         type="number"
                         placeholder={t('WriteNumber')}
                       />

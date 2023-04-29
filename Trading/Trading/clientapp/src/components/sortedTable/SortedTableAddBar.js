@@ -7,7 +7,12 @@ import InputAdornment from '@mui/material/InputAdornment'
 import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
 
-const SortedTableAddBar = ({ setOpenDialog, searchText, handleSearch }) => {
+const SortedTableAddBar = ({
+  setOpenDialog,
+  searchText,
+  handleSearch,
+  setEditDataTable,
+}) => {
   const { t } = useTranslation()
 
   return (
@@ -18,7 +23,10 @@ const SortedTableAddBar = ({ setOpenDialog, searchText, handleSearch }) => {
         size="large"
         className="add-button"
         startIcon={<AddIcon />}
-        onClick={() => setOpenDialog(true)}
+        onClick={() => {
+          setOpenDialog(true)
+          setEditDataTable(null)
+        }}
       >
         {t('Add')}
       </Button>

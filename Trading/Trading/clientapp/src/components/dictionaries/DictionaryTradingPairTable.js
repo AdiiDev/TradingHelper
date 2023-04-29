@@ -68,6 +68,7 @@ const DictionaryTradingPairTable = () => {
         onDelete={deleteTradingPair}
         storedData={pairsData}
         editDataTable={(data) => setEditData(data)}
+        setEditDataTable={(bool) => setEditData(bool)}
         setOpenDialog={(bool) => setOpenDialog(bool)}
       />
     </>

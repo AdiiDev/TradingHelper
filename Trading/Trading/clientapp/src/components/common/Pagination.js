@@ -12,7 +12,7 @@ const Pagination = ({
   const { t } = useTranslation()
   return (
     <TablePagination
-      rowsPerPageOptions={[5, 10, 20]}
+      rowsPerPageOptions={[5, 8, 10, 20]}
       component="div"
       count={count}
       rowsPerPage={rowsPerPage}

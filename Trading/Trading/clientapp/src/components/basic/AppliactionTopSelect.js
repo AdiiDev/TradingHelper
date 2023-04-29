@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { setSelectedBroker } from '../../services/dictionary/BrokerAccountSlice'
@@ -72,7 +72,9 @@ const ApplicationTopSelect = () => {
             </TextField>
           ) : (
             <div>
-              <Link to="/DictionaryPage">{t('EnterYourBrokerAccount')}</Link>
+              <NavLink to="/DictionaryPage">
+                {t('EnterYourBrokerAccount')}
+              </NavLink>
             </div>
           )}
 
@@ -97,10 +99,10 @@ const ApplicationTopSelect = () => {
               onClose={handleClose}
             >
               <MenuItem onClick={handleClose}>
-                <Link to="/home">{t('Profile')}</Link>
+                <NavLink to="/home">{t('Profile')}</NavLink>
               </MenuItem>
               <MenuItem onClick={handleClose}>
-                <Link to="/SettingsPage">{t('Settings')}</Link>
+                <NavLink to="/SettingsPage">{t('Settings')}</NavLink>
               </MenuItem>
             </Menu>
           </div>

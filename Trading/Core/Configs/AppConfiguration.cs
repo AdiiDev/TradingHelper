@@ -7,5 +7,6 @@
         public string Language { get; set; } = "pl";
         public string Theme { get; set; } = "dark";
         public string SavePath { get; set; } = "";
+        public string DBEngine { get; set; } = "MSSQL";
     }
 }

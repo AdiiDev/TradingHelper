@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -14,29 +14,40 @@ const TradesPage = () => {
   const [openDialog, setOpenDialog] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [editData, setEditData] = useState(null)
-  const [filter, setFilter] = useState({
-    brokerAccountId: 0,
-    tradingPairs: [],
-    dateFrom: moment(),
-    dateTime: moment(),
-    tradeConsistentStrategy: true,
-    numberOfConfirmations: 0,
-    confirmations: [],
-    profit: 0,
-    loos: 0,
-    onlyProfit: true,
-    onlyLoos: true,
-  })
   const brokerSelectedAccount = useSelector(
     (state) => state.brokerAccounts.selectedBroker
   )
 
-  const handleFormSubmitFilterData = async (data) => {
+  const [filter, setFilter] = useState({
+    brokerId: brokerSelectedAccount.id,
+    tradingPairs: [],
+    dateFrom: moment().startOf('day'),
+    dateTime: moment(),
+    tradeConsistentStrategy: null,
+    numberOfConfirmations: null,
+    confirmations: [],
+    profit: null,
+    loos: null,
+    onlyProfit: null,
+    onlyLoos: null,
+  })
+
+  useEffect(() => {
+    setFilter({ ...filter, brokerId: brokerSelectedAccount.id })
+  }, [brokerSelectedAccount])
+
+  const handleFormSubmitFilterData = (data) => {
     console.log(data)
-    setDrawerOpen(false)
+    let tradingsIdArray = []
+    if (data.tradingPairs) {
+      data.tradingPairs.forEach((tradingPair) => {
+        tradingsIdArray.push(tradingPair.id)
+      })
+    }
+    debugger
     setFilter({
-      brokerAccountId: brokerSelectedAccount.id,
-      tradingPairs: data.tradingPairs,
+      brokerId: brokerSelectedAccount.id,
+      tradingPairs: tradingsIdArray,
       dateFrom: data.dateFrom,
       dateTime: data.dateTime,
       tradeConsistentStrategy: data.tradeConsistentStrategy,
@@ -52,30 +63,32 @@ const TradesPage = () => {
 
   const handleFormSubmit = async (data) => {
     console.log(data)
+    let confirmationsIdArray = []
+    if (data.confirmations) {
+      data.confirmations.forEach((confirmations) => {
+        confirmationsIdArray.push(confirmations.id)
+      })
+    }
 
     const tradesData = JSON.stringify({
       id: data.id,
       brokerAccountId: brokerSelectedAccount.id,
-      brokerAccount: {},
-      tradingPairId: data.tradingPairs.id,
-      tradingPair: null,
+      tradingPairId:
+        data.tradingPairs && data.tradingPairs.id ? data.tradingPairs.id : null,
       tradeConsistentStrategy: data.tradeConsistentStrategy,
-      startTrade: data.startTrade === 'undefined' ? null : data.startTrade,
-      endTrade: data.endTrade === 'undefined' ? null : data.endTrade,
+      startTrade: data.startTrade,
+      endTrade: data.endTrade,
       profitLoos: data.profitLoos,
-      notes: '',
-      confirmations: data.confirmations,
+      note: data.note,
+      confirmations: confirmationsIdArray,
     })
     console.log(tradesData)
-    {
-      /*const res = await TradesService.AddTrades(tradesData)
-    console.log(res)
+    const res = await TradesService.AddTrades(tradesData)
     if (res.isError) {
       toast.error(t('ErrorUpdate'))
       return
     }
-  toast.success(t('Added'))*/
-    }
+    toast.success(t('Added'))
     setOpenDialog(false)
   }
 
@@ -91,12 +104,14 @@ const TradesPage = () => {
 
   return (
     <WrapperBasicPage>
-      <TradesForm
-        openDialog={openDialog}
-        setOpenDialog={(bool) => setOpenDialog(bool)}
-        editData={editData}
-        onSubmit={handleFormSubmit}
-      />
+      {brokerSelectedAccount !== 0 ? (
+        <TradesForm
+          openDialog={openDialog}
+          setOpenDialog={(bool) => setOpenDialog(bool)}
+          editData={editData}
+          onSubmit={handleFormSubmit}
+        />
+      ) : null}
       <TradesTable
         editDataTable={(data) => setEditData(data)}
         onDelete={deleteTrades}
@@ -107,7 +122,7 @@ const TradesPage = () => {
         }}
       />
       <TradesDrawer
-        editData={editData}
+        filter={filter}
         onSubmit={handleFormSubmitFilterData}
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}

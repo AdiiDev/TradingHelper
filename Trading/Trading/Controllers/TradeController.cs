@@ -41,7 +41,7 @@ namespace Trading.Controllers
             for (int i = 0; i < viewModel.Confirmations.Count; i++)
             {
                 if (!model.Confirmations.Any(x => viewModel.Confirmations[i] == x.ConfirmationId))
-                    _tradeConfirmationService.AddOrUpdate(new TradeConfirmationModel { TradeId = model.Id, ConfirmationId = model.Confirmations[i].Id });
+                    _tradeConfirmationService.AddOrUpdate(new TradeConfirmationModel { TradeId = model.Id, ConfirmationId = viewModel.Confirmations[i] });
             }
             for (int i = 0; i < model.Confirmations.Count; i++)
             {
