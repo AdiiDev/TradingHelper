@@ -1,24 +1,22 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import moment from 'moment'
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import { DesktopDateTimePicker } from '@mui/x-date-pickers'
-import Switch from '@mui/material/Switch'
 import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import Stack from '@mui/material/Stack'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
+import MenuItem from '@mui/material/MenuItem'
+import { tradesColumns } from '../../data'
 import DictionaryFormTitle from '../dictionaries/DictionaryFormTitle'
 import DictionaryFormActions from '../dictionaries/DictionaryFormActions'
-import { tradesColumns } from '../../data'
-import TradesMultiSelectForm from './TradesMultiSelectForm'
-import SelectForm from './SelectForm'
+import DateAndTimePickerReusable from '../common/DateAndTimePickerReusable'
+import ReactHookFormMultiSelect from '../common/ReactHookFormMultiSelect'
+import ReactHookFormSelect from '../common/ReactHookFormSelect'
+import ReactHookFormSwitchReusable from '../common/ReactHookFormSwitchReusable'
 
-const TradesForm = ({ openDialog, setOpenDialog, editData, onSubmit }) => {
+const TradesForm = ({ setOpenDialog, editData, onSubmit }) => {
   const { t } = useTranslation()
   const tradingPairsData = useSelector(
     (state) => state.tradingPairs.tradingPairs
@@ -26,11 +24,10 @@ const TradesForm = ({ openDialog, setOpenDialog, editData, onSubmit }) => {
   const confirmationsData = useSelector(
     (state) => state.confirmations.confirmations
   )
+
   const brokerSelectedAccount = useSelector(
     (state) => state.brokerAccounts.selectedBroker
   )
-
-  console.log(brokerSelectedAccount)
 
   const initTradeState = {
     id: 0,
@@ -39,20 +36,24 @@ const TradesForm = ({ openDialog, setOpenDialog, editData, onSubmit }) => {
     tradeConsistentStrategy: false,
     startTrade: moment(),
     endTrade: null,
-    profitLoos: null,
+    profitLoss: null,
     note: '',
     confirmations: [],
   }
 
-  const { register, handleSubmit, control, getValues, setValue } = useForm({
+  const { register, handleSubmit, control } = useForm({
     defaultValues: editData !== null ? editData : initTradeState,
   })
 
   return (
-    <Dialog open={openDialog}>
+    <Dialog open={true}>
       <DictionaryFormTitle title={t('Trades')} setOpenDialog={setOpenDialog} />
       <DialogContent>
-        <Stack spacing={3} onSubmit={handleSubmit(onSubmit)}>
+        <Stack
+          spacing={3}
+          onSubmit={handleSubmit(onSubmit)}
+          sx={{ paddingTop: '10px' }}
+        >
           {(tradesColumns !== undefined ? tradesColumns : []).map((input) => {
             switch (input.type) {
               case 'text':
@@ -77,73 +78,73 @@ const TradesForm = ({ openDialog, setOpenDialog, editData, onSubmit }) => {
                     variant="standard"
                     margin="normal"
                     fullWidth
-                    required
+                    required={false}
                     type="number"
                     placeholder={t('WriteNumber')}
                   />
                 )
               case 'checkbox':
                 return (
-                  <FormControlLabel
+                  <ReactHookFormSwitchReusable
                     key={input.id}
-                    control={
-                      <Controller
-                        control={control}
-                        name={input.id}
-                        defaultValue={false}
-                        render={({ field: { value, ...field } }) => {
-                          return <Switch checked={value} {...field} />
-                        }}
-                      />
-                    }
+                    control={control}
+                    name={input.id}
                     label={t(input.label)}
                   />
                 )
               case 'select':
                 return (
-                  <SelectForm
+                  <ReactHookFormSelect
                     key={input.id}
+                    name={input.id}
+                    label={t(input.label)}
                     control={control}
-                    input={input}
-                    setValue={setValue}
-                    options={tradingPairsData}
-                  />
+                    defaultValue={tradingPairsData[0].id}
+                    required={true}
+                  >
+                    {tradingPairsData.map((option) => (
+                      <MenuItem
+                        key={`${input.id}-${option.id}`}
+                        value={option.id}
+                      >
+                        {option.symbol}
+                      </MenuItem>
+                    ))}
+                  </ReactHookFormSelect>
                 )
               case 'multi-select':
                 return (
-                  <TradesMultiSelectForm
+                  <ReactHookFormMultiSelect
                     key={input.id}
                     control={control}
-                    tradingPairs={tradingPairsData}
-                    confirmations={confirmationsData}
-                    input={input}
-                    setValue={setValue}
-                    getValues={getValues}
+                    name={input.id}
+                    label={t(input.label)}
+                    options={confirmationsData}
+                    optionsKeyProp={'id'}
+                    optionsValueProp={'id'}
+                    optionsLabelProp={'name'}
+                    required={true}
                   />
                 )
-              case 'time':
+              case 'time1':
                 return (
-                  <LocalizationProvider
+                  <DateAndTimePickerReusable
                     key={input.id}
-                    dateAdapter={AdapterMoment}
-                  >
-                    <Controller
-                      control={control}
-                      name={input.id}
-                      render={({ field: { onChange, value } }) => (
-                        <DesktopDateTimePicker
-                          className="input"
-                          label={t(input.label)}
-                          value={value}
-                          inputFormat="yyyy/MM/DD HH:mm:ss"
-                          onChange={(e) => {
-                            onChange(e)
-                          }}
-                          renderInput={(params) => <TextField {...params} />}
-                        />
-                      )}
-                    />
-                  </LocalizationProvider>
+                    control={control}
+                    name={input.id}
+                    label={t(input.label)}
+                    required={true}
+                  />
+                )
+              case 'time2':
+                return (
+                  <DateAndTimePickerReusable
+                    key={input.id}
+                    control={control}
+                    name={input.id}
+                    label={t(input.label)}
+                    required={false}
+                  />
                 )
               case 'none':
                 return null

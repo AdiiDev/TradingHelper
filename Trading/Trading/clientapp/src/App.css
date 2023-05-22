@@ -210,11 +210,26 @@ a:-webkit-any-link {
   font-size: 18px !important;
 }
 
-.table-cell-header {
+.drawer-fab-button {
+  position: absolute !important;
+  right: 19px;
+  bottom: auto;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.table-cell-header- {
+  font-weight: bolder !important;
+  font-size: 1rem !important;
+  text-transform: uppercase;
+}
+
+.table-cell-header-hidden {
   font-weight: bolder !important;
   font-size: 1rem !important;
   text-transform: uppercase;
   cursor: pointer;
+  display: none !important;
 }
 
 .add-button {
@@ -279,10 +294,6 @@ a:-webkit-any-link {
   flex-direction: row !important;
   min-width: 500px !important;
   font-weight: bold !important;
-  margin-bottom: 16px !important;
-}
-.dialog-form-actions {
-  margin-top: 36px !important;
 }
 
 .MuiAppBar-root {
@@ -342,14 +353,12 @@ body div .Application-bar {
   align-items: center;
 }
 
-.drawer {
-  width: 300px;
-}
 .drawer-Typography {
   text-align: center;
   font-weight: bolder !important;
   text-transform: uppercase;
   margin-bottom: 16px !important;
+  min-width: 300px;
 }
 
 .button-drawerOpen {

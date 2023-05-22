@@ -14,9 +14,7 @@ const DictionaryConfirmationTable = () => {
   const dispatch = useDispatch()
   const confirmData = useSelector((state) => state.confirmations.confirmations)
   const [editData, setEditData] = useState(null)
-  const [openDialog, setOpenDialog] = useState(false)
-
-  console.log(editData)
+  const [openFormDialog, setOpenFormDialog] = useState(false)
 
   const handleFormSubmit = async (data) => {
     const confirmationData = JSON.stringify({
@@ -39,7 +37,7 @@ const DictionaryConfirmationTable = () => {
     ]
     setEditData(undefined)
     dispatch(setConfirmations(updatedConfirmations))
-    setOpenDialog(false)
+    setOpenFormDialog(false)
   }
 
   const deleteConfirmation = async (id) => {
@@ -49,7 +47,7 @@ const DictionaryConfirmationTable = () => {
       return
     }
     toast.success(t('Deleted'))
-    setOpenDialog(false)
+    setOpenFormDialog(false)
 
     const response = await DictionaryConfirmationService.GetConfirmations()
     if (!response.isError) {
@@ -59,21 +57,21 @@ const DictionaryConfirmationTable = () => {
 
   return (
     <>
-      <DictionaryForm
-        title={'Confirmations'}
-        dataInputs={confirmationsColumns}
-        openDialog={openDialog}
-        setOpenDialog={(bool) => setOpenDialog(bool)}
-        onSubmit={handleFormSubmit}
-        editData={editData}
-      />
+      {openFormDialog && (
+        <DictionaryForm
+          title={'Confirmations'}
+          dataInputs={confirmationsColumns}
+          setOpenDialog={setOpenFormDialog}
+          onSubmit={handleFormSubmit}
+          editData={editData}
+        />
+      )}
       <SortedTable
         columns={confirmationsColumns}
         onDelete={deleteConfirmation}
         storedData={confirmData}
-        editDataTable={(data) => setEditData(data)}
-        setEditDataTable={(bool) => setEditData(bool)}
-        setOpenDialog={(bool) => setOpenDialog(bool)}
+        setEditDataTable={setEditData}
+        setOpenDialog={setOpenFormDialog}
       />
     </>
   )

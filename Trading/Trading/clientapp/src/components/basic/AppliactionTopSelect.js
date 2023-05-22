@@ -57,8 +57,6 @@ const ApplicationTopSelect = () => {
     dispatch(changeLayout(layout))
   }
 
-  console.log('Layouts', layouts)
-
   return (
     <Box
       sx={{ flexGrow: 1, position: 'sticky', top: 0 }}
@@ -73,9 +71,10 @@ const ApplicationTopSelect = () => {
           <Stack direction="row" spacing={2}>
             {brokerAccountData.length > 0 ? (
               <Box sx={{ minWidth: 180 }}>
-                <FormControl variant="filled" fullWidth>
+                <FormControl fullWidth>
                   <InputLabel id="broker-label">{t('BrokerName')}</InputLabel>
                   <Select
+                    variant="outlined"
                     labelId="broker-label"
                     id="broker-select"
                     value={
@@ -94,15 +93,18 @@ const ApplicationTopSelect = () => {
               </Box>
             ) : (
               <div>
-                <Link to="/DictionaryPage">{t('EnterYourBrokerAccount')}</Link>
+                <NavLink to="/DictionaryPage">
+                  {t('EnterYourBrokerAccount')}
+                </NavLink>
               </div>
             )}
             {showSelectedLayout && (
               <Box sx={{ minWidth: 180 }}>
-                <FormControl variant="filled" fullWidth>
+                <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">Layout</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
+                    variant="outlined"
                     id="demo-simple-select"
                     value={selectedLayout !== null ? selectedLayout.id : 0}
                     label="layout"

@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import Tooltip from '@mui/material/Tooltip'
 import Fab from '@mui/material/Fab'
 import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings'
+import MenuOpenIcon from '@mui/icons-material/MenuOpen'
 import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -13,95 +14,25 @@ import {
 } from '../services/config/LayoutsConfigSlice'
 import WrapperBasicPage from '../components/common/WrapperBasicPage'
 import WidgetsDrawer from '../components/widgets/WidgetsDrawer'
-import TVChart from '../components/widgets/TVChart'
-import IconButton from '@mui/material/IconButton'
-import Fullscreen from '@mui/icons-material/Fullscreen'
-import MinimizeIcon from '@mui/icons-material/Minimize'
+import ChartGrid from '../components/widgets/ChartGrid'
+import ChartsSettingsDialog from '../components/widgets/ChartsSettingsDialog'
+import LayoutsService from '../services/config/LayoutsService'
 
-const useScroll = () => {
-  const elRef = useRef(null)
-  const executeScroll = () =>
-    elRef.current.scrollIntoView({ block: 'end', behavior: 'smooth' })
+const baseSettingsSchema = yup.object().shape({
+  columns: yup
+    .number()
+    .required()
+    .min(1, 'ColumnNumberMustBeGreaterThanOrEqualTo1')
+    .max(12, 'ColumnNumberMustBeLessThanOrEqualTo12'),
+  rows: yup
+    .number()
+    .required()
+    .min(1, 'RowNumberMustBeGreaterThanOrEqualTo1')
+    .max(12, 'RowNumberMustBeLessThanOrEqualTo12'),
+  height: yup.number().min(50).max(1000),
+})
 
-  return [executeScroll, elRef]
-}
-
-const Chart = ({
-  heightTV,
-  isSelected,
-  columns,
-  columnIndex,
-  rowIndex,
-  changeMax,
-}) => {
-  const [executeScroll, elRef] = useScroll()
-
-  const maximize = () => {
-    changeMax(rowIndex, columnIndex)
-    setTimeout(() => executeScroll(), 100)
-  }
-
-  return (
-    <Grid
-      ref={elRef}
-      className="test"
-      sx={{ height: heightTV <= 100 ? heightTV + 'vh' : heightTV }}
-      item
-      xs={isSelected ? 12 : 12 / columns}
-      key={`column-${columnIndex}`}
-    >
-      <TVChart rowId={rowIndex} columnId={columnIndex} height={heightTV} />
-      <IconButton
-        sx={{ position: 'absolute', top: 16, right: 30 }}
-        color="inherit"
-        onClick={() => maximize()}
-      >
-        {isSelected ? <MinimizeIcon /> : <Fullscreen />}
-      </IconButton>
-    </Grid>
-  )
-}
-
-const ChartGrid = ({ rows, columns, height }) => {
-  const [maximize, setMaximize] = useState({ row: -1, column: -1 })
-
-  const changeMax = (rowId, columnId) => {
-    if (maximize.row === rowId && maximize.column === columnId)
-      setMaximize({ row: -1, column: -1 })
-    else setMaximize({ row: rowId, column: columnId })
-  }
-
-  return (
-    <div>
-      {Array.from({ length: rows }, (_, rowIndex) => (
-        <Grid container spacing={2} key={`row-${rowIndex}`}>
-          {Array.from({ length: columns }, (_, columnIndex) => {
-            const isSelected =
-              maximize.row === rowIndex && maximize.column === columnIndex
-            const vh = Math.max(
-              document.documentElement.clientHeight || 0,
-              window.innerHeight || 0
-            )
-            const heightTV = isSelected ? vh - 48 : height
-            return (
-              <Chart
-                key={`column-${columnIndex}-r-${rowIndex}`}
-                heightTV={heightTV}
-                isSelected={isSelected}
-                columns={columns}
-                columnIndex={columnIndex}
-                rowIndex={rowIndex}
-                changeMax={(row, col) => changeMax(row, col)}
-              />
-            )
-          })}
-        </Grid>
-      ))}
-    </div>
-  )
-}
-
-const WidgetsPage = ({ setShowLeftBar, setShowTopBar }) => {
+const WidgetsPage = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const selectedLayout = useSelector((state) => state.layouts.selectedLayout)
@@ -113,6 +44,7 @@ const WidgetsPage = ({ setShowLeftBar, setShowTopBar }) => {
   const [currentWidgetsArray, setCurrentWidgetsArray] = useState([])
   const [openChartGridSettings, setOpenChartGridSettings] = useState(false)
   const [hide, setHide] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   const useMiltipleForm = (defaultValues, resolver) => {
     console.log('Call')
@@ -167,6 +99,16 @@ const WidgetsPage = ({ setShowLeftBar, setShowTopBar }) => {
 
   return (
     <WrapperBasicPage>
+      <Tooltip title={t('OpenDrawer')}>
+        <Fab
+          size="small"
+          color="primary"
+          onClick={() => setDrawerOpen(true)}
+          className="drawer-fab-button"
+        >
+          <MenuOpenIcon />
+        </Fab>
+      </Tooltip>
       {openChartGridSettings && (
         <ChartsSettingsDialog
           close={() => setOpenChartGridSettings(false)}
@@ -211,7 +153,8 @@ const WidgetsPage = ({ setShowLeftBar, setShowTopBar }) => {
           />
         </div>
       </div>
-      <WidgetsDrawer />
+
+      {drawerOpen && <WidgetsDrawer setDrawerOpen={setDrawerOpen} />}
     </WrapperBasicPage>
   )
 }

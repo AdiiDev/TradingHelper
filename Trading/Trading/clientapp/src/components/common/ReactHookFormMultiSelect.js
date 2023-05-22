@@ -10,9 +10,16 @@ import { TextField, MenuItem, Checkbox, ListItemText } from '@mui/material'
   <ReactHookFormMultiSelect control={control} name="selectedNumbers" label="Test multiselect" options={options} optionsKeyProp="id" optionsValueProp="val" optionsLabelProp="label" />
 */
 
-
-const ReactHookFormMultiSelect = ({ control, name, label, options, optionsKeyProp, optionsValueProp, optionsLabelProp }) => {
-
+const ReactHookFormMultiSelect = ({
+  control,
+  name,
+  label,
+  options,
+  optionsKeyProp,
+  optionsValueProp,
+  optionsLabelProp,
+  required,
+}) => {
   // Need to fix styles a litlle
   return (
     <FormControl sx={{ width: '100%' }}>
@@ -20,37 +27,48 @@ const ReactHookFormMultiSelect = ({ control, name, label, options, optionsKeyPro
         control={control}
         name={name}
         render={({ field: { onChange, value } }) => {
-          console.log(value);
           return (
             <TextField
+              required={required}
+              sx={{ paddingBottom: '20px !important' }}
               select
               id={name}
-              variant="outlined"
+              variant="standard"
               label={label}
               SelectProps={{
                 multiple: true,
                 value: value,
                 renderValue: (selected) => {
-                  return (<div>
-                    {(selected).map(value => {
-                      const option = options.find(el => el[optionsValueProp] === value)
-                      if (option === 'undefined')
-                        return null
-                      return (<Chip key={value} label={option[optionsLabelProp]} />)
-                    })}
-                  </div>)
+                  return (
+                    <div>
+                      {selected.map((value) => {
+                        const option = options.find(
+                          (el) => el[optionsValueProp] === value
+                        )
+                        if (typeof option === 'undefined') return null
+                        return (
+                          <Chip key={value} label={option[optionsLabelProp]} />
+                        )
+                      })}
+                    </div>
+                  )
                 },
-                onChange: onChange
+                onChange: onChange,
               }}
             >
               {options.map((option) => (
-                <MenuItem key={option[optionsKeyProp]} value={option[optionsValueProp]}>
-                  <Checkbox checked={value?.includes(option[optionsValueProp])} />
+                <MenuItem
+                  key={option[optionsKeyProp]}
+                  value={option[optionsValueProp]}
+                >
+                  <Checkbox
+                    checked={value?.includes(option[optionsValueProp])}
+                  />
                   <ListItemText primary={option[optionsLabelProp]} />
                 </MenuItem>
               ))}
             </TextField>
-          );
+          )
         }}
       />
     </FormControl>

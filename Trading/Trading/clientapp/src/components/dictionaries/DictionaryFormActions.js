@@ -9,7 +9,7 @@ const DictionaryFormActions = ({ handleSubmit, setOpenDialog }) => {
   const { t } = useTranslation()
 
   return (
-    <DialogActions className="dialog-form-actions">
+    <DialogActions>
       <Button
         variant="text"
         size="medium"

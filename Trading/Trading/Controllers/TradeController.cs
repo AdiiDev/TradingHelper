@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Core.QueryCriteria;
+using Microsoft.AspNetCore.Mvc;
 using Trades.Application.Interfaces;
 using Trades.Application.Requests;
 using Trades.Domain.Models;
@@ -55,6 +56,12 @@ namespace Trading.Controllers
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
+            var confirmationsToDelete = _tradeConfirmationService.Get(new QuerySpecification<TradeConfirmationModel>(x => x.TradeId == id)).ToArray();
+            for(int i = 0; i < confirmationsToDelete.Length;i++)
+            {
+                _tradeConfirmationService.Delete(confirmationsToDelete[i]);
+            }
+            
             var result = _tradeService.Delete(id);
 
             return result ? Ok() : NotFound();

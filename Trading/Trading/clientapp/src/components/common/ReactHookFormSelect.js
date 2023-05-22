@@ -12,13 +12,17 @@ const ReactHookFormSelect = ({
   defaultValue,
   children,
   className,
+  required,
   ...props
 }) => {
   const labelId = `${name}-label`
   return (
     <FormControl sx={{ width: '100%' }} className={className}>
-      <InputLabel id={labelId} shrink={true}>{label}</InputLabel>
+      <InputLabel required={required} id={labelId} shrink={true}>
+        {label}
+      </InputLabel>
       <Controller
+        key={labelId}
         control={control}
         name={name}
         defaultValue={defaultValue}

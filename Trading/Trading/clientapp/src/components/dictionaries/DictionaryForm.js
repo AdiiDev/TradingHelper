@@ -1,54 +1,43 @@
-import React, { useEffect, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import React, { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Switch from '@mui/material/Switch'
 import Stack from '@mui/material/Stack'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import DictionaryFormActions from './DictionaryFormActions'
 import DictionaryFormTitle from './DictionaryFormTitle'
+import ReactHookFormSwitchReusable from '../common/ReactHookFormSwitchReusable'
 
 export const DictionaryForm = ({
   dataInputs,
-  openDialog,
   setOpenDialog,
   title,
   onSubmit,
   editData,
 }) => {
   const { t } = useTranslation()
-  const { register, handleSubmit, reset, control, getValues, setValue } =
-    useForm({
-      defaultValues: editData !== null ? editData : null,
-    })
-
-  const [brokerNameValue, setBrokerNameValue] = useState('')
-  const [accountNumberValue, setAccountNumberValue] = useState('')
+  const { register, handleSubmit, reset, control, watch, setValue } = useForm({
+    defaultValues: editData !== null ? editData : null,
+  })
 
   useEffect(() => {
     if (editData !== null) {
       reset(editData)
     }
-  }, [openDialog])
+  }, [])
 
-  const handleBrokerNameChange = (event) => {
-    const { value } = event.target
-    setBrokerNameValue(value)
-    const nameValue = `${value}-${accountNumberValue}`
-    setValue('name', nameValue)
-  }
+  const brokerName = watch('brokerName')
+  const accountNumber = watch('accountNumber')
 
-  const handleAccountNumberChange = (event) => {
-    const { value } = event.target
-    setAccountNumberValue(value)
-    const nameValue = `${brokerNameValue}-${value}`
-    setValue('name', nameValue)
-  }
+  useEffect(() => {
+    if (brokerName && accountNumber) {
+      setValue('name', `${brokerName}-${accountNumber}`)
+    }
+  }, [brokerName, accountNumber])
 
   return (
-    <Dialog open={openDialog}>
+    <Dialog open={true}>
       <DictionaryFormTitle title={title} setOpenDialog={setOpenDialog} />
       <DialogContent>
         <Stack spacing={3} onSubmit={handleSubmit(onSubmit)}>
@@ -59,45 +48,14 @@ export const DictionaryForm = ({
                   return (
                     <TextField
                       key={input.id}
-                      {...register(input.id)}
+                      {...register('name')}
+                      label={t('Name')}
                       variant="standard"
                       margin="normal"
                       fullWidth
                       required
-                      value={getValues(input.id)}
-                      InputLabelProps={{
-                        shrink: true,
-                        focused: true,
-                      }}
-                      label={t(input.label)}
-                    />
-                  )
-                } else if (input.id === 'brokerName') {
-                  return (
-                    <TextField
-                      key={input.id}
-                      {...register(input.id)}
-                      label={t(input.label)}
-                      variant="standard"
-                      margin="normal"
-                      fullWidth
-                      required
-                      value={brokerNameValue}
-                      onChange={handleBrokerNameChange}
-                    />
-                  )
-                } else if (input.id === 'accountNumber') {
-                  return (
-                    <TextField
-                      key={input.id}
-                      {...register(input.id)}
-                      label={t(input.label)}
-                      variant="standard"
-                      margin="normal"
-                      fullWidth
-                      required
-                      value={accountNumberValue}
-                      onChange={handleAccountNumberChange}
+                      defaultValue={name}
+                      InputLabelProps={{ shrink: true }}
                     />
                   )
                 } else {
@@ -115,19 +73,11 @@ export const DictionaryForm = ({
                 }
               case 'checkbox':
                 return (
-                  <FormControlLabel
+                  <ReactHookFormSwitchReusable
                     key={input.id}
-                    control={
-                      <Controller
-                        control={control}
-                        name="favourite"
-                        defaultValue={false}
-                        render={({ field: { value, ...field } }) => {
-                          return <Switch checked={value} {...field} />
-                        }}
-                      />
-                    }
-                    label={t('Favourite')}
+                    control={control}
+                    name={input.id}
+                    label={t(input.label)}
                   />
                 )
               case 'none':

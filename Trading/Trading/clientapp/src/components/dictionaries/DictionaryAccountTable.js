@@ -15,10 +15,11 @@ const DictionaryAccountTable = () => {
   const brokerAccountData = useSelector(
     (state) => state.brokerAccounts.brokerAccounts
   )
-  const [openDialog, setOpenDialog] = useState(false)
+  const [openFormDialog, setOpenFormDialog] = useState(false)
   const [editData, setEditData] = useState(null)
 
   const handleFormSubmit = async (data) => {
+    console.log(data)
     const accountData = JSON.stringify({
       id: data.id,
       brokerName: data.brokerName,
@@ -38,7 +39,7 @@ const DictionaryAccountTable = () => {
       res.result,
     ]
     dispatch(setBrokerAccounts(updatedBrokerAccounts))
-    setOpenDialog(false)
+    setOpenFormDialog(false)
   }
 
   const deleteAccount = async (id) => {
@@ -48,7 +49,7 @@ const DictionaryAccountTable = () => {
       return
     }
     toast.success(t('Deleted'))
-    setOpenDialog(false)
+    setOpenFormDialog(false)
 
     const response = await DictionaryAccountService.GetAccounts()
     if (!response.isError) {
@@ -58,21 +59,21 @@ const DictionaryAccountTable = () => {
 
   return (
     <>
-      <DictionaryForm
-        title={'Accounts'}
-        dataInputs={brokerAccountsColumns}
-        openDialog={openDialog}
-        setOpenDialog={(bool) => setOpenDialog(bool)}
-        onSubmit={handleFormSubmit}
-        editData={editData}
-      />
+      {openFormDialog && (
+        <DictionaryForm
+          setOpenDialog={setOpenFormDialog}
+          title="Accounts"
+          onSubmit={handleFormSubmit}
+          editData={editData}
+          dataInputs={brokerAccountsColumns}
+        />
+      )}
       <SortedTable
         columns={brokerAccountsColumns}
         onDelete={deleteAccount}
         storedData={brokerAccountData}
-        editDataTable={(data) => setEditData(data)}
-        setEditDataTable={(bool) => setEditData(bool)}
-        setOpenDialog={(bool) => setOpenDialog(bool)}
+        setEditDataTable={setEditData}
+        setOpenDialog={setOpenFormDialog}
       />
     </>
   )

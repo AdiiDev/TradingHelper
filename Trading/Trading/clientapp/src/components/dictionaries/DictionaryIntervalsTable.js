@@ -11,7 +11,7 @@ import IntervalService from '../../services/dictionary/IntervalService'
 
 /**
  * This component is not working correctly
- * 
+ *
  */
 
 const DictionaryIntervalsTable = () => {
@@ -19,14 +19,14 @@ const DictionaryIntervalsTable = () => {
   const dispatch = useDispatch()
   const intervals = useSelector((state) => state.intervals.intervals)
   const [editData, setEditData] = useState(null)
-  const [openDialog, setOpenDialog] = useState(false)
+  const [openFormDialog, setOpenFormDialog] = useState(false)
 
   const handleFormSubmit = async (data) => {
     const intervalData = JSON.stringify({
       id: data.id,
       label: data.label,
       interval: data.interval,
-      hide: JSON.parse(data.hide)
+      hide: JSON.parse(data.hide),
     })
     console.log(intervalData)
     const res = await IntervalService.AddOrUpdate(intervalData)
@@ -42,7 +42,7 @@ const DictionaryIntervalsTable = () => {
     ]
     setEditData(null)
     dispatch(setIntervals(updatedIntervals))
-    setOpenDialog(false)
+    setOpenFormDialog(false)
   }
 
   const deleteInterval = async (id) => {
@@ -52,7 +52,7 @@ const DictionaryIntervalsTable = () => {
       return
     }
     toast.success(t('Deleted'))
-    setOpenDialog(false)
+    setOpenFormDialog(false)
 
     const response = await IntervalService.Get()
     if (!response.isError) {
@@ -62,20 +62,21 @@ const DictionaryIntervalsTable = () => {
 
   return (
     <>
-      <DictionaryForm
-        title={'Intervals'}
-        dataInputs={intervalsColumns}
-        openDialog={openDialog}
-        setOpenDialog={(bool) => setOpenDialog(bool)}
-        onSubmit={handleFormSubmit}
-        editData={editData}
-      />
+      {openFormDialog && (
+        <DictionaryForm
+          title={'Intervals'}
+          dataInputs={intervalsColumns}
+          setOpenDialog={setOpenFormDialog}
+          onSubmit={handleFormSubmit}
+          editData={editData}
+        />
+      )}
       <SortedTable
         columns={intervalsColumns}
         onDelete={deleteInterval}
         storedData={intervals}
-        editDataTable={(data) => setEditData(data)}
-        setOpenDialog={(bool) => setOpenDialog(bool)}
+        setEditDataTable={setEditData}
+        setOpenDialog={setOpenFormDialog}
       />
     </>
   )

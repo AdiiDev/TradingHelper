@@ -12,7 +12,7 @@ namespace Trades.Domain.Models
         public virtual bool TradeConsistentStrategy { get; set; } //
         public virtual DateTime StartTrade { get; set; } //
         public virtual DateTime? EndTrade { get; set; } //
-        public virtual double? ProfitLoos { get; set; } //
+        public virtual double? ProfitLoss { get; set; } //
         public virtual string Note { get; set; } 
         public virtual IList<TradeConfirmationModel> Confirmations { get; set; } = new List<TradeConfirmationModel>(); //List<int>
 

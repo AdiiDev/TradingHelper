@@ -14,7 +14,7 @@ const DictionaryTradingPairTable = () => {
   const dispatch = useDispatch()
   const pairsData = useSelector((state) => state.tradingPairs.tradingPairs)
   const [editData, setEditData] = useState(null)
-  const [openDialog, setOpenDialog] = useState(false)
+  const [openFormDialog, setOpenFormDialog] = useState(false)
 
   const handleFormSubmit = async (data) => {
     const tradingPairsData = JSON.stringify({
@@ -35,7 +35,7 @@ const DictionaryTradingPairTable = () => {
       res.result,
     ]
     dispatch(setTradingPairs(updatedTradingPairs))
-    setOpenDialog(false)
+    setOpenFormDialog(false)
   }
 
   const deleteTradingPair = async (id) => {
@@ -45,7 +45,7 @@ const DictionaryTradingPairTable = () => {
       return
     }
     toast.success(t('Deleted'))
-    setOpenDialog(false)
+    setOpenFormDialog(false)
 
     const response = await DictionaryTradingPairsService.GetTradingPairs()
     if (!response.isError) {
@@ -55,21 +55,21 @@ const DictionaryTradingPairTable = () => {
 
   return (
     <>
-      <DictionaryForm
-        title={'TradingPairs'}
-        dataInputs={tradingPairsColumns}
-        openDialog={openDialog}
-        setOpenDialog={(bool) => setOpenDialog(bool)}
-        onSubmit={handleFormSubmit}
-        editData={editData}
-      />
+      {openFormDialog && (
+        <DictionaryForm
+          title={'TradingPairs'}
+          dataInputs={tradingPairsColumns}
+          setOpenDialog={setOpenFormDialog}
+          onSubmit={handleFormSubmit}
+          editData={editData}
+        />
+      )}
       <SortedTable
         columns={tradingPairsColumns}
         onDelete={deleteTradingPair}
         storedData={pairsData}
-        editDataTable={(data) => setEditData(data)}
-        setEditDataTable={(bool) => setEditData(bool)}
-        setOpenDialog={(bool) => setOpenDialog(bool)}
+        setEditDataTable={setEditData}
+        setOpenDialog={setOpenFormDialog}
       />
     </>
   )

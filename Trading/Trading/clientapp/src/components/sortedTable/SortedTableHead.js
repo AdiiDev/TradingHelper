@@ -17,9 +17,6 @@ const SortedTableHead = ({ columns, handleSort, sortInfo }) => {
             key={id}
             align={align}
             className="table-cell-header"
-            style={{
-              minWidth: columns.minWidth,
-            }}
             onClick={id !== 'actions' ? () => handleSort(id) : undefined}
           >
             {t(label)}

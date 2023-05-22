@@ -12,7 +12,6 @@ const SortedTable = ({
   columns,
   onDelete,
   storedData,
-  editDataTable,
   setEditDataTable,
   setOpenDialog,
 }) => {
@@ -96,7 +95,7 @@ const SortedTable = ({
           data={data}
           tableInfo={tableInfo}
           columns={columns}
-          editDataTable={editDataTable}
+          editDataTable={setEditDataTable}
           setOpenDialog={setOpenDialog}
           setRowID={setRowID}
           setOpenConfirmDialog={setOpenConfirmDialog}
