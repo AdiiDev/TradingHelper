@@ -1,4 +1,5 @@
 import React from 'react'
+import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
@@ -8,6 +9,7 @@ import Stack from '@mui/material/Stack'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import MenuItem from '@mui/material/MenuItem'
+import TradesService from '../../services/TradesService'
 import { tradesColumns } from '../../data'
 import DictionaryFormTitle from '../dictionaries/DictionaryFormTitle'
 import DictionaryFormActions from '../dictionaries/DictionaryFormActions'
@@ -15,8 +17,9 @@ import DateAndTimePickerReusable from '../common/DateAndTimePickerReusable'
 import ReactHookFormMultiSelect from '../common/ReactHookFormMultiSelect'
 import ReactHookFormSelect from '../common/ReactHookFormSelect'
 import ReactHookFormSwitchReusable from '../common/ReactHookFormSwitchReusable'
+import DateAndTimePickerWithValidateReusable from '../common/DateAndTimePickerWithValidateReusable'
 
-const TradesForm = ({ setOpenDialog, editData, onSubmit }) => {
+const TradesForm = ({ setOpenDialog, editData, onReload }) => {
   const { t } = useTranslation()
   const tradingPairsData = useSelector(
     (state) => state.tradingPairs.tradingPairs
@@ -24,7 +27,6 @@ const TradesForm = ({ setOpenDialog, editData, onSubmit }) => {
   const confirmationsData = useSelector(
     (state) => state.confirmations.confirmations
   )
-
   const brokerSelectedAccount = useSelector(
     (state) => state.brokerAccounts.selectedBroker
   )
@@ -41,9 +43,36 @@ const TradesForm = ({ setOpenDialog, editData, onSubmit }) => {
     confirmations: [],
   }
 
-  const { register, handleSubmit, control } = useForm({
+  const { register, handleSubmit, control, getValues } = useForm({
     defaultValues: editData !== null ? editData : initTradeState,
   })
+
+  const onSubmit = async (data) => {
+    const confirmationsArray = data.confirmations.map(
+      (confirmation) => confirmation.id
+    )
+    console.log(data)
+    const tradesData = JSON.stringify({
+      id: data.id,
+      brokerAccountId: brokerSelectedAccount.id,
+      tradingPairId: data.tradingPairs !== null ? data.tradingPairs : null,
+      tradeConsistentStrategy: data.tradeConsistentStrategy,
+      startTrade: data.startTrade,
+      endTrade: data.endTrade,
+      profitLoss: data.profitLoss,
+      note: data.note,
+      confirmations: confirmationsArray,
+    })
+    console.log(tradesData)
+    const res = await TradesService.AddTrades(tradesData)
+    if (res.isError) {
+      toast.error(t('ErrorUpdate'))
+      return
+    }
+    toast.success(t('Added'))
+    onReload()
+    setOpenDialog(false)
+  }
 
   return (
     <Dialog open={true}>
@@ -138,12 +167,13 @@ const TradesForm = ({ setOpenDialog, editData, onSubmit }) => {
                 )
               case 'time2':
                 return (
-                  <DateAndTimePickerReusable
+                  <DateAndTimePickerWithValidateReusable
                     key={input.id}
                     control={control}
                     name={input.id}
                     label={t(input.label)}
                     required={false}
+                    startDateAndTime={getValues('startTrade')}
                   />
                 )
               case 'none':

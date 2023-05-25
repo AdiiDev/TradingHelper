@@ -22,9 +22,9 @@ const TradesPage = () => {
 
   const [filter, setFilter] = useState({
     brokerId: brokerSelectedAccount.id,
-    tradingPairs: [],
-    dateFrom: moment().startOf('day'),
-    dateTime: moment(),
+    tradingPairId: null,
+    dateFrom: moment().utc().startOf('month'),
+    dateTo: moment().utc(),
     tradeConsistentStrategy: null,
     numberOfConfirmations: null,
     confirmations: [],
@@ -34,54 +34,34 @@ const TradesPage = () => {
     onlyLoss: null,
   })
 
+  console.log(filter)
+
   useEffect(() => {
     setFilter({ ...filter, brokerId: brokerSelectedAccount.id })
   }, [brokerSelectedAccount])
 
   const handleFormSubmitFilterData = (data) => {
+    console.log(data.tradingPairId)
     let tradingsIdArray = []
-    if (data.tradingPairs) {
-      data.tradingPairs.forEach((tradingPair) => {
+    if (data.tradingPairId) {
+      data.tradingPairId.forEach((tradingPair) => {
         tradingsIdArray.push(tradingPair.id)
       })
     }
     setFilter({
       brokerId: brokerSelectedAccount.id,
-      tradingPairs: tradingsIdArray,
+      tradingPairId: tradingsIdArray,
       dateFrom: data.dateFrom,
-      dateTime: data.dateTime,
+      dateTo: data.dateTo,
       tradeConsistentStrategy: data.tradeConsistentStrategy,
       numberOfConfirmations: data.numberOfConfirmations,
       confirmations: data.confirmations,
       profit: data.profit,
-      loss: data.loos > 0 ? -data.loss : data.loss,
+      loss: data.loss > 0 ? -data.loss : data.loss,
       onlyProfit: data.onlyProfit,
       onlyLoss: data.onlyLoss,
     })
     setDrawerOpen(false)
-  }
-
-  const handleFormSubmit = async (data) => {
-    const tradesData = JSON.stringify({
-      id: data.id,
-      brokerAccountId: brokerSelectedAccount.id,
-      tradingPairId: data.tradingPairs !== null ? data.tradingPairs : null,
-      tradeConsistentStrategy: data.tradeConsistentStrategy,
-      startTrade: data.startTrade,
-      endTrade: data.endTrade,
-      profitLoss: data.profitLoss,
-      note: data.note,
-      confirmations: data.confirmations.length > 0 ? data.confirmations : {},
-    })
-    console.log(tradesData)
-    const res = await TradesService.AddTrades(tradesData)
-    if (res.isError) {
-      toast.error(t('ErrorUpdate'))
-      return
-    }
-    setReload(reload + 1)
-    toast.success(t('Added'))
-    setOpenFormDialog(false)
   }
 
   const deleteTrades = async (id) => {
@@ -101,7 +81,7 @@ const TradesPage = () => {
         <TradesForm
           setOpenDialog={setOpenFormDialog}
           editData={editData}
-          onSubmit={handleFormSubmit}
+          onReload={() => setReload(reload + 1)}
         />
       ) : null}
       <TradesTable

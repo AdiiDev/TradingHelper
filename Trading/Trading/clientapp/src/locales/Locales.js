@@ -138,6 +138,13 @@ export const InitLocales = () => {
             ColumnWidth: 'Column width ',
             AddNewSymbol: 'Add new symbol',
             Symbols: 'Symbols',
+            OpenDrawerSymbols: 'Open symbols drawer',
+            OpenTradesDrawer: 'Open trades drawer',
+            Open: 'Open',
+            Closed: 'Closed',
+            AddTrade: 'Add trade',
+            EndDateAndTimeMustBeAfterStartDateAndTime:
+              'End date and time must be after start date and time',
           },
         },
         pl: {
@@ -270,6 +277,13 @@ export const InitLocales = () => {
             ColumnWidth: 'Szerokość kolumny',
             AddNewSymbol: 'Dodaj nowy symbol',
             Symbols: 'Symbole',
+            OpenDrawerSymbols: 'Otwórz panel boczny z symbolami',
+            OpenTradesDrawer: 'Otwórz panel dolny z trades',
+            Open: 'Otwarte',
+            Closed: 'Zamknięte',
+            AddTrade: 'Dodaj trade',
+            EndDateAndTimeMustBeAfterStartDateAndTime:
+              'Data i czas rozpoczęcia nie może być wcześniejsza niż data i czas zakończenia',
           },
         },
       },

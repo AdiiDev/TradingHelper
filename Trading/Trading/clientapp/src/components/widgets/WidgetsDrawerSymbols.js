@@ -14,7 +14,7 @@ import { setTradingPairs } from '../../services/dictionary/TradingPairsSlice'
 import DictionaryTradingPairsService from '../../services/dictionary/DictionaryTradingPairsService'
 import { tradingPairsColumns } from '../../data'
 
-export const WidgetsDrawer = ({ setDrawerOpen }) => {
+export const WidgetsDrawerSymbols = ({ setDrawerOpen }) => {
   const { t } = useTranslation()
   const symbols = useSelector((state) => state.tradingPairs.tradingPairs)
   const [openTradingPairsDialog, setOpenTradingPairsDialog] = useState(false)
@@ -101,4 +101,4 @@ export const WidgetsDrawer = ({ setDrawerOpen }) => {
   )
 }
 
-export default WidgetsDrawer
+export default WidgetsDrawerSymbols

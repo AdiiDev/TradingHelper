@@ -213,9 +213,25 @@ a:-webkit-any-link {
 .drawer-fab-button {
   position: absolute !important;
   right: 19px;
-  bottom: auto;
-  top: 50%;
+  top: auto;
+  bottom: 50%;
   transform: translateY(-50%);
+}
+
+.drawer-fab-button-trades {
+  position: absolute !important;
+  bottom: 19px;
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.drawer-fab-button-add {
+  position: absolute !important;
+  top: 4px;
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .table-cell-header- {

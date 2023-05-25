@@ -25,7 +25,7 @@ namespace Trades.Domain.Models
             EndTrade = newObject.EndTrade;
             ProfitLoss = newObject.ProfitLoss;
             Note = newObject.Note;
-            Confirmations = newObject.Confirmations;
+            //Confirmations = newObject.Confirmations;
             return this;
         }
     }

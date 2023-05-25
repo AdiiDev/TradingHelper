@@ -22,7 +22,6 @@ const DictionaryConfirmationTable = () => {
       name: data.name,
       favourite: JSON.parse(data.favourite),
     })
-    console.log(confirmationData)
     const res = await DictionaryConfirmationService.AddConfirmation(
       confirmationData
     )

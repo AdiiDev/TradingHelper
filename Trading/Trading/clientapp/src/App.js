@@ -39,7 +39,7 @@ import { setLayouts } from './services/config/LayoutsConfigSlice'
 const AppRouter =
   process.env.REACT_APP_MYVAR === 'win' ? HashRouter : BrowserRouter
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => { } })
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} })
 
 const App = () => {
   const { t } = useTranslation()
@@ -63,13 +63,14 @@ const App = () => {
       setCallDone(true)
       toast.info(t('Welcome') + ' ' + res.result.username)
 
-      const [accounts, confirmations, tradingPairs, intervals, layouts] = await Promise.all([
-        DictionaryAccountService.GetAccounts(),
-        DictionaryConfirmationService.GetConfirmations(),
-        DictionaryTradingPairsService.GetTradingPairs(),
-        IntervalService.Get(),
-        LayoutsService.Get()
-      ])
+      const [accounts, confirmations, tradingPairs, intervals, layouts] =
+        await Promise.all([
+          DictionaryAccountService.GetAccounts(),
+          DictionaryConfirmationService.GetConfirmations(),
+          DictionaryTradingPairsService.GetTradingPairs(),
+          IntervalService.Get(),
+          LayoutsService.Get(),
+        ])
 
       if (accounts.isError) {
         return
@@ -89,16 +90,12 @@ const App = () => {
       if (intervals.isError) {
         // Here should be log or toast
         return
-      }
-      else
-        dispatch(setIntervals(intervals.result))
+      } else dispatch(setIntervals(intervals.result))
 
       if (layouts.isError) {
         // Here should be log or toast
         return
-      }
-      else
-        dispatch(setLayouts(layouts.result))
+      } else dispatch(setLayouts(layouts.result))
     }
     checkConfig()
   }, [])

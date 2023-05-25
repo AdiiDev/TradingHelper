@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import Tooltip from '@mui/material/Tooltip'
-import Fab from '@mui/material/Fab'
-import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings'
-import MenuOpenIcon from '@mui/icons-material/MenuOpen'
 import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -13,10 +9,13 @@ import {
   setShowLayout,
 } from '../services/config/LayoutsConfigSlice'
 import WrapperBasicPage from '../components/common/WrapperBasicPage'
-import WidgetsDrawer from '../components/widgets/WidgetsDrawer'
+import WidgetsDrawerSymbols from '../components/widgets/WidgetsDrawerSymbols'
+import WidgetsTradesDrawer from '../components/widgets/WidgetsTradesDrawer'
 import ChartGrid from '../components/widgets/ChartGrid'
 import ChartsSettingsDialog from '../components/widgets/ChartsSettingsDialog'
 import LayoutsService from '../services/config/LayoutsService'
+import TradesForm from '../components/trades/TradesForm'
+import WidgetsButtonBox from '../components/widgets/WidgetsButtonBox'
 
 const baseSettingsSchema = yup.object().shape({
   columns: yup
@@ -44,10 +43,11 @@ const WidgetsPage = () => {
   const [currentWidgetsArray, setCurrentWidgetsArray] = useState([])
   const [openChartGridSettings, setOpenChartGridSettings] = useState(false)
   const [hide, setHide] = useState(false)
-  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [drawerSymbolsOpen, setDrawerSymbolsOpen] = useState(false)
+  const [drawerTradesOpen, setDrawerTradesOpen] = useState(false)
+  const [openTradeForm, setOpenTradeForm] = useState(false)
 
   const useMiltipleForm = (defaultValues, resolver) => {
-    console.log('Call')
     return useForm({ resolver: resolver, defaultValues: defaultValues })
   }
 
@@ -78,7 +78,6 @@ const WidgetsPage = () => {
   }
 
   const handleLayouts = async (data) => {
-    console.log('Handle layouts', data)
     const res = await LayoutsService.AddOrUpdate(data)
     if (res.isError) {
       console.log('Error', res.isError)
@@ -86,7 +85,7 @@ const WidgetsPage = () => {
     }
     const layouts = await LayoutsService.Get()
     if (layouts.isError) {
-      // Here should be log or toast
+      console.log('Error', res.isError)
       return
     } else dispatch(setLayouts(layouts.result))
     setOpenChartGridSettings(false)
@@ -99,16 +98,6 @@ const WidgetsPage = () => {
 
   return (
     <WrapperBasicPage>
-      <Tooltip title={t('OpenDrawer')}>
-        <Fab
-          size="small"
-          color="primary"
-          onClick={() => setDrawerOpen(true)}
-          className="drawer-fab-button"
-        >
-          <MenuOpenIcon />
-        </Fab>
-      </Tooltip>
       {openChartGridSettings && (
         <ChartsSettingsDialog
           close={() => setOpenChartGridSettings(false)}
@@ -119,31 +108,14 @@ const WidgetsPage = () => {
         />
       )}
       <div style={{ minHeight: '80vh', width: '100%' }}>
-        <div
-          className="Chart-settings-buttons"
-          style={{ top: 4, width: '100px', right: '40%' }}
-        >
-          <Tooltip title={t('SetView')}>
-            <Fab
-              color="primary"
-              aria-label="add"
-              size="small"
-              onClick={() => openSettings()}
-            >
-              <DisplaySettingsIcon />
-            </Fab>
-          </Tooltip>
-          <Tooltip title={t('GeName')}>
-            <Fab
-              color="primary"
-              aria-label="add"
-              size="small"
-              onClick={() => setHide(!hide)}
-            >
-              <DisplaySettingsIcon />
-            </Fab>
-          </Tooltip>
-        </div>
+        <WidgetsButtonBox
+          setOpenTradeForm={setOpenTradeForm}
+          setDrawerSymbolsOpen={setDrawerSymbolsOpen}
+          setHide={setHide}
+          setDrawerTradesOpen={setDrawerTradesOpen}
+          openSettings={openSettings}
+          hide={hide}
+        />
         <div className={hide ? 'test-hide' : ''}>
           <ChartGrid
             settings={baseSettings}
@@ -154,7 +126,15 @@ const WidgetsPage = () => {
         </div>
       </div>
 
-      {drawerOpen && <WidgetsDrawer setDrawerOpen={setDrawerOpen} />}
+      {drawerSymbolsOpen && (
+        <WidgetsDrawerSymbols setDrawerOpen={setDrawerSymbolsOpen} />
+      )}
+      {drawerTradesOpen && (
+        <WidgetsTradesDrawer setDrawerOpen={setDrawerTradesOpen} />
+      )}
+      {openTradeForm && (
+        <TradesForm setOpenDialog={setOpenTradeForm} editData={null} />
+      )}
     </WrapperBasicPage>
   )
 }

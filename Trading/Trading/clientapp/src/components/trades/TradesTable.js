@@ -1,33 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import moment from 'moment'
 import Table from '@mui/material/Table'
 import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import TableCell from '@mui/material/TableCell'
-import TableBody from '@mui/material/TableBody'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Switch from '@mui/material/Switch'
-import Popover from '@mui/material/Popover'
-import Divider from '@mui/material/Divider'
-import Slider from '@mui/material/Slider'
 import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
 import AddIcon from '@mui/icons-material/Add'
-import CheckIcon from '@mui/icons-material/Check'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import TradesService from '../../services/TradesService'
 import Pagination from '../common/Pagination'
 import ConfirmDialog from '../common/ConfirmDialog'
-import SortedTableActions from '../sortedTable/SortedTableActions'
+import TradesTablePopover from './TradesTablePopover'
+import TradesTableBody from './TradesTableBody'
+import TradesTableHead from './TradesTableHead'
 import { tradesColumns } from '../../data'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 
 const TradesTable = ({
   editDataTable,
@@ -44,7 +33,6 @@ const TradesTable = ({
   const [count, setCount] = useState(0)
   const [rowID, setRowID] = useState(null)
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
-  const [openSettingsPopover, setOpenSettingsPopover] = useState(false)
   const [columnVisibility, setColumnVisibility] = useState({
     tradingPairs: true,
     tradeConsistentStrategy: true,
@@ -56,35 +44,40 @@ const TradesTable = ({
   const [showAllColumns, setShowAllColumns] = useState(true)
   const [columnWidths, setColumnWidths] = useState({})
   const [columns, setColumns] = useState(tradesColumns)
-  const anchorRef = useRef(null)
+
   const clearTimeoutRef = useRef()
 
-  const fixProfitOrLoos = (data) => {
+  const fixProfitOrLoss = (data) => {
     if (data === null || data === '') return null
     return +data
   }
 
   const loadTrades = async () => {
-    const loosNew = fixProfitOrLoos(filter.loos)
-    const profitNew = fixProfitOrLoos(filter.profit)
-    const res = await TradesService.GetTrades({
+    const lossNew = fixProfitOrLoss(filter.loss)
+    const profitNew = fixProfitOrLoss(filter.profit)
+    const confirmationsArray = filter.confirmations.map(
+      (confirmation) => confirmation.id
+    )
+    const filterData = {
       brokerId: filter.brokerId,
-      tradingPairs: filter.tradingPairs,
-      dateFrom: filter.dateFrom,
-      dateTime: filter.dateTime,
+      tradingPairId: filter.tradingPairId,
+      dateFrom: moment(filter.dateFrom).utc(),
+      dateTo: moment(filter.dateTo).utc(),
       tradeConsistentStrategy: filter.tradeConsistentStrategy,
       numberOfConfirmations:
-        filter.numberOfConfirmations !== ''
+        filter.numberOfConfirmations !== 0
           ? +filter.numberOfConfirmations
           : null,
-      confirmations: filter.confirmations,
+      confirmations: confirmationsArray,
       profit: profitNew,
-      loos: loosNew,
+      loss: lossNew,
       onlyProfit: filter.onlyProfit,
-      onlyLoos: filter.onlyLoos,
+      onlyLoss: filter.onlyLoss,
       Page: page,
       PageSize: rowsPerPage,
-    })
+    }
+    console.log(filterData)
+    const res = await TradesService.GetTrades(filterData)
     if (res.isError) {
       toast.error(t('LoadingError'))
       return
@@ -177,89 +170,24 @@ const TradesTable = ({
           size="large"
           className="add-button"
           startIcon={<AddIcon />}
-          onClick={() => setOpenDialog(true)}
+          onClick={() => {
+            setOpenDialog(true)
+            editDataTable(null)
+          }}
         >
           {t('Add')}
-        </Button>{' '}
-        <div style={{ marginRight: '50px' }} className="button-drawerOpen">
-          <Tooltip title={t('TableSettings')}>
-            <Button
-              onClick={() => setOpenSettingsPopover(true)}
-              ref={anchorRef}
-            >
-              <MoreVertIcon fontSize="large" />
-            </Button>
-          </Tooltip>
-          <Popover
-            open={openSettingsPopover}
-            onClose={() => setOpenSettingsPopover(false)}
-            anchorEl={anchorRef.current}
-          >
-            <Box sx={{ p: 4 }}>
-              <Typography variant="h5" sx={{ marginBottom: '10px' }}>
-                {t('TableSettings')}
-              </Typography>
-              {columns.map((column, index) => (
-                <div key={column.id}>
-                  {column.id === 'actions' ? null : (
-                    <>
-                      <Button onClick={() => moveColumnUp(index)}>
-                        <KeyboardArrowUpIcon />
-                      </Button>
-                      <Button onClick={() => moveColumnDown(index)}>
-                        <ArrowDropDownIcon />
-                      </Button>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={columnVisibility[column.id]}
-                            onChange={() => toggleColumnVisibility(column.id)}
-                          />
-                        }
-                        label={t(column.label)}
-                      />
-                    </>
-                  )}
-                  {column.id === 'actions' ? null : (
-                    <>
-                      {' '}
-                      <Typography
-                        id={`slider-label-${column.id}`}
-                        variant="caption"
-                      >
-                        {`${t('ColumnWidth')}: ${
-                          columnWidths[column.id] || 100
-                        }px`}{' '}
-                      </Typography>
-                      <Slider
-                        sx={{ marginLeft: '10px' }}
-                        color="secondary"
-                        value={columnWidths[column.id] || 200}
-                        min={100}
-                        max={500}
-                        step={10}
-                        onChange={(event, newValue) =>
-                          handleColumnWidthChange(column.id, newValue)
-                        }
-                        aria-labelledby={`slider-label-${column.id}`}
-                      />
-                      <Divider />
-                    </>
-                  )}
-                </div>
-              ))}
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={showAllColumns}
-                    onChange={handleShowAllColumns}
-                  />
-                }
-                label={showAllColumns ? t('HideAll') : t('ShowAll')}
-              />
-            </Box>
-          </Popover>
-        </div>
+        </Button>
+        <TradesTablePopover
+          moveColumnDown={moveColumnDown}
+          moveColumnUp={moveColumnUp}
+          toggleColumnVisibility={toggleColumnVisibility}
+          handleColumnWidthChange={handleColumnWidthChange}
+          handleShowAllColumns={handleShowAllColumns}
+          columnWidths={columnWidths}
+          columns={columns}
+          columnVisibility={columnVisibility}
+          showAllColumns={showAllColumns}
+        />
         <div className="button-drawerOpen">
           <Tooltip title={t('OpenDrawer')}>
             <Button onClick={toggleDrawer}>
@@ -269,105 +197,21 @@ const TradesTable = ({
         </div>
       </Box>
       <Table stickyHeader>
-        <TableHead>
-          <TableRow>
-            {columns.map((column) => {
-              if (column.id === 'actions') {
-                return (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    className="table-cell-header-"
-                  >
-                    {t(column.label)}
-                  </TableCell>
-                )
-              }
-
-              const isColumnVisible = columnVisibility[column.id]
-              const columnWidth = columnWidths[column.id] || 200
-
-              return (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  className={`table-cell-header-${
-                    !isColumnVisible ? 'hidden' : ''
-                  }`}
-                  style={{ width: columnWidth }}
-                >
-                  {t(column.label)}
-                </TableCell>
-              )
-            })}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {trades.map((row) => {
-            return (
-              <TableRow
-                hover
-                key={'row' + row.id}
-                role="checkbox"
-                tabIndex={-1}
-                align="right"
-              >
-                {columns.map((column) => {
-                  if (!columnVisibility[column.id]) {
-                    return null
-                  }
-                  let value = row[column.id]
-                  if (column.id === 'tradingPairs') {
-                    value = row.tradingPairId
-                  } else if (column.id === 'confirmations') {
-                    value = row.confirmations.join(', ')
-                  } else if (column.id === 'startTrade') {
-                    value = row.startTrade.replace('T', ' ')
-                  } else if (column.id === 'endTrade') {
-                    value = row.endTrade?.replace('T', ' ')
-                  }
-                  const cellStyle =
-                    column.id === 'profitLoss'
-                      ? value > 0
-                        ? { color: 'green', fontWeight: 'bolder' }
-                        : value < 0
-                        ? { color: 'red', fontWeight: 'bolder' }
-                        : { color: 'yellow', fontWeight: 'bolder' }
-                      : {}
-
-                  return (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ ...cellStyle, width: columnWidths[column.id] }}
-                      className={
-                        columnVisibility[column.id] ? '' : 'hidden-column'
-                      }
-                    >
-                      {column.id === 'tradeConsistentStrategy' ? (
-                        row.tradeConsistentStrategy ? (
-                          <Typography className="check-table">
-                            <CheckIcon fontSize="large" />
-                          </Typography>
-                        ) : null
-                      ) : (
-                        value
-                      )}
-                    </TableCell>
-                  )
-                })}
-                <SortedTableActions
-                  columnName={'actions'}
-                  editDataTable={editDataTable}
-                  setOpenDialog={setOpenDialog}
-                  setOpenConfirmDialog={setOpenConfirmDialog}
-                  setRowID={setRowID}
-                  row={row}
-                />
-              </TableRow>
-            )
-          })}
-        </TableBody>
+        <TradesTableHead
+          columns={columns}
+          columnVisibility={columnVisibility}
+          columnWidths={columnWidths}
+        />
+        <TradesTableBody
+          columns={columns}
+          columnWidths={columnWidths}
+          columnVisibility={columnVisibility}
+          editDataTable={editDataTable}
+          setOpenDialog={setOpenDialog}
+          setOpenConfirmDialog={setOpenConfirmDialog}
+          setRowID={setRowID}
+          trades={trades}
+        />
       </Table>
       <Pagination
         count={count}

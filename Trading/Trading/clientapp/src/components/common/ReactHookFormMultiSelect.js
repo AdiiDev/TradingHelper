@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import FormControl from '@mui/material/FormControl'
 import Chip from '@mui/material/Chip'
 import { Controller } from 'react-hook-form'
@@ -20,13 +21,37 @@ const ReactHookFormMultiSelect = ({
   optionsLabelProp,
   required,
 }) => {
-  // Need to fix styles a litlle
+  const { t } = useTranslation()
+
+  const onChangeOverride = (e, value) => {
+    const selectedValues = value.map((option) => option[optionsValueProp])
+  }
+
   return (
     <FormControl sx={{ width: '100%' }}>
       <Controller
         control={control}
         name={name}
         render={({ field: { onChange, value } }) => {
+          const handleChange = (e, selectedOption) => {
+            const selectedIndex =
+              value &&
+              value.findIndex(
+                (option) =>
+                  option[optionsKeyProp] === selectedOption[optionsKeyProp]
+              )
+            const updatedValue = Array.isArray(value) ? [...value] : []
+
+            if (selectedIndex > -1) {
+              updatedValue.splice(selectedIndex, 1)
+            } else {
+              updatedValue.push(selectedOption)
+            }
+
+            onChangeOverride(e, updatedValue)
+            onChange(updatedValue)
+          }
+
           return (
             <TextField
               required={required}
@@ -37,36 +62,42 @@ const ReactHookFormMultiSelect = ({
               label={label}
               SelectProps={{
                 multiple: true,
-                value: value,
+                value: Array.isArray(value) ? value : [],
                 renderValue: (selected) => {
                   return (
                     <div>
-                      {selected.map((value) => {
-                        const option = options.find(
-                          (el) => el[optionsValueProp] === value
-                        )
-                        if (typeof option === 'undefined') return null
-                        return (
-                          <Chip key={value} label={option[optionsLabelProp]} />
-                        )
+                      {selected.map((option) => {
+                        const optionLabel =
+                          option === options.day
+                            ? options.label
+                            : option[optionsLabelProp]
+                        return <Chip key={optionLabel} label={t(optionLabel)} />
                       })}
                     </div>
                   )
                 },
-                onChange: onChange,
               }}
             >
-              {options.map((option) => (
-                <MenuItem
-                  key={option[optionsKeyProp]}
-                  value={option[optionsValueProp]}
-                >
-                  <Checkbox
-                    checked={value?.includes(option[optionsValueProp])}
-                  />
-                  <ListItemText primary={option[optionsLabelProp]} />
-                </MenuItem>
-              ))}
+              {options.map((option) => {
+                const optionKey = option[optionsKeyProp]
+                const isChecked = value?.some(
+                  (selectedOption) =>
+                    selectedOption[optionsKeyProp] === optionKey
+                )
+
+                return (
+                  <MenuItem
+                    key={optionKey}
+                    value={option}
+                    onClick={(e) => {
+                      handleChange(e, option)
+                    }}
+                  >
+                    <Checkbox checked={isChecked} />
+                    <ListItemText primary={t(option[optionsLabelProp])} />
+                  </MenuItem>
+                )
+              })}
             </TextField>
           )
         }}

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 import TableCell from '@mui/material/TableCell'
 import Button from '@mui/material/Button'
 import EditIcon from '@mui/icons-material/Edit'
@@ -14,6 +15,23 @@ const SortedTableActions = ({
   row,
 }) => {
   const { t } = useTranslation()
+  const confirmationsData = useSelector(
+    (state) => state.confirmations.confirmations
+  )
+
+  const handleEditData = (data) => {
+    if (data.confirmations?.length > 0) {
+      const matchConfirmations = confirmationsData.filter((confirm) =>
+        data.confirmations?.includes(confirm.id)
+      )
+      editDataTable({ ...data, confirmations: matchConfirmations })
+      setOpenDialog(true)
+    } else {
+      editDataTable(data)
+      setOpenDialog(true)
+    }
+  }
+
   return (
     <TableCell key={columnName} align="right">
       <Button
@@ -22,8 +40,7 @@ const SortedTableActions = ({
         startIcon={<EditIcon />}
         size="small"
         onClick={() => {
-          editDataTable(row)
-          setOpenDialog(true)
+          handleEditData(row)
         }}
       >
         {t('Edit')}

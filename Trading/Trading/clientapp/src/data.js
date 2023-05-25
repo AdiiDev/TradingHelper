@@ -134,7 +134,7 @@ const tradesColumns = [
 ]
 const tradesDrawerColumns = [
   {
-    id: 'tradingPairs',
+    id: 'tradingPairId',
     label: 'TradingPairs',
     align: 'left',
     type: 'multi-select1',
@@ -188,8 +188,8 @@ const tradesDrawerColumns = [
     type: 'checkbox',
   },
   {
-    id: 'onlyLoos',
-    label: 'OnlyLoos',
+    id: 'onlyLoss',
+    label: 'OnlyLoss',
     align: 'center',
     type: 'checkbox',
   },

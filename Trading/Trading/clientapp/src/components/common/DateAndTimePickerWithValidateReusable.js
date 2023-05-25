@@ -1,17 +1,42 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
+import moment from 'moment'
 import { Controller } from 'react-hook-form'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { DesktopDateTimePicker } from '@mui/x-date-pickers'
 import TextField from '@mui/material/TextField'
 
-const DateAndTimePickerReusable = ({ control, name, label, required }) => {
+const DateAndTimePickerWithValidateReusable = ({
+  control,
+  label,
+  name,
+  required,
+  startDateAndTime,
+}) => {
+  const { t } = useTranslation()
   return (
     <LocalizationProvider key={name} dateAdapter={AdapterMoment}>
       <Controller
         control={control}
         name={name}
-        render={({ field: { onChange, value } }) => (
+        rules={{
+          validate: (value) => {
+            const startDateTimeValid = startDateAndTime
+            if (startDateTimeValid && value) {
+              const startMoment = moment(
+                startDateTimeValid,
+                'yyyy/MM/DD HH:mm:ss'
+              )
+              const endMoment = moment(value, 'yyyy/MM/DD HH:mm:ss')
+              if (endMoment.isBefore(startMoment)) {
+                return 'EndDateAndTimeMustBeAfterStartDateAndTime'
+              }
+            }
+            return true
+          },
+        }}
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
           <DesktopDateTimePicker
             className="input"
             label={label}
@@ -30,6 +55,8 @@ const DateAndTimePickerReusable = ({ control, name, label, required }) => {
                 }}
                 required={required}
                 {...params}
+                error={Boolean(error)}
+                helperText={t(error?.message)}
               />
             )}
           />
@@ -39,4 +66,4 @@ const DateAndTimePickerReusable = ({ control, name, label, required }) => {
   )
 }
 
-export default DateAndTimePickerReusable
+export default DateAndTimePickerWithValidateReusable

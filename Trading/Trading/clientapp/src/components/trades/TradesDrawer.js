@@ -25,8 +25,8 @@ const TradesDrawer = ({ filter, onSubmit, setDrawerOpen }) => {
 
   const initialState = {
     brokerId: 0,
-    tradingPairs: [],
-    dateFrom: moment().startOf('day'),
+    tradingPairId: [],
+    dateFrom: moment().startOf('year'),
     dateTime: moment(),
     tradeConsistentStrategy: false,
     numberOfConfirmations: null,
@@ -115,7 +115,7 @@ const TradesDrawer = ({ filter, onSubmit, setDrawerOpen }) => {
                     control={control}
                     name={input.id}
                     label={t(input.label)}
-                    required={true}
+                    required={false}
                   />
                 )
               case 'none':
