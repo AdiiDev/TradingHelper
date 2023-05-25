@@ -36,8 +36,9 @@ import { setLayouts } from './services/config/LayoutsConfigSlice'
 // Styling
 //https://mui.com/system/getting-started/usage/
 
-const AppRouter =
-  process.env.REACT_APP_MYVAR === 'win' ? HashRouter : BrowserRouter
+const env = import.meta.env.VITE_ENV
+
+const AppRouter = env === 'win' ? HashRouter : BrowserRouter
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} })
 
@@ -128,12 +129,8 @@ const App = () => {
         theme={mode}
       />
       <ThemeProvider theme={theme}>
-        {process.env.REACT_APP_MYVAR === 'win' && <ApplicationBar />}
-        <div
-          className={
-            'App ' + (process.env.REACT_APP_MYVAR === 'win' ? 'App-win' : '')
-          }
-        >
+        {env === 'win' && <ApplicationBar />}
+        <div className={'App ' + (env === 'win' ? 'App-win' : '')}>
           <CssBaseline enableColorScheme />
           <AppRouter>
             {!configIsEmpty && callDone && (

@@ -12,6 +12,8 @@ import { AdditionalMenu } from './AdditionalMenu'
 import { NewWindow } from './NewWindow'
 import { menuOptions } from '../../data'
 
+const env = import.meta.env.VITE_ENV
+
 export const NavigationBarLeft = ({ themeMode, changeTheme }) => {
   const navigate = useNavigate()
   const [currentOption, setCurrentOption] = useState(menuOptions[0])
@@ -41,7 +43,7 @@ export const NavigationBarLeft = ({ themeMode, changeTheme }) => {
       variant="permanent"
       open={true}
       sx={{
-        ...(process.env.REACT_APP_MYVAR === 'win' && {
+        ...(env === 'win' && {
           '& .MuiPaper-root': {
             top: '32px',
             height: 'calc(100vh - 32px)',
@@ -51,7 +53,7 @@ export const NavigationBarLeft = ({ themeMode, changeTheme }) => {
       }}
       className="fix-drawer"
     >
-      {process.env.REACT_APP_MYVAR === 'win' && <NewWindow />}
+      {env === 'win' && <NewWindow />}
       <Divider />
       <List>
         {menuOptions.map((option, index) => (

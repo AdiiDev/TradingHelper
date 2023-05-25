@@ -17,6 +17,8 @@ import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import { Stack } from '@mui/material'
 
+const env = import.meta.env.VITE_ENV
+
 const ApplicationTopSelect = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -60,11 +62,7 @@ const ApplicationTopSelect = () => {
   return (
     <Box
       sx={{ flexGrow: 1, position: 'sticky', top: 0 }}
-      className={
-        process.env.REACT_APP_MYVAR === 'win'
-          ? 'Top-select-bar-win'
-          : 'Top-select-bar'
-      }
+      className={env === 'win' ? 'Top-select-bar-win' : 'Top-select-bar'}
     >
       <AppBar position="sticky" variant="permanent">
         <Toolbar>

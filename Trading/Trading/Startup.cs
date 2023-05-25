@@ -103,9 +103,11 @@ namespace Trading
             {
                 spa.Options.SourcePath = "clientapp";
                 var reactEnv = HybridSupport.IsElectronActive ? "win" : "web";
+          
                 if (env.IsDevelopment())
                 {
-                    spa.UseReactDevelopmentServer(npmScript: reactEnv);
+           
+                    spa.UseProxyToSpaDevelopmentServer("https://localhost:3399");
                 }
             });
 
