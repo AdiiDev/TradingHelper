@@ -13,8 +13,8 @@ namespace Trades.Domain.Models
         public virtual DateTime StartTrade { get; set; } //
         public virtual DateTime? EndTrade { get; set; } //
         public virtual double? ProfitLoss { get; set; } //
-        public virtual string Note { get; set; }
-        public virtual IList<TradeConfirmationModel> Confirmations { get; set; } = new List<TradeConfirmationModel>(); //
+        public virtual string Note { get; set; } 
+        public virtual IList<TradeConfirmationModel> Confirmations { get; set; } = new List<TradeConfirmationModel>(); //List<int>
 
         public virtual TradeModel CopyFrom(TradeModel newObject)
         {
@@ -25,7 +25,7 @@ namespace Trades.Domain.Models
             EndTrade = newObject.EndTrade;
             ProfitLoss = newObject.ProfitLoss;
             Note = newObject.Note;
-            Confirmations = newObject.Confirmations;
+            //Confirmations = newObject.Confirmations;
             return this;
         }
     }
