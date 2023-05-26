@@ -14,11 +14,6 @@ namespace Trades.Domain.ViewModels
         public virtual string Note { get; set; }
         public virtual IList<int> Confirmations { get; set; } = new List<int>(); // ?
 
-        public TradeViewModel()
-        {
-            
-        }
-
         public TradeViewModel(TradeModel model)
         {
             Id = model.Id;
@@ -29,7 +24,7 @@ namespace Trades.Domain.ViewModels
             StartTrade = model.StartTrade;
             EndTrade = model.EndTrade;
             ProfitLoss = model.ProfitLoss;
-            Confirmations = model.Confirmations?.Select(x => x.ConfirmationId).ToList() ?? new List<int>();
+            Confirmations = model.Confirmations?.Select(x => x.Id).ToList() ?? new List<int>();
         }
 
         public TradeModel ToModel()

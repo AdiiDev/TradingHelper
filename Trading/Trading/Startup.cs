@@ -47,12 +47,10 @@ namespace Trading
 
             //_appConfiguration.ConnectionString = "Server=.\\SQLEXPRESS;Database=TradingApp;Trusted_Connection=True;MultipleActiveResultSets=true;";
             services.AddSingleton<AppConfiguration>(_appConfiguration);
-            _appConfiguration.DBEngine = "MYSQL";
-            _appConfiguration.ConnectionString = "server=127.0.0.1;uid=root;pwd=mojabazadanych;database=trading";
             // Secure AppMainDB
             if (!string.IsNullOrEmpty(_appConfiguration.ConnectionString))
             {
-                services.AddScoped<IAppMainDB>(x => new AppMainDB(_appConfiguration.ConnectionString, _appConfiguration.DBEngine, true));
+                services.AddScoped<IAppMainDB>(x => new AppMainDB(_appConfiguration.ConnectionString, "MSSQL", true));
                 services.AddTradesModule();
             }
 
@@ -103,11 +101,9 @@ namespace Trading
             {
                 spa.Options.SourcePath = "clientapp";
                 var reactEnv = HybridSupport.IsElectronActive ? "win" : "web";
-          
                 if (env.IsDevelopment())
                 {
-           
-                    spa.UseProxyToSpaDevelopmentServer("https://localhost:3399");
+                    spa.UseReactDevelopmentServer(npmScript: reactEnv);
                 }
             });
 

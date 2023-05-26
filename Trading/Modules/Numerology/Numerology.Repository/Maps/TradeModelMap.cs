@@ -19,7 +19,7 @@ namespace Trades.Repository.Maps
             Map(x => x.StartTrade).Not.Nullable();
             Map(x => x.EndTrade).Nullable();
 
-            HasMany(x => x.Confirmations).KeyColumn("TradeId").NotFound.Ignore().LazyLoad();
+            HasMany(x => x.Confirmations).KeyColumn("TradeId").Cascade.Persist().NotFound.Ignore().LazyLoad();
         }
     }
 }

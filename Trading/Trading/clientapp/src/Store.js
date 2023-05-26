@@ -13,7 +13,7 @@ export const store = configureStore({
     confirmations: confirmationSlice,
     tradingPairs: tradingPairsSlice,
     intervals: intervalsSlice,
-    layouts: layoutsConfigSlice,
+    layouts: layoutsConfigSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
